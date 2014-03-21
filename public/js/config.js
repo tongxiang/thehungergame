@@ -1,28 +1,28 @@
 'use strict';
 
 //Setting up route
-angular.module('mean').config(['$stateProvider', '$urlRouterProvider',
+angular.module('hungergame').config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
     // For unmatched routes:
     $urlRouterProvider.otherwise('/');
 
     // states for my app
     $stateProvider
-      .state('all articles', {
-        url: '/articles',
-        templateUrl: 'views/articles/list.html'
+      .state('all restaurants', {
+        url: '/restaurants',
+        templateUrl: 'views/restaurants/list.html'
     })
-      .state('create article', {
-        url: '/articles/create',
-        templateUrl: 'views/articles/create.html'
+      .state('create restaurant', {
+        url: '/restaurants/create',
+        templateUrl: 'views/restaurants/create.html'
     })
-      .state('edit article', {
-        url: '/articles/:articleId/edit',
-        templateUrl: 'views/articles/edit.html'
+      .state('edit restaurant', {
+        url: '/restaurants/:restaurantId/edit',
+        templateUrl: 'views/restaurants/edit.html'
     })
-      .state('article by id', {
-        url: '/articles/:articleId',
-        templateUrl: 'views/articles/view.html'
+      .state('restaurant by id', {
+        url: '/restaurants/:restaurantId',
+        templateUrl: 'views/restaurants/view.html'
     })
       .state('home', {
         url: '/',
@@ -32,7 +32,7 @@ angular.module('mean').config(['$stateProvider', '$urlRouterProvider',
 ]);
 
 //Setting HTML5 Location Mode
-angular.module('mean').config(['$locationProvider',
+angular.module('hungergame').config(['$locationProvider',
   function($locationProvider) {
     $locationProvider.hashPrefix('!');
 }
