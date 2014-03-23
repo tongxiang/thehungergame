@@ -9,9 +9,10 @@ ul.articles li:not(:last-child) {
     border-bottom:1px solid #ccc;
 }
 
-ul li {
-  display: inline;
+ul.food li {
+  display: block;
   list-style-type: none;
+  /*border: solid 1px green;*/
 }
 
 div {
@@ -29,6 +30,10 @@ div {
   margin-top: 40px;
 }
 .slide{
+  position: absolute;
+  top: 0;
+  left: 27%;
+  margin: auto;
   margin-bottom: 10px;
 }
 
@@ -38,7 +43,11 @@ div {
   display: block;
 }
 
-.slide.ng-hide-add, .slide.ng-hide-remove {
+/*
+ +++ FADE ANIMATION +++
+*/
+
+/*li.ng-hide-add, li.ng-hide-remove {
   -webkit-transition:all linear 0.5s;
   -moz-transition:all linear 0.5s;
   -o-transition:all linear 0.5s;
@@ -46,49 +55,49 @@ div {
   display:block!important;
 }
 
-.slide.ng-hide-add.ng-hide-add-active,.slide.ng-hide-remove {
+li.ng-hide-add.ng-hide-add-active,li.ng-hide-remove {
   opacity:0;
 }
 
-.slide.ng-hide-add,.slide.ng-hide-remove.ng-hide-remove-active {
+li.ng-hide-add,li.ng-hide-remove.ng-hide-remove-active {
   opacity:1;
-}
+}*/
 
 /*
- ++++ END -- FROM SLIDER FILE's app.css ++++
+ +++ Slide ANIMATION +++
 */
 
-/****
-  http://www.yearofmoo.com/2013/08/remastered-animation-in-angularjs-1-2.html#presentation-slides
-****/
+/* ************************* */
 
-/** filter list **/
-/*.repeat-item.ng-enter,
-.repeat-item.ng-leave {
-  -webkit-transition:0.5s linear all;
-  transition:0.5s linear all;
+li.ng-hide-add {
+  -webkit-transition:all ease 0.125s;
+  -moz-transition:all ease 0.125s;
+  -o-transition:all ease 0.125s;
+  transition:all ease 0.125s;
+  display:block!important;
 }
 
-.repeat-item.ng-enter,
-.repeat-item.ng-leave.ng-leave-active {
-  opacity:0;
+li.ng-hide-remove {
+  -webkit-transition:all ease 0.125s;
+  -moz-transition:all ease 0.125s;
+  -o-transition:all ease 0.125s;
+  transition:all ease 0.125s;
+  display:block!important;
 }
-.repeat-item.ng-leave,
-.repeat-item.ng-enter.ng-enter-active {
-  opacity:1;
-}*/
 
-/*** Toggle color / show | hide ***/
-/** starting animations **/
+/* ************************* */
 
-/*.my-special-animation.ng-enter {
-  -webkit-transition:0.5s linear all;
-  transition:0.5s linear all;
-
-  background:red;
+.ng-hide-add-active {
+  -webkit-animation: bounceOutLeft 0.125s;
+  -moz-animation: bounceOutLeft 0.125s;
+  -ms-animation: bounceOutLeft 0.125s;
+  animation: bounceOutLeft 0.125s;
 }
- destination animations
-.my-special-animation.ng-enter.ng-enter-active {
-  background:blue;
-}*/
 
+.ng-hide-remove-active {
+  -webkit-animation: bounceInRight 0.125s;
+  -moz-animation: bounceInRight 0.125s;
+  -ms-animation: bounceInRight 0.125s;
+  animation: bounceInRight 0.125s;
+
+}

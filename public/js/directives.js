@@ -58,12 +58,13 @@ hungergame.directive('slider', function ($timeout) {
     /* Start: For Automatic slideshow*/
 
             var timer;
+            var interval = 250;
 
             var sliderFunc=function(){
                 timer=$timeout(function(){
                     scope.next();
-                    timer=$timeout(sliderFunc,1000);
-                },1000);
+                    timer=$timeout(sliderFunc,interval);
+                },interval);
             };
 
 
