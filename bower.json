@@ -12,9 +12,10 @@
     "angular-ui-router": "#master",
     "angular-animate": "~1.2.14",
     "angularjs-geolocation": "~0.1.1",
-    "ngAnimate-animate.css": "~0.1.1"
+    "ngAnimate-animate.css": "~0.1.1",
+    "angular-gestures": "~0.2.1"
   },
   "resolutions": {
-    "angular": "1.2.14"
+    "angular": "~1.2.0"
   }
 }
