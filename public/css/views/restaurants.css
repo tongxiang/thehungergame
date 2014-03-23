@@ -1,0 +1,94 @@
+section {
+  padding: 10px;
+}
+h1 {
+    text-align:center;
+}
+
+ul.articles li:not(:last-child) {
+    border-bottom:1px solid #ccc;
+}
+
+ul li {
+  display: inline;
+  list-style-type: none;
+}
+
+div {
+  /*border: 1px solid blue;*/
+}
+
+/*
+ ++++ BEGIN -- FROM SLIDER FILE's app.css ++++
+*/
+.slider{
+  position: relative;
+  padding:5px;
+  width:100%;
+  margin: auto;
+  margin-top: 40px;
+}
+.slide{
+  margin-bottom: 10px;
+}
+
+.arrows{
+  position: relative;
+  margin: auto;
+  display: block;
+}
+
+.slide.ng-hide-add, .slide.ng-hide-remove {
+  -webkit-transition:all linear 0.5s;
+  -moz-transition:all linear 0.5s;
+  -o-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  display:block!important;
+}
+
+.slide.ng-hide-add.ng-hide-add-active,.slide.ng-hide-remove {
+  opacity:0;
+}
+
+.slide.ng-hide-add,.slide.ng-hide-remove.ng-hide-remove-active {
+  opacity:1;
+}
+
+/*
+ ++++ END -- FROM SLIDER FILE's app.css ++++
+*/
+
+/****
+  http://www.yearofmoo.com/2013/08/remastered-animation-in-angularjs-1-2.html#presentation-slides
+****/
+
+/** filter list **/
+/*.repeat-item.ng-enter,
+.repeat-item.ng-leave {
+  -webkit-transition:0.5s linear all;
+  transition:0.5s linear all;
+}
+
+.repeat-item.ng-enter,
+.repeat-item.ng-leave.ng-leave-active {
+  opacity:0;
+}
+.repeat-item.ng-leave,
+.repeat-item.ng-enter.ng-enter-active {
+  opacity:1;
+}*/
+
+/*** Toggle color / show | hide ***/
+/** starting animations **/
+
+/*.my-special-animation.ng-enter {
+  -webkit-transition:0.5s linear all;
+  transition:0.5s linear all;
+
+  background:red;
+}
+ destination animations
+.my-special-animation.ng-enter.ng-enter-active {
+  background:blue;
+}*/
+
