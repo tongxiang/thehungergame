@@ -1,11 +1,15 @@
+body {
+  padding-bottom: 300px;
+}
+
 .navbar .nav>li>a.brand {
     padding-left:20px;
     margin-left:0
 }
 
-.content {
+/*.content {
     margin-top:70px;
-}
+}*/
 
 
 footer {
@@ -25,8 +29,9 @@ footer p {
 }
 
 img.food {
-  height: 500px;
-  width: 500px;
+/*  height: 500px;
+  width: 500px;*/
+  height: 20em;
   margin: auto;
 }
 

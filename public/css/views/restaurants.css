@@ -10,7 +10,7 @@ ul.articles li:not(:last-child) {
 }
 
 ul.food li {
-  display: block;
+  display: inline;
   list-style-type: none;
   /*border: solid 1px green;*/
 }
@@ -24,21 +24,26 @@ div {
 */
 .slider{
   position: relative;
-  padding:5px;
-  width:100%;
+  padding: 5px;
+  /*width:100%;*/
   margin: auto;
   margin-top: 40px;
+  /*border: blue solid 1px;*/
 }
+
 .slide{
   position: absolute;
-  top: 0;
-  left: 27%;
+  left: 10px;
+  right: 10px;
   margin: auto;
   margin-bottom: 10px;
 }
 
 .arrows{
-  position: relative;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 22em;
   margin: auto;
   display: block;
 }
@@ -88,16 +93,16 @@ li.ng-hide-remove {
 /* ************************* */
 
 .ng-hide-add-active {
-  -webkit-animation: bounceOutLeft 0.125s;
-  -moz-animation: bounceOutLeft 0.125s;
-  -ms-animation: bounceOutLeft 0.125s;
-  animation: bounceOutLeft 0.125s;
+  -webkit-animation: slideOutLeft 0.125s;
+  -moz-animation: slideOutLeft 0.125s;
+  -ms-animation: slideOutLeft 0.125s;
+  animation: slideOutLeft 0.125s;
 }
 
 .ng-hide-remove-active {
-  -webkit-animation: bounceInRight 0.125s;
-  -moz-animation: bounceInRight 0.125s;
-  -ms-animation: bounceInRight 0.125s;
-  animation: bounceInRight 0.125s;
+  -webkit-animation: slideInRight 0.125s;
+  -moz-animation: slideInRight 0.125s;
+  -ms-animation: slideInRight 0.125s;
+  animation: slideInRight 0.125s;
 
 }
