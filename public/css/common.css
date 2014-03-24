@@ -1,5 +1,7 @@
 body {
-  padding-bottom: 300px;
+  /*padding-bottom: 300px;*/
+  overflow: hidden;
+  width: 100%;
 }
 
 .navbar .nav>li>a.brand {

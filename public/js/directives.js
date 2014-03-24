@@ -33,20 +33,37 @@ hungergame.directive('slider', function ($timeout) {
             scope.currentIndex=0;
 
             scope.start=function(){
-              sliderFunc();
-            }
+                sliderFunc();
+            };
 
             scope.end=function(){
-              $timeout.cancel(timer);
-            }
+                $timeout.cancel(timer);
+            };
 
             scope.next=function(){
-              scope.currentIndex<scope.images.length-1?scope.currentIndex++:scope.currentIndex=0;
+                scope.currentIndex<scope.images.length-1?scope.currentIndex++:scope.currentIndex=0;
             };
 
             scope.prev=function(){
                 scope.currentIndex>0?scope.currentIndex--:scope.currentIndex=scope.images.length-1;
             };
+
+            scope.swipedUp=function($event){
+              var ele = $event.target;
+              console.log("this is the ele: ", ele)
+              // console.log('current image: ',scope.images[scope.currentIndex])
+              ele.classList.add("swiped")
+
+              // Get image index -- pop/slice/splice it out of array into new array
+
+              // console.log("this is the ele style: ", ele.style)
+
+              // Removes the list item
+              setTimeout (function() {
+                scope.images.splice(scope.currentIndex-1,1)
+                ele.classList.remove("swiped")
+              }, 1000);
+            }
 
             scope.$watch('currentIndex',function(){
                 scope.images.forEach(function(image){
@@ -58,7 +75,7 @@ hungergame.directive('slider', function ($timeout) {
     /* Start: For Automatic slideshow*/
 
             var timer;
-            var interval = 250;
+            var interval = 500;
 
             var sliderFunc=function(){
                 timer=$timeout(function(){

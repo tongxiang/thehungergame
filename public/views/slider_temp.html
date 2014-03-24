@@ -1,9 +1,7 @@
 <div class="slider">
   <ul class='food'>
-    <li class='text-center' ng-repeat="image in images" ng-show="image.visible">
-      <div class="slide modal-content">
-      <img class='food img-responsive img-rounded' ng-src="{{image.src}}"/>
-      </div>
+    <li class='slide text-center' ng-repeat="image in images" ng-show="image.visible">
+      <img hm-swipe="swipedUp($event)" class='food img-responsive img-rounded' ng-src="{{image.src}}"/>
     <li>
   </ul>
   <div class="arrows text-center">

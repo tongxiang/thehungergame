@@ -26,27 +26,25 @@ angular.module('hungergame.restaurants')
         { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
     ];
 
-    // $scope.direction = 'left';
-    // $scope.currentIndex = 0;
-
-    // $scope.setCurrentSlideIndex = function (index) {
-    //     $scope.direction = (index > $scope.currentIndex) ? 'left' : 'right';
-    //     $scope.currentIndex = index;
-    // };
-
-    // $scope.isCurrentSlideIndex = function (index) {
-    //     return $scope.currentIndex === index;
-    // };
-
-    // $scope.nextSlide = function () {
-    //     $scope.direction = 'right';
-    //     $scope.currentIndex = ($scope.currentIndex < $scope.slides.length - 1) ? ++$scope.currentIndex : 0;
-    // };
-
-    // $scope.prevSlide = function () {
-    //     $scope.direction = 'left';
-    //     $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.slides.length - 1;
-    // };
+    $scope.ele = "test"
+    // $scope.tapped = function($event) {
+    //     ele = $event.target;
+    //     console.l
+    //     console.log("this is the ele: ", ele)
+    //     var ele = $event.target;
+    //     var x = Math.floor(Math.random() * 200) + 1,
+    //         y = Math.floor(Math.random() * 100) + 1,
+    //         z = Math.floor(Math.random() * 6) + 1,
+    //         rot = Math.floor(Math.random()*360)+1;
+    //     ele.classList.add("swiped")
+    //     console.log("this is the ele style: ", ele.style)
+    //     setTimeout (function() {ele.parentNode.removeChild(ele)}, 1000);
+    //     // $(ele).css({
+    //     //   'transform':
+    //     //     "translate3d("+x+"px,"+y+"px,"+z+"px)" +
+    //     //     "rotate("+rot+"deg)"
+    //     // });
+    // }
 
 // **************************************************** //
 

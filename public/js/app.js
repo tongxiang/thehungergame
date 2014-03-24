@@ -3,4 +3,4 @@
 angular.module('hungergame', ['ngCookies', 'ngResource', 'ui.bootstrap', 'ui.router', 'hungergame.system', 'hungergame.restaurants' , 'geolocation']);
 
 angular.module('hungergame.system', []);
-angular.module('hungergame.restaurants', ['ngAnimate']);
+angular.module('hungergame.restaurants', ['ngAnimate', 'angular-gestures']);

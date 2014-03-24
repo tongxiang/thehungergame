@@ -1,6 +1,7 @@
 section {
   padding: 10px;
 }
+
 h1 {
     text-align:center;
 }
@@ -33,10 +34,11 @@ div {
 
 .slide{
   position: absolute;
-  left: 10px;
-  right: 10px;
+  /*width: 50%;*/
+  left: 10%;
+  right: 10%;
   margin: auto;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 
 .arrows{
@@ -47,6 +49,62 @@ div {
   margin: auto;
   display: block;
 }
+
+
+/*
+ ++++++++ Slide ANIMATION ++++++++
+*/
+
+/* Scrolling Action */
+
+.ng-hide-add {
+  -webkit-transition:all 0.25s linear 0s;
+  -moz-transition:all 0.25s linear 0s;
+  -o-transition:all 0.25s linear 0s;
+  transition:all 0.25s linear 0s;
+  display:block!important;
+}
+
+.ng-hide-remove {
+  -webkit-transition:all 0.25s linear 0s;
+  -moz-transition:all 0.25s linear 0s;
+  -o-transition:all 0.25s linear 0s;
+  transition:all 0.25s linear 0s;
+  display:block!important;
+}
+
+.ng-hide-add-active {
+  -webkit-animation: slideOutLeft 0.25s;
+  -moz-animation: slideOutLeft 0.25s;
+  -ms-animation: slideOutLeft 0.25s;
+  animation: slideOutLeft 0.25s;
+}
+
+.ng-hide-remove-active {
+  -webkit-animation: slideInRight 0.125s;
+  -moz-animation: slideInRight 0.125s;
+  -ms-animation: slideInRight 0.125s;
+  animation: slideInRight 0.125s;
+
+}
+
+
+/* Scrolling Action */
+
+.swiped {
+  -webkit-animation: slideOutUp 1s;
+  -moz-animation: slideOutUp 1s;
+  -ms-animation: slideOutUp 1s;
+  animation: slideOutUp 1s;
+
+}
+
+
+
+
+
+
+/* @@@@@@@@@ UNUSED CSS @@@@@@@@@ */
 
 /*
  +++ FADE ANIMATION +++
@@ -67,42 +125,3 @@ li.ng-hide-add.ng-hide-add-active,li.ng-hide-remove {
 li.ng-hide-add,li.ng-hide-remove.ng-hide-remove-active {
   opacity:1;
 }*/
-
-/*
- +++ Slide ANIMATION +++
-*/
-
-/* ************************* */
-
-li.ng-hide-add {
-  -webkit-transition:all ease 0.125s;
-  -moz-transition:all ease 0.125s;
-  -o-transition:all ease 0.125s;
-  transition:all ease 0.125s;
-  display:block!important;
-}
-
-li.ng-hide-remove {
-  -webkit-transition:all ease 0.125s;
-  -moz-transition:all ease 0.125s;
-  -o-transition:all ease 0.125s;
-  transition:all ease 0.125s;
-  display:block!important;
-}
-
-/* ************************* */
-
-.ng-hide-add-active {
-  -webkit-animation: slideOutLeft 0.125s;
-  -moz-animation: slideOutLeft 0.125s;
-  -ms-animation: slideOutLeft 0.125s;
-  animation: slideOutLeft 0.125s;
-}
-
-.ng-hide-remove-active {
-  -webkit-animation: slideInRight 0.125s;
-  -moz-animation: slideInRight 0.125s;
-  -ms-animation: slideInRight 0.125s;
-  animation: slideInRight 0.125s;
-
-}
