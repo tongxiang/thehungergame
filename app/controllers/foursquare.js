@@ -24,11 +24,9 @@ var config = {
 
 var foursquare = require('node-foursquare')(config);
 
-foursquare.Venues.explore(40.7058908,-74.0076924, {venuePhotos: 1, openNow: 1, sortByDistance: 1, query: 'restaurant', price: 1}, null, function(error, data){
+foursquare.Venues.explore(40.7058908,-74.0076924, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, data){
     data.groups[0].items.forEach(function(place){
-        // if (place.venue.price.tier === 1){
-            console.log(place.venue.name, place.venue.price, place.venue.location.lat, place.venue.location.lng, place.venue.location.distance, place.venue.photos.groups[0].items[0].prefix, place.venue.photos.groups[0].items[0].suffix)
-        // }
+            console.log(place.venue.name, place.venue.price, place.venue.location.lat, place.venue.location.lng, place.venue.location.distance, place.venue.photos.groups[0].items[0].prefix + '500x500' + place.venue.photos.groups[0].items[0].suffix)
     });
 });
 
@@ -36,8 +34,8 @@ exports.foursquareQuery = function(req, res){
     var coords = req.query.lngLat.split(",");
     var lat = coords[0];
     var lng = coords[1];
-    foursquare.Venues.explore(40.7058908,-74.0076924, {venuePhotos: 1, openNow: 1, sortByDistance: 1, query: 'restaurant', price: 1}, null, function(error, data){
-        res.json(data.groups[0].items);
+    foursquare.Venues.explore(lat,lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, query: 'restaurant', price: 1}, null, function(error, data){
+        res.json(data.groups[0].items.forEach);
     });
 }
 
