@@ -26,7 +26,8 @@ hungergame.directive('slider', function ($timeout) {
     */
         replace: true,
         scope:{
-            images: '='
+            images: '=',
+            yes_images: '='
         },
         link: function (scope, elem, attrs) {
 
@@ -101,7 +102,10 @@ hungergame.directive('slider', function ($timeout) {
                     } else {
                       removed = scope.currentIndex,1;
                     }
-                      scope.images.splice(removed,1);
+                      var approved = scope.images.splice(removed,1);
+                      console.log("YAY! ", approved)
+                      scope.yes_images.push(approved);
+
                       scope.next();
                       ele.classList.remove('swipedup');
                       console.log("after index: ", scope.currentIndex);
@@ -120,7 +124,6 @@ hungergame.directive('slider', function ($timeout) {
                     } else {
                       removed = scope.currentIndex,1;
                     }
-                      scope.images.splice(removed,1);
                       scope.next();
                       ele.classList.remove('swipeddown');
                       console.log("after index: ", scope.currentIndex);
