@@ -1,9 +1,17 @@
 <section class='main' ng-controller="RestaurantsController">
-  <h3>ROUND 1</h3>
 
-  <slider images="images"/></slider>
+  <div ui-view="final">
+    <h3>ROUND 1</h3>
+    <slider images="images"/>
+    </slider>
+  </div>
+
+
 
   <footer>
-    <div class='text-center'><p>Your location is: {{coords}}</p></div>
+    <div class='text-center'>
+      <a ui-sref='home.finalRound'>final</a>
+      <p>Your location is: {{coords}}</p>
+    </div>
   </footer>
 </section>
