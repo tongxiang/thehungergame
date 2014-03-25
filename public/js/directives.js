@@ -11,7 +11,7 @@ var hungergame=angular.module('hungergame.restaurants');
 //     $scope.images=[{src:'img1.png',title:'Pic 1'},{src:'img2.jpg',title:'Pic 2'},{src:'img3.jpg',title:'Pic 3'},{src:'img4.png',title:'Pic 4'},{src:'img5.png',title:'Pic 5'}];
 // });
 
-hungergame.directive('slider', function ($timeout) {
+hungergame.directive('slider', function ($timeout, $state) {
     return {
         restrict: 'AE',
     /*
@@ -32,6 +32,7 @@ hungergame.directive('slider', function ($timeout) {
 
             scope.currentIndex=0;
             scope.playing=false;
+            scope.nom_count = 0;
             scope.noms_images = [];
 
             scope.start=function(){
@@ -94,6 +95,7 @@ hungergame.directive('slider', function ($timeout) {
                 var ele = $event.target;
                 console.log('this is the ele: ', ele);
                 ele.classList.add('swipedup');
+                scope.nom_count +=1;
 
                 // Removes the list item
                 $timeout (function() {
@@ -102,12 +104,17 @@ hungergame.directive('slider', function ($timeout) {
                     } else {
                       removed = scope.currentIndex,1;
                     }
-                      var nom = scope.images.splice(removed,1);
+                      var nom = scope.images.splice(removed,1)[0];
                       scope.noms_images.push(nom);
                       console.log("NOM! ", nom);
                       if (scope.noms_images.length >= 3) {
-                        console.log('noms satisfied')
-                        scope.images = scope.noms_images;
+                        console.log('noms satisfied');
+                        arrReplace(scope.images,scope.noms_images);
+                        // scope.noms_images.forEach(function(ele) {
+                        //   scope.images.push(ele);
+                        // })
+                        // scope.images.push({ src:'http://lorempixel.com/500/500',title:'Random2'});
+                        console.log('TESING 123!:', scope.images)
                       }
                       // console.log("yes images: ", scope.yes_images)
 
@@ -143,13 +150,13 @@ hungergame.directive('slider', function ($timeout) {
                 scope.images[scope.currentIndex].visible=true;
             });
 
-            // // attempt to watch the nom count
-            // scope.$watch('nomHits',function(){
-            //       if (scope.noms_images.length >= 3) {
-            //         console.log('noms satisfied')
-            //         scope.images = scope.noms_images;
-            //       }
-            // });
+            // attempt to watch the nom count
+            scope.$watch('nom_count',function(){
+                  if (scope.nom_count >= 3) {
+                    console.log('nom_count is: ', scope.nom_count)
+                    $state.go('home.finalRound')
+                  }
+            });
 
     /* Start: For Automatic slideshow*/
 
@@ -163,6 +170,19 @@ hungergame.directive('slider', function ($timeout) {
                 },interval);
             };
 
+            var arrReplace = function(arr1, arr2){
+              // Clears the arr1
+              arr1.splice(0,arr1.length)
+
+              // Adds arr2 elements to arr1
+              arr2.forEach(function(ele) {
+                arr1.push(ele);
+              })
+
+              // Reset arr2
+              arr2.splice(0,arr2.length)
+
+            }
 
             scope.$on('$destroy',function(){
                 $timeout.cancel(timer);
