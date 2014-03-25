@@ -24,7 +24,7 @@ angular.module('hungergame.restaurants')
 
     $scope.yes_images = [
         { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Random1'},
-        { src:'http://lorempixel.com/500/500',title:'Random2'},
+        { src:'http://lorempixel.com/500/500/people',title:'Random2'},
         { src:'http://lorempixel.com/500/500',title:'Random3'}
     ];
 
