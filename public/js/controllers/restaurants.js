@@ -12,6 +12,19 @@ angular.module('hungergame.restaurants')
     // Get player's location;
     geolocation.getLocation().then(function(data) {
         $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude};
+        var latLngString = data.coords.latitude + ',' + data.coords.longitude;
+
+        (var findNearBy = function(coordString){
+            $http({method: 'GET', url: '/restaurants/latitudeLongitude', 
+                params: {latLng: coordString}}).
+                success(function(data, status, headers, config){
+                    console.log(data);
+                    $scope.restaurants = data;
+                }).
+                error(function(data, status, headers config){
+                    console.log(status);
+                });
+        })(latLngString);
     });
 
     $scope.images = [
@@ -20,6 +33,7 @@ angular.module('hungergame.restaurants')
         { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
     ];
 
+<<<<<<< Updated upstream
 // http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg
 
     $scope.yes_images = [
@@ -29,7 +43,12 @@ angular.module('hungergame.restaurants')
     ];
 
 // **************************************************** //
+=======
+>>>>>>> Stashed changes
 
+
+// **************************************************** //
+    
     $scope.create = function() {
         var restaurant = new Restaurants({
             title: this.title,
