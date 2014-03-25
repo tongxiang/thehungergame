@@ -108,11 +108,24 @@ ul.food li {
 
 /* Scrolling Action */
 
-.swiped {
+.swipedup {
   -webkit-animation: slideOutUp 1s;
   -moz-animation: slideOutUp 1s;
   -ms-animation: slideOutUp 1s;
   animation: slideOutUp 1s;
+/*  -webkit-transition:all 1.0s linear 1s;
+  -moz-transition:all 1.0s linear 1s;
+  -o-transition:all 1.0s linear 1s;
+  transition:all 1.0s linear 1s;
+  display:block!important;
+  opacity: 0;*/
+}
+
+.swipeddown {
+  -webkit-animation: hinge 1s;
+  -moz-animation: hinge 1s;
+  -ms-animation: hinge 1s;
+  animation: hinge 1s;
 /*  -webkit-transition:all 1.0s linear 1s;
   -moz-transition:all 1.0s linear 1s;
   -o-transition:all 1.0s linear 1s;

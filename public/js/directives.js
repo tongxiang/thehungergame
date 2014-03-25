@@ -92,7 +92,7 @@ hungergame.directive('slider', function ($timeout) {
             scope.swipedUp=function($event){
                 var ele = $event.target;
                 console.log('this is the ele: ', ele);
-                ele.classList.add('swiped');
+                ele.classList.add('swipedup');
 
                 // Removes the list item
                 $timeout (function() {
@@ -103,7 +103,26 @@ hungergame.directive('slider', function ($timeout) {
                     }
                       scope.images.splice(removed,1);
                       scope.next();
-                      ele.classList.remove('swiped');
+                      ele.classList.remove('swipedup');
+                      console.log("after index: ", scope.currentIndex);
+                  }, 1000);
+            }
+
+            scope.swipedDown=function($event){
+                var ele = $event.target;
+                console.log('this is the ele: ', ele);
+                ele.classList.add('swipeddown');
+
+                // Removes the list item
+                $timeout (function() {
+                    if (scope.playing) {
+                      var removed = scope.currentIndex-1;
+                    } else {
+                      removed = scope.currentIndex,1;
+                    }
+                      scope.images.splice(removed,1);
+                      scope.next();
+                      ele.classList.remove('swipeddown');
                       console.log("after index: ", scope.currentIndex);
                   }, 1000);
             }
