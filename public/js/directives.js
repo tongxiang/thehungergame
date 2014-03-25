@@ -27,12 +27,12 @@ hungergame.directive('slider', function ($timeout) {
         replace: true,
         scope:{
             images: '=',
-            yes_images: '='
         },
         link: function (scope, elem, attrs) {
 
             scope.currentIndex=0;
             scope.playing=false;
+            scope.noms_images = [];
 
             scope.start=function(){
                 if(!scope.playing) {
@@ -102,10 +102,16 @@ hungergame.directive('slider', function ($timeout) {
                     } else {
                       removed = scope.currentIndex,1;
                     }
-                      var approved = scope.images.splice(removed,1);
-                      console.log("YAY! ", approved)
-                      scope.yes_images.push(approved);
+                      var nom = scope.images.splice(removed,1);
+                      scope.noms_images.push(nom);
+                      console.log("NOM! ", nom);
+                      if (scope.noms_images.length >= 3) {
+                        console.log('noms satisfied')
+                        scope.images = scope.noms_images;
+                      }
+                      // console.log("yes images: ", scope.yes_images)
 
+                      // when scope.yes_images.length = 3, got to final round
                       scope.next();
                       ele.classList.remove('swipedup');
                       console.log("after index: ", scope.currentIndex);
@@ -136,6 +142,14 @@ hungergame.directive('slider', function ($timeout) {
                 });
                 scope.images[scope.currentIndex].visible=true;
             });
+
+            // // attempt to watch the nom count
+            // scope.$watch('nomHits',function(){
+            //       if (scope.noms_images.length >= 3) {
+            //         console.log('noms satisfied')
+            //         scope.images = scope.noms_images;
+            //       }
+            // });
 
     /* Start: For Automatic slideshow*/
 

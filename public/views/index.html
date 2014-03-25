@@ -1,9 +1,14 @@
 <section class='main' ng-controller="RestaurantsController">
 
-  <div ui-view="final">
-    <h3>ROUND 1</h3>
-    <slider images="images"/>
-    </slider>
+  <div class='jumbotron'>
+    <h1>FEED THE HUNGER</h1>
+    <a class='btn btn-primary btn-lg' u="start()">
+        Start
+      </button>
+
+  <div ui-view="first" class="slidedown">
+  </div>
+  <div ui-view="final" class="slidedown">
   </div>
 
 

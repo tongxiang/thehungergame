@@ -15,15 +15,18 @@ angular.module('hungergame.restaurants')
     });
 
     $scope.images = [
-        { src:'http://lorempixel.com/500/500',title:'Burger'},
+        { src:'http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg',title:'Burger'},
         { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Pizza'},
         { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
+        { src:'http://lorempixel.com/500/500/people',title:'Random2'},
+        { src:'http://lorempixel.com/500/500/people',title:'Random2'},
+        { src:'http://lorempixel.com/500/500/people',title:'Random2'},
     ];
 
-// http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg
-
     $scope.yes_images = [
-        { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Random1'},
+        { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
+        { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
+        { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
         { src:'http://lorempixel.com/500/500/people',title:'Random2'},
         { src:'http://lorempixel.com/500/500',title:'Random3'}
     ];
