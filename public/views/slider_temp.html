@@ -1,25 +1,25 @@
 <div class="slider">
   <ul class='food'>
     <li class='slide text-center' ng-repeat="image in images" ng-show="image.visible">
-      <img hm-swipe="swipedUp($event)" class='food img-responsive img-rounded' ng-src="{{image.src}}"/>
-    <li>
+      <img class='food img-responsive img-rounded' ng-src="{{image.src}}" hm-swipe-up-opts='{prevent_default: true}' hm-swipe-up="swipedUp($event)" hm-swipe-left-opts='{prevent_default: true}' hm-swipe-left="next($event)" hm-swipe-right-opts='{prevent_default: true}' hm-swipe-right="prev($event)"/>
+    </li>
   </ul>
   <div class="arrows text-center">
-    <div class='btn-group'>
-      <button class='btn btn-default btn-md' ng-click="prev()">
+    <!-- <div class='btn-group'> -->
+<!--       <button class='btn btn-default btn-md' ng-click="prev($event)">
         <span class="glyphicon glyphicon-chevron-left"></span>
-      </button>
-      <button class='btn btn-default btn-md' ng-click="start()">
+      </button> -->
+      <button class='btn btn-primary btn-lg' ng-click="start()">
         Start
       </button>
-      <button class='btn btn-default btn-md'ng-click="end()">
+      <button class='btn btn-danger btn-lg' ng-click="end()">
         End
       </button>
-      <button class='btn btn-default btn-md' ng-click="next()">
+<!--       <button class='btn btn-default btn-md' ng-click="next($event)">
         <span class="glyphicon glyphicon-chevron-right"></span>
-      </button>
-    </div>
-    <div class='clearfix'></div>
+      </button> -->
+    <!-- </div> -->
+    <br>
+    <br>
   </div>
-  <div class='clearfix'></div>
 </div>

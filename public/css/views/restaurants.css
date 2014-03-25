@@ -1,23 +1,24 @@
 section {
-  padding: 10px;
+  /*padding: 10px;*/
 }
 
-h1 {
-    text-align:center;
+h3 {
+  margin-top: 50px;
+  text-align:center;
 }
 
-ul.articles li:not(:last-child) {
-    border-bottom:1px solid #ccc;
-}
-
-ul.food li {
-  display: inline;
-  list-style-type: none;
+ul.food {
+  padding: 0;
+  height: 100px;
   /*border: solid 1px green;*/
 }
 
-div {
-  /*border: 1px solid blue;*/
+ul.food li {
+  /*display: inline;*/
+  list-style-type: none;
+  width: 100%;
+  margin: 0 auto;
+  /*border: solid 1px green;*/
 }
 
 /*
@@ -25,29 +26,29 @@ div {
 */
 .slider{
   position: relative;
-  padding: 5px;
+  /*padding: 5px;*/
   /*width:100%;*/
   margin: auto;
-  margin-top: 40px;
+  margin-top: 5px;
   /*border: blue solid 1px;*/
 }
 
 .slide{
   position: absolute;
+  top: 10px;
   /*width: 50%;*/
-  left: 10%;
-  right: 10%;
-  margin: auto;
+/*  left: 1%;
+  right: 1%;*/
+  width:100%;
+  margin: 0 auto;
   /*margin-bottom: 10px;*/
 }
 
 .arrows{
   position: absolute;
-  left: 10px;
-  right: 10px;
-  top: 22em;
-  margin: auto;
-  display: block;
+  top: 25em;
+  width: 100%;
+  /*border: 1px solid green;*/
 }
 
 
@@ -73,6 +74,7 @@ div {
   display:block!important;
 }
 
+/* Slideshow animate forward */
 .ng-hide-add-active {
   -webkit-animation: slideOutLeft 0.25s;
   -moz-animation: slideOutLeft 0.25s;
@@ -81,11 +83,26 @@ div {
 }
 
 .ng-hide-remove-active {
-  -webkit-animation: slideInRight 0.125s;
-  -moz-animation: slideInRight 0.125s;
-  -ms-animation: slideInRight 0.125s;
-  animation: slideInRight 0.125s;
+  -webkit-animation: slideInRight 0.25s;
+  -moz-animation: slideInRight 0.25s;
+  -ms-animation: slideInRight 0.25s;
+  animation: slideInRight 0.25s;
 
+}
+
+/* Slideshow animate reversse */
+.reverse.ng-hide-add-active, .reverse.ng-hide-add-active {
+  -webkit-animation: slideOutRight 0.25s;
+  -moz-animation: slideOutRight 0.25s;
+  -ms-animation: slideOutRight 0.25s;
+  animation: slideOutRight 0.25s;
+}
+
+.reverse.ng-hide-remove-active, .reverse.ng-hide-remove-active {
+  -webkit-animation: slideInLeft 0.25s;
+  -moz-animation: slideInLeft 0.25s;
+  -ms-animation: slideInLeft 0.25s;
+  animation: slideInLeft 0.25s;
 }
 
 
@@ -96,13 +113,13 @@ div {
   -moz-animation: slideOutUp 1s;
   -ms-animation: slideOutUp 1s;
   animation: slideOutUp 1s;
-
+/*  -webkit-transition:all 1.0s linear 1s;
+  -moz-transition:all 1.0s linear 1s;
+  -o-transition:all 1.0s linear 1s;
+  transition:all 1.0s linear 1s;
+  display:block!important;
+  opacity: 0;*/
 }
-
-
-
-
-
 
 /* @@@@@@@@@ UNUSED CSS @@@@@@@@@ */
 

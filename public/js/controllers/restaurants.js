@@ -14,37 +14,11 @@ angular.module('hungergame.restaurants')
         $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude};
     });
 
-
-    // +++ Deprecated +++
-
-    // // Controller  for Carousel
-    //   $scope.myInterval = 1000;
-    //    // Initializing  slide rray
     $scope.images = [
         { src:'http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg',title:'Burger'},
         { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Pizza'},
         { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
     ];
-
-    $scope.ele = "test"
-    // $scope.tapped = function($event) {
-    //     ele = $event.target;
-    //     console.l
-    //     console.log("this is the ele: ", ele)
-    //     var ele = $event.target;
-    //     var x = Math.floor(Math.random() * 200) + 1,
-    //         y = Math.floor(Math.random() * 100) + 1,
-    //         z = Math.floor(Math.random() * 6) + 1,
-    //         rot = Math.floor(Math.random()*360)+1;
-    //     ele.classList.add("swiped")
-    //     console.log("this is the ele style: ", ele.style)
-    //     setTimeout (function() {ele.parentNode.removeChild(ele)}, 1000);
-    //     // $(ele).css({
-    //     //   'transform':
-    //     //     "translate3d("+x+"px,"+y+"px,"+z+"px)" +
-    //     //     "rotate("+rot+"deg)"
-    //     // });
-    // }
 
 // **************************************************** //
 

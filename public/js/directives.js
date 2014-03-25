@@ -31,38 +31,81 @@ hungergame.directive('slider', function ($timeout) {
         link: function (scope, elem, attrs) {
 
             scope.currentIndex=0;
+            scope.playing=false;
 
             scope.start=function(){
-                sliderFunc();
+                if(!scope.playing) {
+                    sliderFunc();
+                    scope.playing=true;
+                }
             };
 
             scope.end=function(){
-                $timeout.cancel(timer);
+                if(scope.playing) {
+                  $timeout.cancel(timer);
+                  scope.playing=false;
+                }
             };
 
-            scope.next=function(){
-                scope.currentIndex<scope.images.length-1?scope.currentIndex++:scope.currentIndex=0;
+            scope.next=function($event){
+                // This is the next image to be displayed's index
+                var nextIndex = (scope.currentIndex<scope.images.length-1) ? scope.currentIndex+1 : 0;
+                if(!$event) {
+                  scope.currentIndex = nextIndex;
+                } else {
+                    // This is the swiped image <li>
+                    var ele = $event.target.parentNode;
+                    console.log('next ele: ', ele);
+
+                    // This is the swiped image's siblings <li>
+                    var lis = $event.target.parentNode.parentNode.children;
+
+                    // This removes the class for the appropriate animation
+                    lis[nextIndex].classList.remove('reverse');
+                    ele.classList.remove('reverse');
+
+                    // Changes the image
+                    scope.currentIndex = nextIndex;
+                }
             };
 
-            scope.prev=function(){
-                scope.currentIndex>0?scope.currentIndex--:scope.currentIndex=scope.images.length-1;
+            scope.prev=function($event){
+                // This is the prev image to be displayed's index
+                var prevIndex = (scope.currentIndex) ? scope.currentIndex-1:scope.images.length-1;
+
+                // This is the swiped image <li>
+                var ele = $event.target.parentNode;
+                console.log('prev ele: ', ele);
+
+                  // This is the swiped image's siblings <li>
+                var lis = $event.target.parentNode.parentNode.children;
+                console.log("lis: ",lis);
+
+                // This removes the class for the appropriate animation
+                lis[prevIndex].classList.add('reverse');
+                ele.classList.add('reverse');
+
+                // Changes the image
+                scope.currentIndex = prevIndex;
             };
 
             scope.swipedUp=function($event){
-              var ele = $event.target;
-              console.log("this is the ele: ", ele)
-              // console.log('current image: ',scope.images[scope.currentIndex])
-              ele.classList.add("swiped")
+                var ele = $event.target;
+                console.log('this is the ele: ', ele);
+                ele.classList.add('swiped');
 
-              // Get image index -- pop/slice/splice it out of array into new array
-
-              // console.log("this is the ele style: ", ele.style)
-
-              // Removes the list item
-              setTimeout (function() {
-                scope.images.splice(scope.currentIndex-1,1)
-                ele.classList.remove("swiped")
-              }, 1000);
+                // Removes the list item
+                $timeout (function() {
+                    if (scope.playing) {
+                      var removed = scope.currentIndex-1;
+                    } else {
+                      removed = scope.currentIndex,1;
+                    }
+                      scope.images.splice(removed,1);
+                      scope.next();
+                      ele.classList.remove('swiped');
+                      console.log("after index: ", scope.currentIndex);
+                  }, 1000);
             }
 
             scope.$watch('currentIndex',function(){
