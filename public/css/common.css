@@ -1,12 +1,18 @@
+body {
+  /*padding-bottom: 300px;*/
+  /*overflow: hidden;*/
+  width: 100%;
+}
+
 .navbar .nav>li>a.brand {
     padding-left:20px;
     margin-left:0
 }
 
-.content {
+/*.content {
     margin-top:70px;
-    width:100%
-}
+}*/
+
 
 footer {
     position:fixed;
@@ -21,5 +27,24 @@ footer {
 }
 
 footer p {
-    padding:5px 0 12px 10px
+    padding:5px 0 10px 10px
+}
+
+img.food {
+/*  height: 500px;
+  width: 500px;*/
+  /*height: 30em;*/
+  margin: auto;
+  /*width: 100%;*/
+  /*border: 1px solid red;*/
+  max-width: 320px
+}
+
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
 }

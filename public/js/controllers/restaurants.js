@@ -1,7 +1,26 @@
 'use strict';
 
-angular.module('hungergame.restaurants').controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', function ($scope, $stateParams, $location, Global, Restaurants) {
+// hungergame.controller('SliderController', function($scope) {
+//     $scope.images=[{src:'img1.png',title:'Pic 1'},{src:'img2.jpg',title:'Pic 2'},{src:'img3.jpg',title:'Pic 3'},{src:'img4.png',title:'Pic 4'},{src:'img5.png',title:'Pic 5'}];
+// });
+
+angular.module('hungergame.restaurants')
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation',function ($scope, $stateParams, $location, Global, Restaurants, geolocation) {
     $scope.global = Global;
+
+
+    // Get player's location;
+    geolocation.getLocation().then(function(data) {
+        $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude};
+    });
+
+    $scope.images = [
+        { src:'http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg',title:'Burger'},
+        { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Pizza'},
+        { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
+    ];
+
+// **************************************************** //
 
     $scope.create = function() {
         var restaurant = new Restaurants({
