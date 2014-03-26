@@ -5,13 +5,26 @@
 // });
 
 angular.module('hungergame.restaurants')
-  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation',function ($scope, $stateParams, $location, Global, Restaurants, geolocation) {
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http) {
     $scope.global = Global;
-
 
     // Get player's location;
     geolocation.getLocation().then(function(data) {
         $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude};
+        var latLngString = data.coords.latitude + ',' + data.coords.longitude;
+        // console.log(latLngString)
+        var findNearBy = function(coordString){
+            $http({method: 'GET', url: '/restaurants/latitudeLongitude', 
+                params: {latLng: coordString}}).
+                success(function(data, status, headers, config){
+                    console.log(data);
+                    $scope.restaurants = data;
+                }).
+                error(function(data, status, headers, config){
+                    console.log(status);
+                });
+        };
+        findNearBy(latLngString);
     });
 
     // $scope.images = {};
@@ -34,7 +47,7 @@ angular.module('hungergame.restaurants')
     // ];
 
 // **************************************************** //
-
+    
     $scope.create = function() {
         var restaurant = new Restaurants({
             title: this.title,

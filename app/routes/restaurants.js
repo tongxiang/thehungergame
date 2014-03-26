@@ -3,6 +3,7 @@
 // restaurants routes use restaurants controller
 var restaurants = require('../controllers/restaurants');
 var authorization = require('./middlewares/authorization');
+var foursquare = require('../controllers/foursquare')
 
 // restaurant authorization helpers
 var hasAuthorization = function(req, res, next) {
@@ -13,9 +14,8 @@ var hasAuthorization = function(req, res, next) {
 };
 
 module.exports = function(app) {
-
-    // app.get('/restaurants/:latitudeLongitude', foursquare.foursquareQuery);
-
+    app.get('/restaurants/latitudeLongitude', foursquare.foursquareQuery);
+    
     app.get('/restaurants', restaurants.all);
     app.post('/restaurants', authorization.requiresLogin, restaurants.create);
     app.get('/restaurants/:restaurantId', restaurants.show);
@@ -25,4 +25,3 @@ module.exports = function(app) {
     // Finish with setting up the restaurantId param
     app.param('restaurantId', restaurants.restaurant);
 };
-

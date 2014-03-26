@@ -14,8 +14,5 @@
     "angularjs-geolocation": "~0.1.1",
     "ngAnimate-animate.css": "~0.1.1",
     "angular-gestures": "~0.2.1"
-  },
-  "resolutions": {
-    "angular": "~1.2.0"
   }
 }
