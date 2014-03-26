@@ -14,10 +14,10 @@ angular.module('hungergame.restaurants')
         var latLngString = data.coords.latitude + ',' + data.coords.longitude;
         // console.log(latLngString)
         var findNearBy = function(coordString){
-            $http({method: 'GET', url: '/restaurants/latitudeLongitude', 
+            $http({method: 'GET', url: '/restaurants/latitudeLongitude',
                 params: {latLng: coordString}}).
                 success(function(data, status, headers, config){
-                    console.log(data);
+                    console.log('rest controller', data);
                     $scope.restaurants = data;
                 }).
                 error(function(data, status, headers, config){
@@ -28,14 +28,14 @@ angular.module('hungergame.restaurants')
     });
 
     // $scope.images = {};
-    $scope.images = [
-        { src:'http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg',title:'Burger'},
-        { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Pizza'},
-        { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
-        { src:'http://www.saksgrill.com/image/cache/data/Hot%20Dogs/Hotdog%20Plain-500x500.png',title:'HotDog'},
-        // { src:'http://lorempixel.com/500/500/people',title:'Random2'},
-        // { src:'http://lorempixel.com/500/500/people',title:'Random2'},
-    ];
+    // $scope.images = [
+    //     { src:'http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg',title:'Burger'},
+    //     { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Pizza'},
+    //     { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
+    //     { src:'http://www.saksgrill.com/image/cache/data/Hot%20Dogs/Hotdog%20Plain-500x500.png',title:'HotDog'},
+    //     // { src:'http://lorempixel.com/500/500/people',title:'Random2'},
+    //     // { src:'http://lorempixel.com/500/500/people',title:'Random2'},
+    // ];
 
 
     // $scope.yes_images = [
@@ -47,7 +47,7 @@ angular.module('hungergame.restaurants')
     // ];
 
 // **************************************************** //
-    
+
     $scope.create = function() {
         var restaurant = new Restaurants({
             title: this.title,

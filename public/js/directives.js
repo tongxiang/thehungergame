@@ -8,7 +8,7 @@ var hungergame=angular.module('hungergame.restaurants');
 
 // Moved controller to restaurants controller
 // hungergame.controller('SliderController', function($scope) {
-//     $scope.images=[{src:'img1.png',title:'Pic 1'},{src:'img2.jpg',title:'Pic 2'},{src:'img3.jpg',title:'Pic 3'},{src:'img4.png',title:'Pic 4'},{src:'img5.png',title:'Pic 5'}];
+//     $scope.restaurants=[{src:'img1.png',title:'Pic 1'},{src:'img2.jpg',title:'Pic 2'},{src:'img3.jpg',title:'Pic 3'},{src:'img4.png',title:'Pic 4'},{src:'img5.png',title:'Pic 5'}];
 // });
 
 hungergame.directive('slider', function ($timeout, $state) {
@@ -26,14 +26,14 @@ hungergame.directive('slider', function ($timeout, $state) {
     */
         replace: true,
         scope:{
-            images: '=',
+            restaurants: '=',
         },
         link: function (scope, elem, attrs) {
 
             scope.currentIndex=0;
             scope.playing=false;
             scope.nom_count = 0;
-            scope.noms_images = [];
+            scope.noms_restaurants = [];
 
             scope.start=function(){
                 if(!scope.playing) {
@@ -50,36 +50,36 @@ hungergame.directive('slider', function ($timeout, $state) {
             };
 
             scope.next=function($event){
-                // This is the next image to be displayed's index
-                var nextIndex = (scope.currentIndex<scope.images.length-1) ? scope.currentIndex+1 : 0;
+                // This is the next restaurant to be displayed's index
+                var nextIndex = (scope.currentIndex<scope.restaurants.length-1) ? scope.currentIndex+1 : 0;
                 if(!$event) {
                   scope.currentIndex = nextIndex;
                 } else {
-                    // This is the swiped image <li>
+                    // This is the swiped restaurant <li>
                     var ele = $event.target.parentNode;
                     console.log('next ele: ', ele);
 
-                    // This is the swiped image's siblings <li>
+                    // This is the swiped restaurant's siblings <li>
                     var lis = $event.target.parentNode.parentNode.children;
 
                     // This removes the class for the appropriate animation
                     lis[nextIndex].classList.remove('reverse');
                     ele.classList.remove('reverse');
 
-                    // Changes the image
+                    // Changes the restaurant
                     scope.currentIndex = nextIndex;
                 }
             };
 
             scope.prev=function($event){
-                // This is the prev image to be displayed's index
-                var prevIndex = (scope.currentIndex) ? scope.currentIndex-1:scope.images.length-1;
+                // This is the prev restaurant to be displayed's index
+                var prevIndex = (scope.currentIndex) ? scope.currentIndex-1:scope.restaurants.length-1;
 
-                // This is the swiped image <li>
+                // This is the swiped restaurant <li>
                 var ele = $event.target.parentNode;
                 console.log('prev ele: ', ele);
 
-                  // This is the swiped image's siblings <li>
+                  // This is the swiped restaurant's siblings <li>
                 var lis = $event.target.parentNode.parentNode.children;
                 console.log("lis: ",lis);
 
@@ -87,7 +87,7 @@ hungergame.directive('slider', function ($timeout, $state) {
                 lis[prevIndex].classList.add('reverse');
                 ele.classList.add('reverse');
 
-                // Changes the image
+                // Changes the restaurant
                 scope.currentIndex = prevIndex;
             };
 
@@ -104,21 +104,21 @@ hungergame.directive('slider', function ($timeout, $state) {
                     } else {
                       removed = scope.currentIndex,1;
                     }
-                      var nom = scope.images.splice(removed,1)[0];
-                      scope.noms_images.push(nom);
+                      var nom = scope.restaurants.splice(removed,1)[0];
+                      scope.noms_restaurants.push(nom);
                       console.log("NOM! ", nom);
-                      if (scope.noms_images.length >= 3) {
+                      if (scope.noms_restaurants.length >= 3) {
                         console.log('noms satisfied');
-                        arrReplace(scope.images,scope.noms_images);
-                        // scope.noms_images.forEach(function(ele) {
-                        //   scope.images.push(ele);
+                        arrReplace(scope.restaurants,scope.noms_restaurants);
+                        // scope.noms_restaurants.forEach(function(ele) {
+                        //   scope.restaurants.push(ele);
                         // })
-                        // scope.images.push({ src:'http://lorempixel.com/500/500',title:'Random2'});
-                        console.log('TESING 123!:', scope.images)
+                        // scope.restaurants.push({ src:'http://lorempixel.com/500/500',title:'Random2'});
+                        console.log('TESING 123!:', scope.restaurants)
                       }
-                      // console.log("yes images: ", scope.yes_images)
+                      // console.log("yes restaurants: ", scope.yes_restaurants)
 
-                      // when scope.yes_images.length = 3, got to final round
+                      // when scope.yes_restaurants.length = 3, got to final round
                       scope.next();
                       ele.classList.remove('swipedup');
                       console.log("after index: ", scope.currentIndex);
@@ -137,7 +137,7 @@ hungergame.directive('slider', function ($timeout, $state) {
                     } else {
                       removed = scope.currentIndex,1;
                     }
-                      scope.images.splice(removed,1)
+                      scope.restaurants.splice(removed,1)
                       scope.next();
                       ele.classList.remove('swipeddown');
                       console.log("after index: ", scope.currentIndex);
@@ -148,12 +148,12 @@ hungergame.directive('slider', function ($timeout, $state) {
               // End slideshow if playing
               scope.end();
 
-              scope.images[scope.currentIndex].info=!scope.images[scope.currentIndex].info
+              scope.restaurants[scope.currentIndex].info=!scope.restaurants[scope.currentIndex].info
 
-              scope.images[scope.currentIndex].foodpic=!scope.images[scope.currentIndex].foodpic
+              scope.restaurants[scope.currentIndex].foodpic=!scope.restaurants[scope.currentIndex].foodpic
 
               // // Hide current card
-              // scope.images[scope.currentIndex].visible=false;
+              // scope.restaurants[scope.currentIndex].visible=false;
 
               // var ele = $event.target;
               // console.log('this is the ele: ', ele);
@@ -162,19 +162,19 @@ hungergame.directive('slider', function ($timeout, $state) {
             }
 
             scope.$watch('currentIndex',function(){
-                scope.images.forEach(function(image){
-                    image.visible=false;
-                    image.foodpic=true;
-                    image.info=false;
+                scope.restaurants.forEach(function(restaurant){
+                    restaurant.visible=false;
+                    restaurant.foodpic=true;
+                    restaurant.info=false;
                 });
-                scope.images[scope.currentIndex].visible=true;
+                scope.restaurants[scope.currentIndex].visible=true;
             });
 
             // scope.$watch('info',function(){
-            //     scope.images.forEach(function(image){
-            //         image.visible=false;
+            //     scope.restaurants.forEach(function(restaurant){
+            //         restaurant.visible=false;
             //     });
-            //     scope.images[scope.currentIndex].visible=true;
+            //     scope.restaurants[scope.currentIndex].visible=true;
             // });
 
             // attempt to watch the nom count
@@ -182,7 +182,7 @@ hungergame.directive('slider', function ($timeout, $state) {
                   if (scope.nom_count === 3) {
                     console.log('nom_count is: ', scope.nom_count)
                     $state.go('home.transition')
-                    scope.images[scope.currentIndex].visible=false;
+                    scope.restaurants[scope.currentIndex].visible=false;
                   }
             });
 
@@ -200,7 +200,7 @@ hungergame.directive('slider', function ($timeout, $state) {
 
             var arrReplace = function(arr1, arr2){
               // Clears the arr1
-              arr1.splice(0,arr1.length)
+              arr1.splice(0,arr1.length);
 
               // Adds arr2 elements to arr1
               arr2.forEach(function(el) {
@@ -208,7 +208,7 @@ hungergame.directive('slider', function ($timeout, $state) {
               })
 
               // Reset arr2
-              arr2.splice(0,arr2.length)
+              arr2.splice(0,arr2.length);
 
             }
 

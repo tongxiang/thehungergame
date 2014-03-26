@@ -1,12 +1,10 @@
 <div class="slider">
   <ul class='food'>
-      <li class='slide text-center' ng-repeat="image in images" ng-show="image.visible">
-        <img ng-show='image.foodpic' class='food fooditem img-responsive img-rounded' ng-src="{{image.src}}" hm-swipe-up-opts='{prevent_default: true}' hm-swipe-up="swipedUp($event)" hm-swipe-down-opts='{prevent_default: true}' hm-swipe-down="swipedDown($event)" hm-swipe-left-opts='{prevent_default: true}' hm-swipe-left="next($event)" hm-swipe-right-opts='{prevent_default: true}' hm-swipe-right="prev($event)" hm-double-tap='moreInfo($event)'/>
-        <div class='fooditem well well-lg food' hm-double-tap='moreInfo($event)' ng-show='image.info'>
-          {{image.title}}
-          {{image.title}}
-          {{image.title}}
-          {{image.title}}
+      <li class='slide text-center' ng-repeat="restaurant in restaurants" ng-show="restaurant.visible">
+        <img ng-show='restaurant.foodpic' class='food fooditem img-responsive img-rounded' ng-src="{{restaurant.photoUrl}}" hm-swipe-up-opts='{prevent_default: true}' hm-swipe-up="swipedUp($event)" hm-swipe-down-opts='{prevent_default: true}' hm-swipe-down="swipedDown($event)" hm-swipe-left-opts='{prevent_default: true}' hm-swipe-left="next($event)" hm-swipe-right-opts='{prevent_default: true}' hm-swipe-right="prev($event)" hm-double-tap='moreInfo($event)'/>
+        <div class='fooditem well well-lg food' hm-double-tap='moreInfo($event)' ng-show='restaurant.info'>
+          <h4>{{restaurant.name}}</h4>
+          <h4>{{restaurant.distance}}</h4>
         </div>
       </li>
   </ul>
@@ -28,11 +26,10 @@
     <br>
     <br>
   </div>
-</div>
 
-<!--We need to keep in mind that we want to attach a lot more information to the image object that gets displayed in the slider via ng-repeat. 
+<!--We need to keep in mind that we want to attach a lot more information to the image object that gets displayed in the slider via ng-repeat.
 
-  We also want to attach a title, a URL to the directions, the distance away from you, and possibly, the price. 
+  We also want to attach a title, a URL to the directions, the distance away from you, and possibly, the price.
 
 {
 name: ,
@@ -41,9 +38,7 @@ lat: ,
 long: ,
 distanceAway: ,
 
-
-
-
 }
 
  -->
+</div>

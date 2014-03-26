@@ -3,16 +3,16 @@
 var Q = require('q');
 var async = require('async');
 
-//Implement Promises Library -- Q, so that we can 
+//Implement Promises Library -- Q, so that we can
 
-//we may also need the async series library, since we're going to running the arrayofResponses.foreach() over the entire 
+//we may also need the async series library, since we're going to running the arrayofResponses.foreach() over the entire
 
 var config = {
     'secrets' : {
-        'clientId': 'E4AWAAAQ0FVJZWUCJAKDEGLOVV2XHIM5Y2X32UEWEPFMACFT',
-        'clientSecret': 'Z2KX31US4VQEKSOZTTBPLQ3LXD5DAODYVXVB4QFPJN3OKUVS',
+        'clientId': 'MTFTHPM5REU2S3MMDIJIEAWF1SSBKD4Y1GSGWBITCQIRWIMI',
+        'clientSecret': 'UOHPNIPZWXF1XYET2WLL1V0WIVLJ3HT3LIP3XP1UP0RJMARG',
         'redirectUrl': 'http://google.com'
-    }, 
+    },
     'winston' : {
         'loggers' : {
             'core' : {
@@ -63,7 +63,7 @@ var getPhotosFromVenue = function(venueObject, done){
             venueObject['photoUrl'] = photoArrayObject.photos.items[1].prefix.concat('500x500', photoArrayObject.photos.items[1].suffix)
         }
         done(null, venueObject);
-        //returns an array of photo objects, from a single venue 
+        //returns an array of photo objects, from a single venue
     });
 };
 

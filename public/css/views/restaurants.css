@@ -1,4 +1,4 @@
-h3 {
+h4 {
   text-align:center;
 }
 
@@ -6,18 +6,19 @@ h3 {
   margin-top: 70px;
 }
 
-.sign {
+/*.sign {
   padding-top: 35px;
 }
 
 .container.sign {
   margin-top: 25px;
   padding-top: 35px;
-}
+}*/
 
 .finalsign {
-  padding-top: 35px;
+  margin-top: 35px;
 }
+
 
 .transition {
   /*background: lightgrey;*/
