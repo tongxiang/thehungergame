@@ -31,20 +31,11 @@ var config = {
 
 var foursquare = require('node-foursquare')(config);
 
-// foursquare.Venues.explore(40.7058908,-74.0076924, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, data){
-//     data.groups[0].items.forEach(function(place){
-//             // console.log(place.venue.name, place.venue.id)
-//             foursquare.Venues.getPhotos(place.venue.id, null, {limit: 10}, null, function(error, data){
-//                 // console.log(data.photos.items[1].id, data.photos.items[1].prefix, data.photos.items[1].suffix, data.photos.items);
-//             })
-//     });
-// });
-
 var venuesRelevantDataArray = []
 
 var foursquareExplore = function(lat, lng){
     var deferred = Q.defer();
-    foursquare.Venues.explore(lat, lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, limit: 3, price: 1}, null, function(error, venuesObject){
+    foursquare.Venues.explore(lat, lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, venuesObject){
         console.log("the restaurant count that foursquareExplore is returning is",venuesObject.groups[0].items.length)
         console.log(venuesObject.groups[0].items)
 
@@ -59,20 +50,25 @@ var foursquareExplore = function(lat, lng){
                 })
         })
         console.log('HO! Your venuesRelevantDataArray is: ', venuesRelevantDataArray);
-        // deferred.resolve(venuesObject.groups[0].items); //resolves promise with an array of venue objects
         deferred.resolve(venuesRelevantDataArray)
     });
     return deferred.promise;
-}
+};
 
 var getPhotosFromVenue = function(venueObject, done){
     foursquare.Venues.getPhotos(venueObject.id, null, {limit: 2}, null, function(error, photoArrayObject){
-        console.log(photoArrayObject.photos.items[1].prefix, photoArrayObject.photos.items[1].suffix);
-        venueObject['photoUrl'] = photoArrayObject.photos.items[1].prefix.concat('500x500', photoArrayObject.photos.items[1].suffix) 
+        console.log(photoArrayObject.photos.items[0].prefix, photoArrayObject.photos.items[0].suffix); //this is throwing an error, when an item[1] is undefined 
+        if (!photoArrayObject.photos.items[1]){
+            venueObject['photoUrl'] = photoArrayObject.photos.items[0].prefix.concat('500x500', photoArrayObject.photos.items[0].suffix)
+            console.log('this ' + venueObject.name + ' doesnt have a second photo!')
+        }
+        else {
+            venueObject['photoUrl'] = photoArrayObject.photos.items[1].prefix.concat('500x500', photoArrayObject.photos.items[1].suffix)
+        }
         done(null, venueObject);
         //returns an array of photo objects, from a single venue 
     });
-}
+};
 
 exports.foursquareQuery = function(req, res){
     var coords = req.query.latLng.split(",");
