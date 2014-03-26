@@ -16,7 +16,7 @@ var hasAuthorization = function(req, res, next) {
 module.exports = function(app) {
 
     app.get('/restaurants/latitudeLongitude', foursquare.foursquareQuery);
-
+    
     app.get('/restaurants', restaurants.all);
     app.post('/restaurants', authorization.requiresLogin, restaurants.create);
     app.get('/restaurants/:restaurantId', restaurants.show);

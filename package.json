@@ -35,7 +35,10 @@
     "lodash": "~2.4.1",
     "forever": "~0.10.11",
     "view-helpers": "~0.1.4",
-    "mean-logger": "0.0.1"
+    "mean-logger": "0.0.1",
+    "node-foursquare": "~0.2.0",
+    "q": "~1.0.1",
+    "async": "~0.2.10"
   },
   "devDependencies": {
     "grunt-env": "~0.4.1",

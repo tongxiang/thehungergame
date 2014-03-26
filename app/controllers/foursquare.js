@@ -1,5 +1,8 @@
 'use strict'
 
+var Q = require('q');
+var async = require('async');
+
 //Implement Promises Library -- Q, so that we can 
 
 //we may also need the async series library, since we're going to running the arrayofResponses.foreach() over the entire 
@@ -30,72 +33,57 @@ var foursquare = require('node-foursquare')(config);
 
 // foursquare.Venues.explore(40.7058908,-74.0076924, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, data){
 //     data.groups[0].items.forEach(function(place){
-//             console.log(place.venue.name, place.venue.price, place.venue.location.lat, place.venue.location.lng, place.venue.location.distance, place.venue.photos.groups[0].items[0].prefix + '500x500' + place.venue.photos.groups[0].items[0].suffix)
+//             // console.log(place.venue.name, place.venue.id)
+//             foursquare.Venues.getPhotos(place.venue.id, null, {limit: 10}, null, function(error, data){
+//                 // console.log(data.photos.items[1].id, data.photos.items[1].prefix, data.photos.items[1].suffix, data.photos.items);
+//             })
 //     });
 // });
 
-exports.foursquareQuery = function(req, res){
-    var coords = req.query.lngLat.split(",");
-    var lat = coords[0];
-    var lng = coords[1];
-    foursquare.Venues.explore(lat,lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, data){
-        res.json(data.groups[0].items);
+var venuesRelevantDataArray = []
+
+var foursquareExplore = function(lat, lng){
+    var deferred = Q.defer();
+    foursquare.Venues.explore(lat, lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, limit: 3, price: 1}, null, function(error, venuesObject){
+        console.log("the restaurant count that foursquareExplore is returning is",venuesObject.groups[0].items.length)
+        console.log(venuesObject.groups[0].items)
+
+        venuesObject.groups[0].items.forEach(function(venue){
+            venuesRelevantDataArray.push(
+                {
+                    'name': venue.venue.name,
+                    'id': venue.venue.id,
+                    'latLng': [venue.venue.location.lat, venue.venue.location.lng],
+                    'distance': venue.venue.location.distance,
+                    'photoUrl': ''
+                })
+        })
+        console.log('HO! Your venuesRelevantDataArray is: ', venuesRelevantDataArray);
+        // deferred.resolve(venuesObject.groups[0].items); //resolves promise with an array of venue objects
+        deferred.resolve(venuesRelevantDataArray)
+    });
+    return deferred.promise;
+}
+
+var getPhotosFromVenue = function(venueObject, done){
+    foursquare.Venues.getPhotos(venueObject.id, null, {limit: 2}, null, function(error, photoArrayObject){
+        console.log(photoArrayObject.photos.items[1].prefix, photoArrayObject.photos.items[1].suffix);
+        venueObject['photoUrl'] = photoArrayObject.photos.items[1].prefix.concat('500x500', photoArrayObject.photos.items[1].suffix) 
+        done(null, venueObject);
+        //returns an array of photo objects, from a single venue 
     });
 }
 
-// console.log(place.venue.name, place.venue.price, place.venue.location.lat, place.venue.location.lng, place.venue.location.distance, place.venue.photos.groups[0].items[0].prefix, place.venue.photos.groups[0].items[0].suffix)
+exports.foursquareQuery = function(req, res){
+    var coords = req.query.latLng.split(",");
+    var lat = coords[0];
+    var lng = coords[1];
+    foursquareExplore(lat, lng).then(function(venuesObject){
+        async.map(venuesObject, getPhotosFromVenue, function(err, photoArraysObject){
+            console.log("There are a total of " + photoArraysObject.length + "venues for which we have now retrieved photos for");
+                console.log(photoArraysObject);
+                res.json(photoArraysObject);
+        });
+    });
+}
 
-// foursquare.Venues.explore(40.7058908,-74.0076924, {venuePhotos: 1, openNow: 1, sortByDistance: 1, query: 'restaurant', price: 1}, null, function(error, data){
-//     data.groups[0].items.forEach(function(place){
-//         var newPlace = {
-//             name: place.venue.name, 
-//             price: place.venue.price,
-//             latLng: [place.venue.location.lat, place.venue.location.lng],
-//             distance: place.venue.location.distance, 
-//             photoUrlPrefix: place.venue.photos.groups[0].items[0].prefix, 
-//             photoUrlSuffix: place.venue.photos.groups[0].items[0].suffix
-//         }
-//     });
-
-//what this returns>>>console.log(place.venue.name, place.venue.price)
-//L'Artusi { tier: 3, message: 'Expensive', currency: '$' }
-
-// What the unfiltered, no-optioned request returns >>> 
-
-// { reasons: { count: 0, items: [] },
-//     venue:
-//      { id: '4abce679f964a5209d8720e3',
-//        name: 'Luke\'s Lobster EV',
-//        contact: [Object],
-//        location: [Object],
-//        categories: [Object],
-//        verified: true,
-//        stats: [Object],
-//        url: 'http://lukeslobster.com',
-//        price: [Object],
-//        likes: [Object],
-//        rating: 9.63,
-//        menu: [Object],
-//        hours: [Object],
-//        specials: [Object],
-//        photos: [Object],
-//        hereNow: [Object],
-//        storeId: '' },
-//     tips: [ [Object] ],
-//     referralId: 'e-0-4abce679f964a5209d8720e3-24' }
-
-// Photo Object
-
-//  { id: '4e85eebb29c2b442d19d5edc',
-//     createdAt: 1317400251,
-//     prefix: 'https://irs1.4sqi.net/img/general/',
-//     suffix: '/3ETYLZEFWZ4EWLQ4C5ZQFPBNQZ0MCRJDMIEEXAEXACQPIZJ2.jpg',
-//     width: 300,
-//     height: 400,
-//     user:
-//      { id: '10940274',
-//        firstName: 'Rodel',
-//        lastName: 'P.',
-//        gender: 'male',
-//        photo: [Object] },
-//     visibility: 'public' } ]

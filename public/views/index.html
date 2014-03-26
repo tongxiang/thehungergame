@@ -2,12 +2,13 @@
 
   <div ui-view="final">
     <h3>ROUND 1</h3>
-    <slider images="images"/>
-    </slider>
+<!--     <slider images="images"/>
+    </slider> -->
   </div>
 
-
-
+<div ng-repeat="restaurant in restaurants">
+{{restaurants}}
+</div>
   <footer>
     <div class='text-center'>
       <a ui-sref='home.finalRound'>final</a>
@@ -15,3 +16,8 @@
     </div>
   </footer>
 </section>
+
+
+
+<!--   <img src="{{restaurant.venue.photos.groups[0].items[0].prefix+'500x500'+restaurant.venue.photos.groups[0].items[0].suffix}}"></img>s
+ -->

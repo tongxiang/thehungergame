@@ -5,27 +5,31 @@
 // });
 
 angular.module('hungergame.restaurants')
-  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation',function ($scope, $stateParams, $location, Global, Restaurants, geolocation) {
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http) {
     $scope.global = Global;
-
 
     // Get player's location;
     geolocation.getLocation().then(function(data) {
         $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude};
         var latLngString = data.coords.latitude + ',' + data.coords.longitude;
-
-        (var findNearBy = function(coordString){
+        // console.log(latLngString)
+        var findNearBy = function(coordString){
             $http({method: 'GET', url: '/restaurants/latitudeLongitude', 
                 params: {latLng: coordString}}).
                 success(function(data, status, headers, config){
                     console.log(data);
                     $scope.restaurants = data;
                 }).
-                error(function(data, status, headers config){
+                error(function(data, status, headers, config){
                     console.log(status);
                 });
-        })(latLngString);
+        };
+        findNearBy(latLngString);
     });
+
+    // $scope.images = findNearByReturnsobject.foreach({
+
+    // })
 
     $scope.images = [
         { src:'http://lorempixel.com/500/500',title:'Burger'},
@@ -33,7 +37,6 @@ angular.module('hungergame.restaurants')
         { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
     ];
 
-<<<<<<< Updated upstream
 // http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg
 
     $scope.yes_images = [
@@ -41,11 +44,6 @@ angular.module('hungergame.restaurants')
         { src:'http://lorempixel.com/500/500',title:'Random2'},
         { src:'http://lorempixel.com/500/500',title:'Random3'}
     ];
-
-// **************************************************** //
-=======
->>>>>>> Stashed changes
-
 
 // **************************************************** //
     
