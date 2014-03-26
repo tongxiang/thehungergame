@@ -27,10 +27,6 @@ angular.module('hungergame.restaurants')
         findNearBy(latLngString);
     });
 
-    // $scope.images = findNearByReturnsobject.foreach({
-
-    // })
-
     $scope.images = [
         { src:'http://lorempixel.com/500/500',title:'Burger'},
         { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Pizza'},

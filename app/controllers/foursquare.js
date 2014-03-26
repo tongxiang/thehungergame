@@ -37,8 +37,7 @@ var foursquareExplore = function(lat, lng){
     var deferred = Q.defer();
     foursquare.Venues.explore(lat, lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, venuesObject){
         console.log("the restaurant count that foursquareExplore is returning is",venuesObject.groups[0].items.length)
-        console.log(venuesObject.groups[0].items)
-
+        // console.log(venuesObject.groups[0].items)
         venuesObject.groups[0].items.forEach(function(venue){
             venuesRelevantDataArray.push(
                 {
@@ -49,7 +48,6 @@ var foursquareExplore = function(lat, lng){
                     'photoUrl': ''
                 })
         })
-        console.log('HO! Your venuesRelevantDataArray is: ', venuesRelevantDataArray);
         deferred.resolve(venuesRelevantDataArray)
     });
     return deferred.promise;
@@ -57,10 +55,9 @@ var foursquareExplore = function(lat, lng){
 
 var getPhotosFromVenue = function(venueObject, done){
     foursquare.Venues.getPhotos(venueObject.id, null, {limit: 2}, null, function(error, photoArrayObject){
-        console.log(photoArrayObject.photos.items[0].prefix, photoArrayObject.photos.items[0].suffix); //this is throwing an error, when an item[1] is undefined 
         if (!photoArrayObject.photos.items[1]){
             venueObject['photoUrl'] = photoArrayObject.photos.items[0].prefix.concat('500x500', photoArrayObject.photos.items[0].suffix)
-            console.log('this ' + venueObject.name + ' doesnt have a second photo!')
+            // console.log('this ' + venueObject.name + ' doesnt have a second photo!')
         }
         else {
             venueObject['photoUrl'] = photoArrayObject.photos.items[1].prefix.concat('500x500', photoArrayObject.photos.items[1].suffix)
@@ -76,7 +73,7 @@ exports.foursquareQuery = function(req, res){
     var lng = coords[1];
     foursquareExplore(lat, lng).then(function(venuesObject){
         async.map(venuesObject, getPhotosFromVenue, function(err, photoArraysObject){
-            console.log("There are a total of " + photoArraysObject.length + "venues for which we have now retrieved photos for");
+            // console.log("There are a total of " + photoArraysObject.length + "venues for which we have now retrieved photos for");
                 console.log(photoArraysObject);
                 res.json(photoArraysObject);
         });
