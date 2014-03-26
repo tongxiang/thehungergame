@@ -1,10 +1,29 @@
-section {
-  /*padding: 10px;*/
+h3 {
+  text-align:center;
 }
 
-h3 {
-  margin-top: 50px;
-  text-align:center;
+.welcome {
+  margin-top: 70px;
+}
+
+.sign {
+  padding-top: 35px;
+}
+
+.container.sign {
+  margin-top: 25px;
+  padding-top: 35px;
+}
+
+.finalsign {
+  padding-top: 35px;
+}
+
+.transition {
+  /*background: lightgrey;*/
+  margin: 100px 10px;
+  border-radius: 10px;
+  padding: 5px;
 }
 
 ul.food {
@@ -21,6 +40,11 @@ ul.food li {
   /*border: solid 1px green;*/
 }
 
+.fooditem {
+  max-width: 320px;
+  margin: auto;
+}
+
 /*
  ++++ BEGIN -- FROM SLIDER FILE's app.css ++++
 */
@@ -29,13 +53,13 @@ ul.food li {
   /*padding: 5px;*/
   /*width:100%;*/
   margin: auto;
-  margin-top: 5px;
+  margin-top: 1px;
   /*border: blue solid 1px;*/
 }
 
 .slide{
   position: absolute;
-  top: 10px;
+  top: 0;
   /*width: 50%;*/
 /*  left: 1%;
   right: 1%;*/
@@ -46,14 +70,16 @@ ul.food li {
 
 .arrows{
   position: absolute;
-  top: 25em;
+  top: 24em;
   width: 100%;
   /*border: 1px solid green;*/
 }
 
 /*
- ++++++++ Page View ANIMATION ++++++++
+ ++++++++ Page Transitions ++++++++
 */
+
+/* Slide down */
 .slidedown {
     position: absolute;
     top: 0;
@@ -81,14 +107,42 @@ ul.food li {
     top: 100%;
 }
 
+/* Pop */
+.pop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.pop.ng-enter {
+    -webkit-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+.pop.ng-enter {
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+}
+.pop.ng-enter-active {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+}
+/*.pop.ng-leave-active {}*/
 
 /*
  ++++++++ Slide ANIMATION ++++++++
 */
 
 /* Scrolling Action */
-
-.ng-hide-add {
+.slide.ng-hide-add {
   -webkit-transition:all 0.25s linear 0s;
   -moz-transition:all 0.25s linear 0s;
   -o-transition:all 0.25s linear 0s;
@@ -96,7 +150,7 @@ ul.food li {
   display:block!important;
 }
 
-.ng-hide-remove {
+.slide.ng-hide-remove {
   -webkit-transition:all 0.25s linear 0s;
   -moz-transition:all 0.25s linear 0s;
   -o-transition:all 0.25s linear 0s;
@@ -105,14 +159,14 @@ ul.food li {
 }
 
 /* Slideshow animate forward */
-.ng-hide-add-active {
+.slide.ng-hide-add-active {
   -webkit-animation: slideOutLeft 0.25s;
   -moz-animation: slideOutLeft 0.25s;
   -ms-animation: slideOutLeft 0.25s;
   animation: slideOutLeft 0.25s;
 }
 
-.ng-hide-remove-active {
+.slide.ng-hide-remove-active {
   -webkit-animation: slideInRight 0.25s;
   -moz-animation: slideInRight 0.25s;
   -ms-animation: slideInRight 0.25s;
@@ -121,14 +175,14 @@ ul.food li {
 }
 
 /* Slideshow animate reversse */
-.reverse.ng-hide-add-active, .reverse.ng-hide-add-active {
+.slide.reverse.ng-hide-add-active, .reverse.ng-hide-add-active {
   -webkit-animation: slideOutRight 0.25s;
   -moz-animation: slideOutRight 0.25s;
   -ms-animation: slideOutRight 0.25s;
   animation: slideOutRight 0.25s;
 }
 
-.reverse.ng-hide-remove-active, .reverse.ng-hide-remove-active {
+.slide.reverse.ng-hide-remove-active, .reverse.ng-hide-remove-active {
   -webkit-animation: slideInLeft 0.25s;
   -moz-animation: slideInLeft 0.25s;
   -ms-animation: slideInLeft 0.25s;
@@ -143,12 +197,6 @@ ul.food li {
   -moz-animation: slideOutUp 1s;
   -ms-animation: slideOutUp 1s;
   animation: slideOutUp 1s;
-/*  -webkit-transition:all 1.0s linear 1s;
-  -moz-transition:all 1.0s linear 1s;
-  -o-transition:all 1.0s linear 1s;
-  transition:all 1.0s linear 1s;
-  display:block!important;
-  opacity: 0;*/
 }
 
 .swipeddown {
@@ -156,12 +204,40 @@ ul.food li {
   -moz-animation: hinge 1s;
   -ms-animation: hinge 1s;
   animation: hinge 1s;
-/*  -webkit-transition:all 1.0s linear 1s;
-  -moz-transition:all 1.0s linear 1s;
-  -o-transition:all 1.0s linear 1s;
-  transition:all 1.0s linear 1s;
+}
+
+
+/* Slide Flipping Action */
+
+.fooditem.ng-hide-add {
+  -webkit-transition:all 0.25s linear 0s;
+  -moz-transition:all 0.25s linear 0s;
+  -o-transition:all 0.25s linear 0s;
+  transition:all 0.25s linear 0s;
   display:block!important;
-  opacity: 0;*/
+}
+
+.fooditem.ng-hide-remove {
+  -webkit-transition:all 0.25s linear 0s;
+  -moz-transition:all 0.25s linear 0s;
+  -o-transition:all 0.25s linear 0s;
+  transition:all 0.25s linear 0s;
+  display:block!important;
+}
+
+/* Slideshow animate forward */
+.fooditem.ng-hide-add-active {
+  -webkit-animation: flip 0.25s;
+  -moz-animation: flip 0.25s;
+  -ms-animation: flip 0.25s;
+  animation: flip 0.25s;
+}
+
+.fooditem.ng-hide-remove-active {
+  -webkit-animation: flip 0.25s;
+  -moz-animation: flip 0.25s;
+  -ms-animation: flip 0.25s;
+  animation: flip 0.25s;
 }
 
 /* @@@@@@@@@ UNUSED CSS @@@@@@@@@ */

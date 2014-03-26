@@ -19,7 +19,7 @@ angular.module('hungergame.restaurants')
         { src:'http://kalbiburger.com/wp-content/uploads/2010/06/Kalbi_Burger.jpg',title:'Burger'},
         { src:'http://www.littlebabysicecream.com/wp-content/uploads/2012/09/pizza.jpg',title:'Pizza'},
         { src:'http://www.tacobell.com/static_files/TacoBell/StaticAssets/images/menuItems/pdp/pdp_cantina_burrito_steak.png',title:'Burrito'},
-        { src:'http://lorempixel.com/500/500',title:'Random2'},
+        { src:'http://www.saksgrill.com/image/cache/data/Hot%20Dogs/Hotdog%20Plain-500x500.png',title:'HotDog'},
         // { src:'http://lorempixel.com/500/500/people',title:'Random2'},
         // { src:'http://lorempixel.com/500/500/people',title:'Random2'},
     ];

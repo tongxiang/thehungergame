@@ -137,24 +137,52 @@ hungergame.directive('slider', function ($timeout, $state) {
                     } else {
                       removed = scope.currentIndex,1;
                     }
+                      scope.images.splice(removed,1)
                       scope.next();
                       ele.classList.remove('swipeddown');
                       console.log("after index: ", scope.currentIndex);
                   }, 1000);
             }
 
+            scope.moreInfo=function($event){
+              // End slideshow if playing
+              scope.end();
+
+              scope.images[scope.currentIndex].info=!scope.images[scope.currentIndex].info
+
+              scope.images[scope.currentIndex].foodpic=!scope.images[scope.currentIndex].foodpic
+
+              // // Hide current card
+              // scope.images[scope.currentIndex].visible=false;
+
+              // var ele = $event.target;
+              // console.log('this is the ele: ', ele);
+              // ele.classList.add('flip');
+
+            }
+
             scope.$watch('currentIndex',function(){
                 scope.images.forEach(function(image){
                     image.visible=false;
+                    image.foodpic=true;
+                    image.info=false;
                 });
                 scope.images[scope.currentIndex].visible=true;
             });
 
+            // scope.$watch('info',function(){
+            //     scope.images.forEach(function(image){
+            //         image.visible=false;
+            //     });
+            //     scope.images[scope.currentIndex].visible=true;
+            // });
+
             // attempt to watch the nom count
             scope.$watch('nom_count',function(){
-                  if (scope.nom_count >= 3) {
+                  if (scope.nom_count === 3) {
                     console.log('nom_count is: ', scope.nom_count)
-                    $state.go('home.finalRound')
+                    $state.go('home.transition')
+                    scope.images[scope.currentIndex].visible=false;
                   }
             });
 
@@ -175,8 +203,8 @@ hungergame.directive('slider', function ($timeout, $state) {
               arr1.splice(0,arr1.length)
 
               // Adds arr2 elements to arr1
-              arr2.forEach(function(ele) {
-                arr1.push(ele);
+              arr2.forEach(function(el) {
+                arr1.unshift(el);
               })
 
               // Reset arr2

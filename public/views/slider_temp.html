@@ -1,8 +1,14 @@
 <div class="slider">
   <ul class='food'>
-    <li class='slide text-center' ng-repeat="image in images" ng-show="image.visible">
-      <img class='food img-responsive img-rounded' ng-src="{{image.src}}" hm-swipe-up-opts='{prevent_default: true}' hm-swipe-up="swipedUp($event)" hm-swipe-down-opts='{prevent_default: true}' hm-swipe-down="swipedDown($event)" hm-swipe-left-opts='{prevent_default: true}' hm-swipe-left="next($event)" hm-swipe-right-opts='{prevent_default: true}' hm-swipe-right="prev($event)"/>
-    </li>
+      <li class='slide text-center' ng-repeat="image in images" ng-show="image.visible">
+        <img ng-show='image.foodpic' class='food fooditem img-responsive img-rounded' ng-src="{{image.src}}" hm-swipe-up-opts='{prevent_default: true}' hm-swipe-up="swipedUp($event)" hm-swipe-down-opts='{prevent_default: true}' hm-swipe-down="swipedDown($event)" hm-swipe-left-opts='{prevent_default: true}' hm-swipe-left="next($event)" hm-swipe-right-opts='{prevent_default: true}' hm-swipe-right="prev($event)" hm-double-tap='moreInfo($event)'/>
+        <div class='fooditem well well-lg food' hm-double-tap='moreInfo($event)' ng-show='image.info'>
+          {{image.title}}
+          {{image.title}}
+          {{image.title}}
+          {{image.title}}
+        </div>
+      </li>
   </ul>
   <div class="arrows text-center">
     <!-- <div class='btn-group'> -->
