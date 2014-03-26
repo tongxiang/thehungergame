@@ -9,8 +9,8 @@ var async = require('async');
 
 var config = {
     'secrets' : {
-        'clientId': 'E4AWAAAQ0FVJZWUCJAKDEGLOVV2XHIM5Y2X32UEWEPFMACFT',
-        'clientSecret': 'Z2KX31US4VQEKSOZTTBPLQ3LXD5DAODYVXVB4QFPJN3OKUVS',
+        'clientId': '',
+        'clientSecret': '',
         'redirectUrl': 'http://google.com'
     }, 
     'winston' : {
@@ -43,8 +43,12 @@ var foursquareExplore = function(lat, lng){
                 {
                     'name': venue.venue.name,
                     'id': venue.venue.id,
+                    'address': venue.venue.location.address, 
+                    'postalCode': venue.venue.location.postalCode,
                     'latLng': [venue.venue.location.lat, venue.venue.location.lng],
                     'distance': venue.venue.location.distance,
+                    'formattedPhoneNumber': venue.venue.contact.formattedPhone,
+                    'unformattedPhoneNumber': venue.venue.contact.phone,
                     'photoUrl': ''
                 })
         })
