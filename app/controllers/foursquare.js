@@ -43,8 +43,12 @@ var foursquareExplore = function(lat, lng){
                 {
                     'name': venue.venue.name,
                     'id': venue.venue.id,
+                    'address': venue.venue.location.address,
+                    'postalCode': venue.venue.location.postalCode,
                     'latLng': [venue.venue.location.lat, venue.venue.location.lng],
                     'distance': venue.venue.location.distance,
+                    'formattedPhoneNumber': venue.venue.contact.formattedPhone,
+                    'unformattedPhoneNumber': venue.venue.contact.phone,
                     'photoUrl': ''
                 })
         })
