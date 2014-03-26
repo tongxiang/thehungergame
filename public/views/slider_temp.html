@@ -4,7 +4,9 @@
         <img ng-show='restaurant.foodpic' class='food fooditem img-responsive img-rounded' ng-src="{{restaurant.photoUrl}}" hm-swipe-up-opts='{prevent_default: true}' hm-swipe-up="swipedUp($event)" hm-swipe-down-opts='{prevent_default: true}' hm-swipe-down="swipedDown($event)" hm-swipe-left-opts='{prevent_default: true}' hm-swipe-left="next($event)" hm-swipe-right-opts='{prevent_default: true}' hm-swipe-right="prev($event)" hm-double-tap='moreInfo($event)'/>
         <div class='fooditem well well-lg food' hm-double-tap='moreInfo($event)' ng-show='restaurant.info'>
           <h4>{{restaurant.name}}</h4>
-          <h4>{{restaurant.distance}}</h4>
+          <h4>Address: {{restaurant.address}}</h4>
+          <h4>Phone: {{restaurant.formattedPhoneNumber}}</h4>
+          <h4>Distance from you: {{restaurant.distance}}m</h4>
         </div>
       </li>
   </ul>
