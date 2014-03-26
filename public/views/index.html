@@ -1,10 +1,17 @@
 <section class='main' ng-controller="RestaurantsController">
 
-  <div ui-view="final">
-    <h3>ROUND 1</h3>
-<!--     <slider images="images"/>
-    </slider> -->
+<div ui-view="final" class="finalsign slidedown">
+  <div ui-view="transition" class='pop container sign'>
+    <div ui-view="first" class="slidedown sign">
+      <div class='container'>
+        <div class='welcome jumbotron text-center'>
+              <h1>FEED THE HUNGER</h1>
+              <a class='btn btn-primary btn-lg' ui-sref="home.firstRound">Start</a>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
 {{restaurants}}
 
@@ -13,7 +20,6 @@
 </div> -->
   <footer>
     <div class='text-center'>
-      <a ui-sref='home.finalRound'>final</a>
       <p>Your location is: {{coords}}</p>
     </div>
   </footer>

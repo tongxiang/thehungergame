@@ -28,6 +28,20 @@ angular.module('hungergame').config(['$stateProvider', '$urlRouterProvider',
         url: '/',
         templateUrl: 'views/index.html'
     })
+      .state('home.firstRound', {
+        views: {
+            'first': {
+                templateUrl: 'views/first.html'
+            }
+        }
+    })
+      .state('home.transition', {
+        views: {
+            'transition': {
+                templateUrl: 'views/final_transition.html'
+            }
+        }
+    })
       .state('home.finalRound', {
         views: {
             'final': {
