@@ -1,4 +1,4 @@
-h4 {
+h4, h3 {
   text-align:center;
 }
 
@@ -74,6 +74,11 @@ ul.food li {
   top: 23.2em;
   width: 100%;
   /*border: 1px solid green;*/
+}
+
+.angular-google-map-container {
+  height: 90px;
+  max-width: 320px;
 }
 
 /*

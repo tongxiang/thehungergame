@@ -59,7 +59,11 @@ var foursquareExplore = function(lat, lng){
 
 var getPhotosFromVenue = function(venueObject, done){
     foursquare.Venues.getPhotos(venueObject.id, null, {limit: 2}, null, function(error, photoArrayObject){
-        if (!photoArrayObject.photos.items[1]){
+        // OW: Temporary patch to account for no photos loading
+        if (!photoArrayObject || !photoArrayObject.photos.items[0]) {
+            venueObject['photoUrl'] = 'http://lorempixel.com/500/500/'
+        }
+        else if (!photoArrayObject.photos.items[1]){
             venueObject['photoUrl'] = photoArrayObject.photos.items[0].prefix.concat('500x500', photoArrayObject.photos.items[0].suffix)
             // console.log('this ' + venueObject.name + ' doesnt have a second photo!')
         }

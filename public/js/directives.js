@@ -11,7 +11,7 @@ var hungergame=angular.module('hungergame.restaurants');
 //     $scope.restaurants=[{src:'img1.png',title:'Pic 1'},{src:'img2.jpg',title:'Pic 2'},{src:'img3.jpg',title:'Pic 3'},{src:'img4.png',title:'Pic 4'},{src:'img5.png',title:'Pic 5'}];
 // });
 
-hungergame.directive('slider', function ($timeout, $state) {
+hungergame.directive('slider', function ($timeout, $state, nomPasser) {
     return {
         restrict: 'AE',
     /*
@@ -28,24 +28,32 @@ hungergame.directive('slider', function ($timeout, $state) {
         scope:{
             restaurants: '=',
         },
+
         link: function (scope, elem, attrs) {
 
+            // Variables
             scope.currentIndex=0;
-            scope.playing=false;
-            scope.nom_count = 0;
-            scope.noms_restaurants = [];
+            scope.slideshowOn=false;
+            scope.nom_count=0;
+            scope.nope_count=0;
+            scope.playing=true; // Indicates Round
+            scope.gameover=false; // Indicates Game
+
+            // Gameplay: Restaurant Choices
+            scope.noms_arr = [];
+            scope.nopes_arr = [];
 
             scope.start=function(){
-                if(!scope.playing) {
+                if(!scope.slideshowOn) {
                     sliderFunc();
-                    scope.playing=true;
+                    scope.slideshowOn=true;
                 }
             };
 
             scope.end=function(){
-                if(scope.playing) {
+                if(scope.slideshowOn) {
                   $timeout.cancel(timer);
-                  scope.playing=false;
+                  scope.slideshowOn=false;
                 }
             };
 
@@ -96,32 +104,40 @@ hungergame.directive('slider', function ($timeout, $state) {
                 console.log('this is the ele: ', ele);
                 ele.classList.add('swipedup');
                 scope.nom_count +=1;
+                // +++ Incorporate timer here +++
+                scope.playing = false;
 
-                // Removes the list item
+                // Removes the list item and ends user round
                 $timeout (function() {
-                    if (scope.playing) {
-                      var removed = scope.currentIndex-1;
-                    } else {
-                      removed = scope.currentIndex,1;
-                    }
-                      var nom = scope.restaurants.splice(removed,1)[0];
-                      scope.noms_restaurants.push(nom);
-                      console.log("NOM! ", nom);
-                      if (scope.noms_restaurants.length >= 3) {
-                        console.log('noms satisfied');
-                        arrReplace(scope.restaurants,scope.noms_restaurants);
-                        // scope.noms_restaurants.forEach(function(ele) {
-                        //   scope.restaurants.push(ele);
-                        // })
-                        // scope.restaurants.push({ src:'http://lorempixel.com/500/500',title:'Random2'});
-                        console.log('TESING 123!:', scope.restaurants)
-                      }
-                      // console.log("yes restaurants: ", scope.yes_restaurants)
+                      // Sets restaurant selection
+                      var nom = restaurantSelector();
 
-                      // when scope.yes_restaurants.length = 3, got to final round
-                      scope.next();
+                      nom.winner = true;
+                      nom.map = {
+                        center: {
+                          latitude: nom.latLng[0],
+                          longitude: nom.latLng[1]
+                        },
+                        zoom: 14,
+                      }
+
+                      // +++ NOTE: Will need to incorporate firebase functionality here for multiplayer !! +++
+                        // Attach to a user?
+                        // Broadcast event?
+
+                      nomPasser.setNom(nom);
+                      scope.noms_arr.push(nom);
+                      console.log('Selection lat: ', Math.round(nom.latLng[0]))
+                      console.log('Selection long: ', Math.round(nom.latLng[1]))
+
+                      // Ends single user session, makes restaurants array that page sees the user selection
+                        // +++ NOTE: Will need to modify to account for scope.restaurant.winner
+                      if (scope.noms_arr.length === 1) {
+                        arrReplace(scope.restaurants,scope.noms_arr);
+                      }
+
+                      // Resets page <li> element
                       ele.classList.remove('swipedup');
-                      console.log("after index: ", scope.currentIndex);
                   }, 1000);
             }
 
@@ -132,58 +148,47 @@ hungergame.directive('slider', function ($timeout, $state) {
 
                 // Removes the list item
                 $timeout (function() {
-                    if (scope.playing) {
-                      var removed = scope.currentIndex-1;
-                    } else {
-                      removed = scope.currentIndex,1;
-                    }
-                      scope.restaurants.splice(removed,1)
+                      var nope = restaurantSelector();
+                      scope.nopes_restaurants.push(nom);
                       scope.next();
                       ele.classList.remove('swipeddown');
-                      console.log("after index: ", scope.currentIndex);
+                      // console.log("after index: ", scope.currentIndex);
                   }, 1000);
             }
 
+            // Toggles card flip
             scope.moreInfo=function($event){
               // End slideshow if playing
-              scope.end();
+              scope.restaurants[scope.currentIndex].info=!scope.restaurants[scope.currentIndex].info;
+              scope.restaurants[scope.currentIndex].foodpic=!scope.restaurants[scope.currentIndex].foodpic;
+            };
 
-              scope.restaurants[scope.currentIndex].info=!scope.restaurants[scope.currentIndex].info
-
-              scope.restaurants[scope.currentIndex].foodpic=!scope.restaurants[scope.currentIndex].foodpic
-
-              // // Hide current card
-              // scope.restaurants[scope.currentIndex].visible=false;
-
-              // var ele = $event.target;
-              // console.log('this is the ele: ', ele);
-              // ele.classList.add('flip');
-
-            }
 
             scope.$watch('currentIndex',function(){
                 scope.restaurants.forEach(function(restaurant){
                     restaurant.visible=false;
                     restaurant.foodpic=true;
                     restaurant.info=false;
+                    restaurant.winner=false;
                 });
                 scope.restaurants[scope.currentIndex].visible=true;
             });
 
-            // scope.$watch('info',function(){
-            //     scope.restaurants.forEach(function(restaurant){
-            //         restaurant.visible=false;
-            //     });
-            //     scope.restaurants[scope.currentIndex].visible=true;
+            // scope.$watch('playing',function(){
+            //     if (!scope.playing) {
+            //       scope.moreInfo()
+            //     }
             // });
 
             // attempt to watch the nom count
             scope.$watch('nom_count',function(){
-                  if (scope.nom_count === 3) {
-                    console.log('nom_count is: ', scope.nom_count)
-                    $state.go('home.transition')
-                    scope.restaurants[scope.currentIndex].visible=false;
-                  }
+                $timeout(function(){
+                    if (scope.nom_count === 1) {
+                      console.log('nom_count is: ', scope.nom_count)
+                      $state.go('home.transition')
+                      scope.restaurants[scope.currentIndex].visible=false;
+                    }
+                  },1000)
             });
 
     /* Start: For Automatic slideshow*/
@@ -209,8 +214,21 @@ hungergame.directive('slider', function ($timeout, $state) {
 
               // Reset arr2
               arr2.splice(0,arr2.length);
-
             }
+
+
+            var restaurantSelector = function() {
+              if (scope.slideshowOn) {
+                var selection_no = scope.currentIndex-1;
+              } else {
+                selection_no = scope.currentIndex,1;
+              }
+
+              // Sets restaurant selection
+              var selection = scope.restaurants.splice(selection_no,1)[0];
+              return selection;
+            }
+
 
             scope.$on('$destroy',function(){
                 $timeout.cancel(timer);
