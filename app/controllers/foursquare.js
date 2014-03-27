@@ -37,9 +37,9 @@ var foursquareExplore = function(lat, lng){
     var deferred = Q.defer();
     foursquare.Venues.explore(lat, lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, venuesObject){
         console.log("the restaurant count that foursquareExplore is returning is",venuesObject.groups[0].items.length)
-        // console.log(venuesObject.groups[0].items)
         venuesObject.groups[0].items.forEach(function(venue){
-            venuesRelevantDataArray.push(
+            if (venue.venue.photos.groups[0].items.length === 1){
+                venuesRelevantDataArray.push(
                 {
                     'name': venue.venue.name,
                     'id': venue.venue.id,
@@ -51,8 +51,9 @@ var foursquareExplore = function(lat, lng){
                     'unformattedPhoneNumber': venue.venue.contact.phone,
                     'photoUrl': ''
                 })
+            }
         })
-        deferred.resolve(venuesRelevantDataArray)
+        deferred.resolve(venuesRelevantDataArray);
     });
     return deferred.promise;
 };
@@ -77,7 +78,7 @@ exports.foursquareQuery = function(req, res){
     var lng = coords[1];
     foursquareExplore(lat, lng).then(function(venuesObject){
         async.map(venuesObject, getPhotosFromVenue, function(err, photoArraysObject){
-            // console.log("There are a total of " + photoArraysObject.length + "venues for which we have now retrieved photos for");
+            console.log("There are a total of " + photoArraysObject.length + "venues for which we have now retrieved photos for");
                 console.log(photoArraysObject);
                 res.json(photoArraysObject);
         });
