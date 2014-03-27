@@ -8,22 +8,22 @@ angular.module('hungergame').config(['$stateProvider', '$urlRouterProvider',
 
     // states for my app
     $stateProvider
-      .state('all restaurants', {
-        url: '/restaurants',
-        templateUrl: 'views/restaurants/list.html'
-    })
-      .state('create restaurant', {
-        url: '/restaurants/create',
-        templateUrl: 'views/restaurants/create.html'
-    })
-      .state('edit restaurant', {
-        url: '/restaurants/:restaurantId/edit',
-        templateUrl: 'views/restaurants/edit.html'
-    })
-      .state('restaurant by id', {
-        url: '/restaurants/:restaurantId',
-        templateUrl: 'views/restaurants/view.html'
-    })
+    //   .state('all restaurants', {
+    //     url: '/restaurants',
+    //     templateUrl: 'views/restaurants/list.html'
+    // })
+    //   .state('create restaurant', {
+    //     url: '/restaurants/create',
+    //     templateUrl: 'views/restaurants/create.html'
+    // })
+    //   .state('edit restaurant', {
+    //     url: '/restaurants/:restaurantId/edit',
+    //     templateUrl: 'views/restaurants/edit.html'
+    // })
+    //   .state('restaurant by id', {
+    //     url: '/restaurants/:restaurantId',
+    //     templateUrl: 'views/restaurants/view.html'
+    // })
       .state('home', {
         url: '/',
         templateUrl: 'views/index.html'
@@ -42,12 +42,9 @@ angular.module('hungergame').config(['$stateProvider', '$urlRouterProvider',
             }
         }
     })
-      .state('home.finalRound', {
-        views: {
-            'final': {
-                templateUrl: 'views/final.html'
-            }
-        }
+      .state('final', {
+        url: '/final',
+        templateUrl: 'views/final.html'
     });
 }
 ]);

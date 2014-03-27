@@ -10,3 +10,21 @@ angular.module('hungergame.restaurants').factory('Restaurants', ['$resource', fu
         }
     });
 }]);
+
+//+++ NOTE: Restaurants service used for passing data between the public directive and the restaurants controller
+  // See http://jsfiddle.net/b2fCE/1/
+
+angular.module('hungergame.restaurants').service('nomPasser',[function() {
+    var nomSelection;
+
+    return {
+        getNom: function() {
+          return nomSelection;
+        },
+
+        setNom: function(nom) {
+          nomSelection = nom;
+        },
+    }
+
+}]);
