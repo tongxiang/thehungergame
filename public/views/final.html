@@ -1,24 +1,20 @@
-<div ui-view="final" ng-controller="RestaurantsController" class="finalsign slidedown">
-  <h3>WINNER</h3>
-  <div class="slider">
-    <ul class='food'>
+<div ui-view="final" ng-controller="RestaurantsController" class='revealshow'>
+    <h3>WINNER</h3>
+      <ul class='food slider'>
           <div class='fooditem well well-lg food'>
             <google-map center="winner.map.center" zoom="winner.map.zoom">
               <marker coords="winner.map.center"></marker>
             </google-map>
-            <h4>Name: {{winner.name}}</h4>
+            <p>Name: {{winner.name}}</p>
             <p>Address: {{winner.address}}</p>
             <p>Phone: {{winner.formattedPhoneNumber}}</p>
             <p>Distance from you: {{winner.distance}}m</p>
           </div>
-        </li>
-    </ul>
+      </ul>
+    <div class='arrows text-center'>
+        <a class='btn btn-primary btn-lg' href="/">
+          Still Hungry?
+        </a>
+    </div>
   </div>
-  <div class="arrows text-center">
-      <a class='btn btn-primary btn-lg' href="/">
-        Restart
-      </a>
-    <br>
-  </div>
-</div>
 </div>

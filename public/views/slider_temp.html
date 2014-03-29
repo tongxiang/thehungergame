@@ -1,43 +1,22 @@
-<div class="slider">
+<div class="slider" ng-open='start()'>
   <ul class='food'>
+      <div class='icons'>
+        <span class='counter badge'>
+          <i class="fa fa-cutlery"></i>
+          {{restaurants.length}}
+        </span>
+        <timer interval="1000" countdown='3' class='clock badge'>
+          <i class='glyphicon glyphicon-time'></i>
+          {{seconds}}
+        </timer>
+      </div>
+
       <li class='slide text-center' ng-repeat="restaurant in restaurants" ng-show="restaurant.visible">
-        <img ng-show='restaurant.foodpic' class='food fooditem img-responsive img-rounded' ng-src="{{restaurant.photoUrl}}" hm-swipe-up-opts='{prevent_default: true}' hm-swipe-up="swipedUp($event)" hm-swipe-down-opts='{prevent_default: true}' hm-swipe-down="swipedDown($event)" hm-swipe-left-opts='{prevent_default: true}' hm-swipe-left="next($event)" hm-swipe-right-opts='{prevent_default: true}' hm-swipe-right="prev($event)" hm-double-tap='moreInfo($event)'/>
+        <img ng-show='restaurant.foodpic' class='food fooditem img-responsive img-rounded' ng-src="{{restaurant.photoUrl}}" hm-release='resume()' hm-swipe-up-opts='{prevent_default: true}' hm-swipe-up="swipedUp($event)" hm-swipe-down-opts='{prevent_default: true}' hm-swipe-down="swipedDown($event)" hm-swipe-left-opts='{prevent_default: true}' hm-swipe-left="next($event)" hm-swipe-right-opts='{prevent_default: true}' hm-swipe-right="prev($event)" hm-double-tap='moreInfo($event)'/>
         <div class='fooditem well well-lg food' hm-double-tap='moreInfo($event)' ng-show='restaurant.info'>
           <h4>Restaurant: {{restaurant.name}}</h4>
           <p>Distance from you: {{restaurant.distance}}m</p>
         </div>
       </li>
   </ul>
-  <div class="arrows text-center">
-    <!-- <div class='btn-group'> -->
-<!--       <button class='btn btn-default btn-md' ng-click="prev($event)">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-      </button> -->
-      <button class='btn btn-primary btn-lg' ng-click="start()">
-        Start
-      </button>
-      <button class='btn btn-danger btn-lg' ng-click="end()">
-        End
-      </button>
-<!--       <button class='btn btn-default btn-md' ng-click="next($event)">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-      </button> -->
-    <!-- </div> -->
-    <br>
-  </div>
-
-<!--We need to keep in mind that we want to attach a lot more information to the image object that gets displayed in the slider via ng-repeat.
-
-  We also want to attach a title, a URL to the directions, the distance away from you, and possibly, the price.
-
-{
-name: ,
-imageUrl: ,
-lat: ,
-long: ,
-distanceAway: ,
-
-}
-
- -->
 </div>

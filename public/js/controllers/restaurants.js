@@ -19,6 +19,7 @@ angular.module('hungergame.restaurants')
               $http({method: 'GET', url: '/venues',
                   params: {latLng: coordString}}).
                   success(function(data, status, headers, config){
+                      $scope.restaurants = [];
                       console.log('rest controller', data);
                       $scope.restaurants = data;
                   }).
@@ -31,6 +32,10 @@ angular.module('hungergame.restaurants')
     }
 
     $scope.winner = nomPasser.getNom();
+
+    // $scope.$on('timer-stopped', function (event, data){
+    //     console.log('Timer Stopped - data = ', data);
+    // });
 
 }]);
 

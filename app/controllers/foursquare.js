@@ -9,8 +9,8 @@ var async = require('async');
 
 var config = {
     'secrets' : {
-        'clientId': 'MTFTHPM5REU2S3MMDIJIEAWF1SSBKD4Y1GSGWBITCQIRWIMI',
-        'clientSecret': 'UOHPNIPZWXF1XYET2WLL1V0WIVLJ3HT3LIP3XP1UP0RJMARG',
+        'clientId': 'E4AWAAAQ0FVJZWUCJAKDEGLOVV2XHIM5Y2X32UEWEPFMACFT',
+        'clientSecret': 'Z2KX31US4VQEKSOZTTBPLQ3LXD5DAODYVXVB4QFPJN3OKUVS',
         'redirectUrl': 'http://google.com'
     },
     'winston' : {
@@ -37,8 +37,12 @@ var foursquareExplore = function(lat, lng){
     var deferred = Q.defer();
     foursquare.Venues.explore(lat, lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, venuesObject){
         console.log("the restaurant count that foursquareExplore is returning is",venuesObject.groups[0].items.length)
+        var counter = 0
         venuesObject.groups[0].items.forEach(function(venue){
-            if (venue.venue.photos.groups[0].items.length === 1){
+            // Had to implement patch at 11pm; error stating that groups[0] was undefined
+            counter++
+            console.log('foursquareExplore ran: '+ counter + ' times.')
+            if (venue.venue.photos.groups[0] && venue.venue.photos.groups[0].items.length === 1){
                 venuesRelevantDataArray.push(
                 {
                     'name': venue.venue.name,

@@ -7,25 +7,12 @@ var hungergame=angular.module('hungergame.restaurants');
 // http://docs.angularjs.org/guide/directive
 
 // Moved controller to restaurants controller
-// hungergame.controller('SliderController', function($scope) {
-//     $scope.restaurants=[{src:'img1.png',title:'Pic 1'},{src:'img2.jpg',title:'Pic 2'},{src:'img3.jpg',title:'Pic 3'},{src:'img4.png',title:'Pic 4'},{src:'img5.png',title:'Pic 5'}];
-// });
 
 hungergame.directive('slider', function ($timeout, $state, nomPasser) {
     return {
         restrict: 'AE',
-    /*
-    The restrict option is typically set to:
-
-    'A' - only matches attribute name
-    'E' - only matches element name
-    'C' - only matches class name
-    These restrictions can all be combined as needed:
-
-    'AEC' - matches either attribute or element or class name
-    */
         replace: true,
-        scope:{
+        scope: {
             restaurants: '=',
         },
 
@@ -33,9 +20,12 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
 
             // Variables
             scope.currentIndex=0;
+            scope.restaurantsCount=scope.restaurants.length
             scope.slideshowOn=false;
             scope.nom_count=0;
             scope.nope_count=0;
+
+            scope.moreInfoClicks=0;
             scope.playing=true; // Indicates Round
             scope.gameover=false; // Indicates Game
 
@@ -44,20 +34,22 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
             scope.nopes_arr = [];
 
             scope.start=function(){
-                if(!scope.slideshowOn) {
-                    sliderFunc();
-                    scope.slideshowOn=true;
-                }
-            };
+              // timeout to account for slide animation
+              if(!scope.slideshowOn) {
+                  scope.slideshowOn=true;
+                  $timeout(function() {
+                       sliderFunc();
+                  }, 1500)
+                };
+              }
 
             scope.end=function(){
-                if(scope.slideshowOn) {
                   $timeout.cancel(timer);
-                  scope.slideshowOn=false;
-                }
             };
 
             scope.next=function($event){
+                scope.end()
+                console.log('running next func')
                 // This is the next restaurant to be displayed's index
                 var nextIndex = (scope.currentIndex<scope.restaurants.length-1) ? scope.currentIndex+1 : 0;
                 if(!$event) {
@@ -75,11 +67,14 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
                     ele.classList.remove('reverse');
 
                     // Changes the restaurant
+                    console.log('next index: ', nextIndex);
                     scope.currentIndex = nextIndex;
+                    console.log('scope.current: ', scope.currentIndex);
                 }
             };
 
             scope.prev=function($event){
+                scope.end();
                 // This is the prev restaurant to be displayed's index
                 var prevIndex = (scope.currentIndex) ? scope.currentIndex-1:scope.restaurants.length-1;
 
@@ -97,20 +92,38 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
 
                 // Changes the restaurant
                 scope.currentIndex = prevIndex;
+
+                // Add timeout to remove reverse class
+
             };
 
+            scope.resume=function() {
+              // if the slideshow.false kicks off auto slideshow.
+
+              $timeout(function() {
+                if(!scope.slideshowOn) {
+                  scope.slideshowOn=false;
+                }
+            }, 1)
+            }
+
+
             scope.swipedUp=function($event){
+                console.log("slideshow on?", scope.slideshowOn)
+                scope.end();
+                console.log('Current Index: ', scope.currentIndex)
                 var ele = $event.target;
                 console.log('this is the ele: ', ele);
                 ele.classList.add('swipedup');
-                scope.nom_count +=1;
                 // +++ Incorporate timer here +++
                 scope.playing = false;
 
                 // Removes the list item and ends user round
                 $timeout (function() {
+                      scope.nom_count +=1;
                       // Sets restaurant selection
                       var nom = restaurantSelector();
+                      console.log("nom chosen: ", nom)
 
                       nom.winner = true;
                       nom.map = {
@@ -125,44 +138,57 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
                         // Attach to a user?
                         // Broadcast event?
 
-                      nomPasser.setNom(nom);
-                      scope.noms_arr.push(nom);
-                      console.log('Selection lat: ', Math.round(nom.latLng[0]))
-                      console.log('Selection long: ', Math.round(nom.latLng[1]))
+                        nomPasser.setNom(nom);
+                        scope.noms_arr.push(nom);
+                        // console.log('Selection lat: ', Math.round(nom.latLng[0]))
+                        // console.log('Selection long: ', Math.round(nom.latLng[1]))
 
-                      // Ends single user session, makes restaurants array that page sees the user selection
-                        // +++ NOTE: Will need to modify to account for scope.restaurant.winner
-                      if (scope.noms_arr.length === 1) {
-                        arrReplace(scope.restaurants,scope.noms_arr);
-                      }
+                        // Ends single user session, makes restaurants array that page sees the user selection
+                          // +++ NOTE: Will need to modify to account for scope.restaurant.winner
+                        if (scope.noms_arr.length === 1) {
+                          arrReplace(scope.restaurants,scope.noms_arr);
+                       }
 
-                      // Resets page <li> element
-                      ele.classList.remove('swipedup');
-                  }, 1000);
-            }
+                        // Resets page <li> element
+                        ele.classList.remove('swipedup');
+                    }, 999);
+            };
 
             scope.swipedDown=function($event){
+                scope.end();
                 var ele = $event.target;
                 console.log('this is the ele: ', ele);
                 ele.classList.add('swipeddown');
 
                 // Removes the list item
                 $timeout (function() {
-                      var nope = restaurantSelector();
-                      scope.nopes_restaurants.push(nom);
-                      scope.next();
-                      ele.classList.remove('swipeddown');
-                      // console.log("after index: ", scope.currentIndex);
-                  }, 1000);
-            }
+                        var nope = restaurantSelector();
+                        scope.nopes_arr.push(nope);
+                        console.log('this is the nope: ', nope);
+                        ele.classList.remove('swipeddown');
+                        // console.log("after index: ", scope.currentIndex);
+                    }, 550);
+
+                $timeout(function() {
+                  scope.slideshowOn=false;
+                }, 500)
+            };
 
             // Toggles card flip
             scope.moreInfo=function($event){
+              scope.moreInfoClicks+=1
               // End slideshow if playing
               scope.restaurants[scope.currentIndex].info=!scope.restaurants[scope.currentIndex].info;
               scope.restaurants[scope.currentIndex].foodpic=!scope.restaurants[scope.currentIndex].foodpic;
-            };
+              scope.end();
 
+              if(scope.moreInfoClicks%2==0) {
+                console.log('moreInfo should restart slideshow')
+                $timeout (function() {
+                  scope.slideshowOn=false
+                }, 200);
+              }
+            };
 
             scope.$watch('currentIndex',function(){
                 scope.restaurants.forEach(function(restaurant){
@@ -182,19 +208,21 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
 
             // attempt to watch the nom count
             scope.$watch('nom_count',function(){
-                $timeout(function(){
                     if (scope.nom_count === 1) {
-                      console.log('nom_count is: ', scope.nom_count)
-                      $state.go('home.transition')
-                      scope.restaurants[scope.currentIndex].visible=false;
+                        console.log('nom_count is: ', scope.nom_count);
+                        $state.go('home.transition');
+                        if(scope.restaurants[scope.currentIndex]) {
+                          scope.restaurants[scope.currentIndex].visible=false;
+                        }
                     }
-                  },1000)
+                });
+
+            scope.$on('timer-stopped', function (event, data){
+                console.log('Timer Stopped - data = ', data);
             });
 
-    /* Start: For Automatic slideshow*/
-
             var timer;
-            var interval = 500;
+            var interval = 350;
 
             var sliderFunc=function(){
                 timer=$timeout(function(){
@@ -214,29 +242,29 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
 
               // Reset arr2
               arr2.splice(0,arr2.length);
-            }
-
+            };
 
             var restaurantSelector = function() {
-              if (scope.slideshowOn) {
-                var selection_no = scope.currentIndex-1;
-              } else {
-                selection_no = scope.currentIndex,1;
-              }
+                // var selection_no;
+                // if (scope.slideshowOn) {
+                //     selection_no = scope.currentIndex-1;
+                // } else {
+                //     selection_no = scope.currentIndex,1;
+                // }
 
-              // Sets restaurant selection
-              var selection = scope.restaurants.splice(selection_no,1)[0];
-              return selection;
-            }
+                var selection_no = scope.currentIndex;
+
+                // Sets restaurant selection
+                var selection = scope.restaurants.splice(selection_no,1)[0];
+                return selection;
+            };
 
 
             scope.$on('$destroy',function(){
                 $timeout.cancel(timer);
             });
-
-    /* End : For Automatic slideshow*/
-
         },
         templateUrl:'../views/slider_temp.html'
     };
+
 });
