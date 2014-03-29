@@ -1,4 +1,4 @@
-h4 {
+h4, h3 {
   text-align:center;
 }
 
@@ -16,7 +16,7 @@ h4 {
 }*/
 
 .finalsign {
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 
@@ -46,6 +46,46 @@ ul.food li {
   margin: auto;
 }
 
+.icons {
+  position: relative
+}
+
+.counter {
+  font-size: large;
+  position: absolute;
+  top: -1.7em;
+  right: 1em;
+  z-index: 100;
+}
+
+
+.clock {
+  font-size: large;
+  font-weight: bold;
+  position: absolute;
+  top: -1.7em;
+  left: 1.7em;
+  z-index: 100;
+}
+
+.fa-cutlery {
+  margin-right: 4px;
+}
+
+.loading {
+  position: relative;
+}
+
+.spin-container {
+  position: relative;
+  margin: 30px 0 40px 0;
+}
+
+.angular-google-map-container {
+   height: 90px;
+   max-width: 320px;
+}
+
 /*
  ++++ BEGIN -- FROM SLIDER FILE's app.css ++++
 */
@@ -71,7 +111,7 @@ ul.food li {
 
 .arrows{
   position: absolute;
-  top: 23.2em;
+  top: 26.5em;
   width: 100%;
   /*border: 1px solid green;*/
 }
@@ -194,17 +234,17 @@ ul.food li {
 /* Scrolling Action */
 
 .swipedup {
-  -webkit-animation: slideOutUp 1s;
-  -moz-animation: slideOutUp 1s;
-  -ms-animation: slideOutUp 1s;
-  animation: slideOutUp 1s;
+  -webkit-animation: slideOutUp 1.1s;
+  -moz-animation: slideOutUp 1.1s;
+  -ms-animation: slideOutUp 1.1s;
+  animation: slideOutUp 1.1s;
 }
 
 .swipeddown {
-  -webkit-animation: hinge 1s;
-  -moz-animation: hinge 1s;
-  -ms-animation: hinge 1s;
-  animation: hinge 1s;
+  -webkit-animation: hinge 0.60s;
+  -moz-animation: hinge 0.60s;
+  -ms-animation: hinge 0.60s;
+  animation: hinge 0.60s;
 }
 
 
@@ -226,7 +266,6 @@ ul.food li {
   display:block!important;
 }
 
-/* Slideshow animate forward */
 .fooditem.ng-hide-add-active {
   -webkit-animation: flip 0.25s;
   -moz-animation: flip 0.25s;
@@ -239,6 +278,22 @@ ul.food li {
   -moz-animation: flip 0.25s;
   -ms-animation: flip 0.25s;
   animation: flip 0.25s;
+}
+
+/* Tada Reveal */
+
+.revealshow {
+  -webkit-animation: rotateIn 0.25s;
+  -moz-animation: rotateIn 0.25s;
+  -ms-animation: rotateIn 0.25s;
+  animation: rotateIn 0.25s;
+}
+
+.reveal {
+  -webkit-animation: tada 1s 1s;
+  -moz-animation: tada 1s 1s;
+  -ms-animation: tada 1s 1s;
+  animation: tada 1s 1s;
 }
 
 /* @@@@@@@@@ UNUSED CSS @@@@@@@@@ */

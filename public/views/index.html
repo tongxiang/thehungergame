@@ -1,17 +1,24 @@
-<section class='main' ng-controller="RestaurantsController">
+<section class='main' ng-controller="RestaurantsController" ng-init='initialize()'>
 
-<div ui-view="final" class="finalsign slidedown">
   <div ui-view="transition" class='pop container sign'>
     <div ui-view="first" class="slidedown sign">
       <div class='container'>
         <div class='welcome jumbotron text-center'>
+              <div class='loading' ng-switch on='venuesLoaded'>
               <h1>FEED THE HUNGER</h1>
-              <a class='btn btn-primary btn-lg' ui-sref="home.firstRound">Start</a>
+                <div class='spin-container' ng-switch-when='false'>
+                  <span us-spinner='{zIndex: 0}'></span>
+                </div>
+                <div ng-switch-when='true'>
+                  <a class='btn btn-primary btn-lg' ui-sref="home.firstRound">Single Player</a>
+                  <a class='btn btn-primary btn-lg' ui-sref="home.firstRound">Multiplayer</a>
+                </div>
+              </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+
 
   <footer>
     <div class='text-center'>
