@@ -1,3 +1,16 @@
+// Omaris correction: 
+
+// OW: Temporary patch to account for no photos loading
+        // if (!photoArrayObject || !photoArrayObject.photos.items[0]) {
+        //     venueObject['photoUrl'] = 'http://lorempixel.com/500/500/'
+        // }
+        // else if (!photoArrayObject.photos.items[1]){
+        //     venueObject['photoUrl'] = photoArrayObject.photos.items[0].prefix.concat('500x500', photoArrayObject.photos.items[0].suffix)
+        //     // console.log('this ' + venueObject.name + ' doesnt have a second photo!')
+        // }
+
+
+
 // ERROR THAT RETURNS WHEN I TAKE OUT THE {limit: 3} property, because one of the venuesObjects has an undefined property 
 
 
@@ -39,9 +52,6 @@
 //     at IncomingMessage.EventEmitter.emit (events.js:117:20)
 //     at _stream_readable.js:920:16
 //     at process._tickCallback (node.js:415:13)
-
-
-
 
 // BELOW IS WHAT WE ACTUALLY WANT TO RETURN: 
 // {

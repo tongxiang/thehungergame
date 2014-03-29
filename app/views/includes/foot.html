@@ -7,6 +7,7 @@
 <!-- ** Added by OW ** -->
 <!-- Firebase -->
 <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.js"></script>
 
 <!-- Angular animate -->
 <script type="text/javascript" src="/lib/angular-gestures/gestures.min.js"></script>
@@ -14,11 +15,9 @@
 <!-- Angular gestures -->
 <script type="text/javascript" src="/lib/angular-animate/angular-animate.min.js"></script>
 
-
 <!-- Angular Geolocate: -->
 <!-- http://embed.plnkr.co/TM71LBh6ttYotOo6t7oX/preview -->
 <script type="text/javascript" src="/lib/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
-
 
 <!-- Angular UI -->
 <script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
@@ -26,7 +25,7 @@
 
 <!-- Angular Slideshow -->
 <!-- http://onehungrymind.com/build-sweet-photo-slider-angularjs-animate/ -->
-<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script> -->
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-animate.min.js"></script> -->
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script> -->
@@ -40,12 +39,14 @@
 <!-- Application Services -->
 <script type="text/javascript" src="/js/services/global.js"></script>
 <script type="text/javascript" src="/js/services/restaurants.js"></script>
+<script type="text/javascript" src="/js/services/geocodes.js"></script>
 
 <!-- Application Controllers -->
 <script type="text/javascript" src="/js/controllers/restaurants.js"></script>
 <script type="text/javascript" src="/js/controllers/index.js"></script>
 <script type="text/javascript" src="/js/controllers/header.js"></script>
 <script type="text/javascript" src="/js/init.js"></script>
+<script type="text/javascript" src="/js/controllers/firebase.js"></script>
 
 
 {% if (process.env.NODE_ENV == 'development') %}

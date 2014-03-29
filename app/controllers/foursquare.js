@@ -49,6 +49,7 @@ var foursquareExplore = function(lat, lng){
                     'distance': venue.venue.location.distance,
                     'formattedPhoneNumber': venue.venue.contact.formattedPhone,
                     'unformattedPhoneNumber': venue.venue.contact.phone,
+                    'url': venue.venue.url,
                     'photoUrl': ''
                 })
             }

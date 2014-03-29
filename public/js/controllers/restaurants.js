@@ -5,7 +5,7 @@
 // });
 
 angular.module('hungergame.restaurants')
-  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http) {
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', 'Geocodes', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http, Geocodes) {
     $scope.global = Global;
 
     // Get player's location;
@@ -19,6 +19,9 @@ angular.module('hungergame.restaurants')
                 success(function(data, status, headers, config){
                     console.log('rest controller', data);
                     $scope.restaurants = data;
+                    Geocodes.create($scope.coords).then(function(ref){
+                        console.log('you have pushed in your current latlng', ref)
+                    })
                 }).
                 error(function(data, status, headers, config){
                     console.log(status);
