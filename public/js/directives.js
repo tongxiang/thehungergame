@@ -217,9 +217,7 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
                     }
                 });
 
-            scope.$on('timer-stopped', function (event, data){
-                console.log('Timer Stopped - data = ', data);
-            });
+            // scope.$watch()
 
             var timer;
             var interval = 350;

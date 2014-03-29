@@ -5,12 +5,16 @@
 // });
 
 angular.module('hungergame.restaurants')
-  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'geolocation', '$http', 'nomPasser', function ($scope, $stateParams, $location, Global, geolocation, $http, nomPasser) {
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'geolocation', '$http', 'nomPasser', 'usSpinnerService', function ($scope, $stateParams, $location, Global, geolocation, $http, nomPasser, usSpinnerService) {
+
     $scope.global = Global;
+    $scope.venuesLoaded = false;
 
     // Get player's location;
     $scope.initialize = function() {
       console.log('function starting')
+      $scope.visitTime = new Date;
+      console.log('User visited site on: ', $scope.visitTime)
       geolocation.getLocation().then(function(data) {
           $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude};
           var latLngString = data.coords.latitude + ',' + data.coords.longitude;
@@ -19,9 +23,9 @@ angular.module('hungergame.restaurants')
               $http({method: 'GET', url: '/venues',
                   params: {latLng: coordString}}).
                   success(function(data, status, headers, config){
-                      $scope.restaurants = [];
-                      console.log('rest controller', data);
+                      console.log('rest controller', data.length);
                       $scope.restaurants = data;
+                      $scope.venuesLoaded = true;
                   }).
                   error(function(data, status, headers, config){
                       console.log(status);
@@ -33,9 +37,9 @@ angular.module('hungergame.restaurants')
 
     $scope.winner = nomPasser.getNom();
 
-    // $scope.$on('timer-stopped', function (event, data){
-    //     console.log('Timer Stopped - data = ', data);
-    // });
+    $scope.$on('timer-stopped', function (event, data){
+        console.log('Timer Stopped - data = ', data);
+    });
 
 }]);
 
