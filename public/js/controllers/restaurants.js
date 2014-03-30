@@ -11,10 +11,15 @@ angular.module('hungergame.restaurants')
 
     $scope.global = Global;
     $scope.multiplayer = false;
+    $scope.social = function() {
+      $scope.multiplayer = true;
+    }
     $scope.round = {
       //make a duration timer that is dynamic with the timer directive
       roundOver: false,
-      elapsed: 30 - this.roundTime,
+      elapsed: function() {
+        return 30 - $scope.roundTime;
+      }
     }
 
     // $scope.madeSelection = false
@@ -55,7 +60,7 @@ angular.module('hungergame.restaurants')
           $scope.madeSelection = false;
         }
         console.log('madeSelection?: ', $scope.madeSelection)
-        $scope.round.roundTime = data.seconds
+        $scope.roundTime = data.seconds
         $scope.round.roundOver = true;
         $state.go('home.transition');
     });
