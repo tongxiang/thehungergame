@@ -5,7 +5,9 @@
 // });
 
 angular.module('hungergame.restaurants')
-  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', 'Geocodes','nomSelector', 'usSpinnerService', '$state', function ($scope, $stateParams, $location, Global, geolocation, $http, nomSelector, usSpinnerService, $state) {
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http','nomSelector', 'usSpinnerService', '$state', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http, nomSelector, usSpinnerService, $state) {
+
+    // Removed Geocodes from between $http and nomSelector;
 
     $scope.global = Global;
     $scope.multiplayer = false;
@@ -77,9 +79,9 @@ angular.module('hungergame.restaurants')
                       console.log('Rando frm ctrl: ', random)
                       nomSelector.setRandom(random);
                       $scope.venuesLoaded = true;
-                        Geocodes.create($scope.coords).then(function(ref){
-                            console.log('you have pushed in your current latlng', ref)
-                        })
+                        // Geocodes.create($scope.coords).then(function(ref){
+                        //     console.log('you have pushed in your current latlng', ref)
+                        // })
                   }).
                   error(function(data, status, headers, config){
                       console.log(status);
