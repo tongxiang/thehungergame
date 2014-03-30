@@ -8,7 +8,7 @@ var hungergame=angular.module('hungergame.restaurants');
 
 // Moved controller to restaurants controller
 
-hungergame.directive('slider', function ($timeout, $state, nomPasser) {
+hungergame.directive('slider', function ($timeout, $state, nomSelector) {
     return {
         restrict: 'AE',
         replace: true,
@@ -20,7 +20,7 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
 
             // Variables
             scope.currentIndex=0;
-            scope.restaurantsCount=scope.restaurants.length
+            scope.restaurantsCount=scope.restaurants.length;
             scope.slideshowOn=false;
             scope.nom_count=0;
             scope.nope_count=0;
@@ -109,49 +109,36 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
 
 
             scope.swipedUp=function($event){
-                console.log("slideshow on?", scope.slideshowOn)
                 scope.end();
-                console.log('Current Index: ', scope.currentIndex)
                 var ele = $event.target;
                 console.log('this is the ele: ', ele);
                 ele.classList.add('swipedup');
+
                 // +++ Incorporate timer here +++
-                scope.playing = false;
+                // !!!! Check where this is going and later remove !!!!
+                // scope.playing = false;
 
-                // Removes the list item and ends user round
+                // Removes the list item
                 $timeout (function() {
-                      scope.nom_count +=1;
-                      // Sets restaurant selection
-                      var nom = restaurantSelector();
-                      console.log("nom chosen: ", nom)
+                  scope.nom_count +=1;
+                  // Sets restaurant selection
+                  var nom = restaurantSelector();
+                  console.log("nom chosen: ", nom)
 
-                      nom.winner = true;
-                      nom.map = {
-                        center: {
-                          latitude: nom.latLng[0],
-                          longitude: nom.latLng[1]
-                        },
-                        zoom: 14,
-                      }
+                  // +++ NOTE: Will need to incorporate firebase functionality here for multiplayer !! +++
+                    // Attach to a user?
+                    // Broadcast event?
 
-                      // +++ NOTE: Will need to incorporate firebase functionality here for multiplayer !! +++
-                        // Attach to a user?
-                        // Broadcast event?
+                  nomSelector.addNom(nom);
+                  scope.noms_arr.push(nom);
 
-                        nomPasser.setNom(nom);
-                        scope.noms_arr.push(nom);
-                        // console.log('Selection lat: ', Math.round(nom.latLng[0]))
-                        // console.log('Selection long: ', Math.round(nom.latLng[1]))
+                  // Resets page <li> element
+                  ele.classList.remove('swipedup');
+                }, 550);
 
-                        // Ends single user session, makes restaurants array that page sees the user selection
-                          // +++ NOTE: Will need to modify to account for scope.restaurant.winner
-                        if (scope.noms_arr.length === 1) {
-                          arrReplace(scope.restaurants,scope.noms_arr);
-                       }
-
-                        // Resets page <li> element
-                        ele.classList.remove('swipedup');
-                    }, 999);
+                $timeout(function() {
+                  scope.slideshowOn=false;
+                }, 200)
             };
 
             scope.swipedDown=function($event){
@@ -162,16 +149,16 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
 
                 // Removes the list item
                 $timeout (function() {
-                        var nope = restaurantSelector();
-                        scope.nopes_arr.push(nope);
-                        console.log('this is the nope: ', nope);
-                        ele.classList.remove('swipeddown');
-                        // console.log("after index: ", scope.currentIndex);
-                    }, 550);
+                  var nope = restaurantSelector();
+                  scope.nopes_arr.push(nope);
+                  console.log('this is the nope: ', nope);
+                  ele.classList.remove('swipeddown');
+                  // console.log("after index: ", scope.currentIndex);
+                }, 550);
 
                 $timeout(function() {
                   scope.slideshowOn=false;
-                }, 500)
+                }, 200)
             };
 
             // Toggles card flip
@@ -200,24 +187,17 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
                 scope.restaurants[scope.currentIndex].visible=true;
             });
 
-            // scope.$watch('playing',function(){
-            //     if (!scope.playing) {
-            //       scope.moreInfo()
-            //     }
-            // });
-
-            // attempt to watch the nom count
-            scope.$watch('nom_count',function(){
-                    if (scope.nom_count === 1) {
-                        console.log('nom_count is: ', scope.nom_count);
-                        $state.go('home.transition');
-                        if(scope.restaurants[scope.currentIndex]) {
-                          scope.restaurants[scope.currentIndex].visible=false;
-                        }
-                    }
-                });
-
-            // scope.$watch()
+            // Watch the nom count to set a ceiling on the number a moms a user can select
+            // ** UPDATED TO ACCOUNT FOR SHAKE FUNCITONALITY
+            // scope.$watch('nom_count',function(){
+            //         if (scope.nom_count > 0) {
+            //             console.log('nom_count is: ', scope.nom_count);
+            //             scope.round.madeSelection = true;
+            //             // if(scope.restaurants[scope.currentIndex]) {
+            //             //   scope.restaurants[scope.currentIndex].visible=false;
+            //             // }
+            //         }
+            //     });
 
             var timer;
             var interval = 350;
@@ -243,13 +223,6 @@ hungergame.directive('slider', function ($timeout, $state, nomPasser) {
             };
 
             var restaurantSelector = function() {
-                // var selection_no;
-                // if (scope.slideshowOn) {
-                //     selection_no = scope.currentIndex-1;
-                // } else {
-                //     selection_no = scope.currentIndex,1;
-                // }
-
                 var selection_no = scope.currentIndex;
 
                 // Sets restaurant selection

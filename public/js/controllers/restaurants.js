@@ -5,10 +5,58 @@
 // });
 
 angular.module('hungergame.restaurants')
-  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', 'Geocodes', 'nomPasser', 'usSpinnerService', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http, Geocodes, nomPasser, usSpinnerService) {
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', 'Geocodes','nomSelector', 'usSpinnerService', '$state', function ($scope, $stateParams, $location, Global, geolocation, $http, nomSelector, usSpinnerService, $state) {
 
     $scope.global = Global;
+    $scope.multiplayer = false;
+    $scope.round = {
+      //make a duration timer that is dynamic with the timer directive
+      roundOver: false,
+      elapsed: 30 - this.roundTime,
+    }
+
+    // $scope.madeSelection = false
+
+
     $scope.venuesLoaded = false;
+
+    $scope.winner = nomSelector.getNom();
+
+    // Ends user round on a spacebar keypress or a phone shake
+    $scope.shakeNbake=function() {
+      window.addEventListener("keypress", checkKeyPressed, false);
+
+      function checkKeyPressed(e) {
+        if (e.charCode == "32") {
+          $scope.$broadcast('timer-stop');
+        }
+      }
+
+      window.addEventListener('shake', shakeEventDidOccur, false);
+
+      // Define a custom method to fire when shake occurs.
+      function shakeEventDidOccur () {
+        $scope.$broadcast('timer-stop');
+        // if (confirm("Oh no you didn't?")) {
+        //     alert("Ohh bit*h we bout to fight!")
+        // }
+      }
+    }
+
+    $scope.$on('timer-stopped', function (event, data){
+        console.log('Timer Stopped - data = ', data);
+        $scope.nom_count = nomSelector.nomCount()
+        console.log('Nom count from service: ', $scope.nom_count)
+        if($scope.nom_count>0) {
+          $scope.madeSelection = true;
+        } else {
+          $scope.madeSelection = false;
+        }
+        console.log('madeSelection?: ', $scope.madeSelection)
+        $scope.round.roundTime = data.seconds
+        $scope.round.roundOver = true;
+        $state.go('home.transition');
+    });
 
     // Get player's location;
     $scope.initialize = function() {
@@ -25,6 +73,9 @@ angular.module('hungergame.restaurants')
                   success(function(data, status, headers, config){
                       console.log('rest controller', data.length);
                       $scope.restaurants = data;
+                      var random = data[Math.floor(Math.random() * (data.length))];
+                      console.log('Rando frm ctrl: ', random)
+                      nomSelector.setRandom(random);
                       $scope.venuesLoaded = true;
                         Geocodes.create($scope.coords).then(function(ref){
                             console.log('you have pushed in your current latlng', ref)
@@ -37,12 +88,6 @@ angular.module('hungergame.restaurants')
           findNearBy(latLngString);
       });
     }
-
-    $scope.winner = nomPasser.getNom();
-
-    $scope.$on('timer-stopped', function (event, data){
-        console.log('Timer Stopped - data = ', data);
-    });
 }]);
 
 
