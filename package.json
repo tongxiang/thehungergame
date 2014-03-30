@@ -38,7 +38,8 @@
     "mean-logger": "0.0.1",
     "node-foursquare": "~0.2.0",
     "q": "~1.0.1",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "underscore": "~1.6.0"
   },
   "devDependencies": {
     "grunt-env": "~0.4.1",
