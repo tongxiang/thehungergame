@@ -1,9 +1,5 @@
 'use strict';
 
-// hungergame.controller('SliderController', function($scope) {
-//     $scope.images=[{src:'img1.png',title:'Pic 1'},{src:'img2.jpg',title:'Pic 2'},{src:'img3.jpg',title:'Pic 3'},{src:'img4.png',title:'Pic 4'},{src:'img5.png',title:'Pic 5'}];
-// });
-
 angular.module('hungergame.restaurants')
   .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http','nomSelector', 'usSpinnerService', '$state', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http, nomSelector, usSpinnerService, $state) {
 
@@ -14,6 +10,7 @@ angular.module('hungergame.restaurants')
     $scope.social = function() {
       $scope.multiplayer = true;
     }
+
     $scope.round = {
       //make a duration timer that is dynamic with the timer directive
       roundOver: false,
@@ -73,29 +70,35 @@ angular.module('hungergame.restaurants')
       geolocation.getLocation().then(function(data) {
           $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude};
           var latLngString = data.coords.latitude + ',' + data.coords.longitude;
-          // console.log(latLngString)
-          var findNearBy = function(coordString){
-              $http({method: 'GET', url: '/venues',
-                  params: {latLng: coordString}}).
-                  success(function(data, status, headers, config){
-                      console.log('rest controller', data.length);
-                      $scope.restaurants = data;
-                      var random = data[Math.floor(Math.random() * (data.length))];
-                      console.log('Rando frm ctrl: ', random)
-                      nomSelector.setRandom(random);
-                      $scope.venuesLoaded = true;
-                        // Geocodes.create($scope.coords).then(function(ref){
-                        //     console.log('you have pushed in your current latlng', ref)
-                        // })
-                  }).
-                  error(function(data, status, headers, config){
-                      console.log(status);
-                  });
-          };
-          findNearBy(latLngString);
-      });
+          $scope.latLngString = latLngString;
+      })
     }
+
+    $scope.findNearBy = function(coordinates) {
+      // var findNearBy = function(coordinates){
+          $http({method: 'GET', url: '/venues',
+            params: {latLng: coordinates}}).
+            success(function(data, status, headers, config){
+                console.log('rest controller', data.length);
+                $scope.restaurants = data;
+
+                // Assigns random restaurant if user decides to not choose one during gameplay
+                var random = data[Math.floor(Math.random() * (data.length))];
+                console.log('Rando frm ctrl: ', random)
+                nomSelector.setRandom(random);
+                $scope.venuesLoaded = true;
+                  // Geocodes.create($scope.coords).then(function(ref){
+                  //     console.log('you have pushed in your current latlng', ref)
+                  // })
+            }).
+            error(function(data, status, headers, config){
+                console.log(status);
+            });
+      };
+      // findNearBy(latLngString);
 }]);
+
+
 
 
     // // For multiplayer

@@ -1,5 +1,5 @@
-<div ng-init='initialize()' class='loading' ng-switch on='venuesLoaded'>
-  <div class='welcome jumbotron text-center'>
+<div class='loading' ng-switch on='venuesLoaded'>
+  <div ng-init='findNearBy(latLngString)' class='welcome jumbotron text-center'>
     <h2>DELICIOUSNESS AWAITS</h2>
     <h3>Choose Wisely</h3>
     <div class='spin-container' ng-switch-when='false'>

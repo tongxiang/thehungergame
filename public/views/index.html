@@ -4,10 +4,13 @@
     <div ui-view="first" class="slidedown sign">
       <div ui-view="loading" class="slidedown sign">
         <div class='container'>
-          <div class='welcome jumbotron text-center'>
-            <h1>FEED THE HUNGER</h1>
-            <a class='btn btn-primary btn-lg' ui-sref="home.loading">Single Player</a>
-            <a class='btn btn-primary btn-lg' ng-click='social()' ui-sref="home.loading">Multiplayer</a>
+          <div ng-init='initialize()' class='welcome jumbotron text-center'>
+            <h1 class='headline'>FEED THE HUNGER</h1>
+            <div ng-if='!latLngString'>
+              <p class='flash'>Acquiring your position...</p>
+            </div>
+            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ui-sref="home.loading">Single Player</a>
+            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ng-click='social()' ui-sref="home.loading">Multiplayer</a>
           </div>
         </div>
       </div>

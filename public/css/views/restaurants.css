@@ -120,6 +120,18 @@ ul.food li {
  ++++++++ Page Transitions ++++++++
 */
 
+.headline {
+  -webkit-animation: bounceIn 1.5s ease;
+}
+
+.flash {
+  -webkit-animation: flash 5s;
+}
+
+.fadeIn {
+  -webkit-animation: fadeIn 2s cubic-bezier(0.8, 0.0, 1.0, 1.0);
+}
+
 /* Slide down */
 .slidedown {
     position: absolute;

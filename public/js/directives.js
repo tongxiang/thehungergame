@@ -7,7 +7,6 @@ var hungergame=angular.module('hungergame.restaurants');
 // http://docs.angularjs.org/guide/directive
 
 // Moved controller to restaurants controller
-
 hungergame.directive('slider', function ($timeout, $state, nomSelector) {
     return {
         restrict: 'AE',
@@ -92,9 +91,7 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
 
                 // Changes the restaurant
                 scope.currentIndex = prevIndex;
-
                 // Add timeout to remove reverse class
-
             };
 
             scope.resume=function() {
@@ -106,7 +103,6 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
                 }
             }, 1)
             }
-
 
             scope.swipedUp=function($event){
                 scope.end();
