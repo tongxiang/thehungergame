@@ -1,7 +1,16 @@
 <a ui-sref='final' ng-controller='RestaurantsController' class='slidedown'>
-  <div class="jumbotron text-center">
-    <h1>Maximum Nommage!!</h1>
-    <h3>Your Food was CHOSEN in:</h3>
-    <h3>[#.##] seconds</h3>
+  <div ng-switch on='madeSelection' class="jumbotron text-center">
+
+    <div ng-switch-when='true'>
+      <h1>Maximum Nommage!!</h1>
+      <h3>Your Food was CHOSEN in:</h3>
+      <h3>{{round.elapsed()}} seconds</h3>
+    </div>
+
+    <div ng-switch-when='false'>
+      <h1>Nuttin but NOPES!!</h1>
+      <h3>But hey, have a nom on US:</h3>
+    </div>
+
   </div>
 </a>
