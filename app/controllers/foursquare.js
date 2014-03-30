@@ -54,6 +54,7 @@ var foursquareExplore = function(lat, lng){
                     'formattedPhoneNumber': venue.venue.contact.formattedPhone,
                     'unformattedPhoneNumber': venue.venue.contact.phone,
                     'url': venue.venue.url,
+                    'userVotes': '',
                     'photoUrl': ''
                 })
             }
