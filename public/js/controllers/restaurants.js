@@ -27,6 +27,8 @@ angular.module('hungergame.restaurants')
     $scope.winner = nomSelector.getNom();
 
     // Ends user round on a spacebar keypress or a phone shake
+
+
     $scope.shakeNbake=function() {
       window.addEventListener("keypress", checkKeyPressed, false);
 
@@ -46,6 +48,14 @@ angular.module('hungergame.restaurants')
         // }
       }
     }
+
+    $scope.$watch('restaurants',function(){
+      if ($scope.restaurants) {
+        if ($scope.restaurants.length === 0) {
+          $scope.$broadcast('timer-stop');
+        }
+      }
+    });
 
     $scope.$on('timer-stopped', function (event, data){
         console.log('Timer Stopped - data = ', data);
