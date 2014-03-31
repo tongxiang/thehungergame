@@ -1,13 +1,14 @@
 'use strict'
 
 angular.module('hungergame.restaurants')
-  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', 'nomSelector', 'usSpinnerService', 'Rooms', '$state', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http, nomSelector, usSpinnerService, Rooms, $state) {
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', 'nomSelector', 'usSpinnerService', 'Rooms', '$state', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http, nomSelector, usSpinnerService, Rooms, $state, $timeout) {
 
   $scope.global = Global;
   $scope.venuesLoaded = false;
   $scope.multiPlayerData = {};
   $scope.newRoomObject = {};
   $scope.userObject = {};
+  $scope.userAddedToFirebase = false;
 //OMARI'S NEW CODE
   $scope.multiplayer = false;
   $scope.social = function() {
@@ -71,7 +72,7 @@ angular.module('hungergame.restaurants')
 
   var withinTimeInterval = function(time1, time2){
     var difference = Math.abs(time2-time1)
-    if (difference/1000 < 60){
+    if (difference/1000 < 6000){
       return true 
     }
     return false
@@ -104,9 +105,6 @@ angular.module('hungergame.restaurants')
               console.log('rest controller', data.length);
               // $scope.restaurants = data;
               $scope.venuesLoaded = true;
-                // Geocodes.create($scope.coords).then(function(ref){
-                //     console.log('you have pushed in your current latlng', ref)
-                // });
               return data;
           }).
           error(function(data, status, headers, config){
@@ -116,104 +114,80 @@ angular.module('hungergame.restaurants')
 
   $scope.initialize = function() {
     var loginDateTime = new Date;
-    $scope.visitTime = loginDateTime.getTime(); //a string of milliseconds 
-    geolocation.getLocation().then(function(data) {
-      $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude}; //REVISIT THIS, CONSIDERING GEOLOCATION FUNCTION MODULARIZED ABOVE 
-      $scope.latLngString = data.coords.latitude + ',' + data.coords.longitude;
-      //GET firebase rooms object - ?
-      $scope.existingRooms = Rooms.all
-      console.log('rooms.all is logged here', Rooms.all)
-      console.log('specifically identifying child', Rooms.all.$child('testRoom'))
-      console.log($scope.existingRooms);
-      //callback not required here. We don't need to update existing rooms, since data is being synchronized with firebase. 
+    $scope.visitTime = loginDateTime.getTime(); 
+    geolocation.getLocation().then(function(location) {
+      $scope.coords = {'lat':location.coords.latitude, 'long':location.coords.longitude}; 
+      $scope.latLngString = location.coords.latitude + ',' + location.coords.longitude;
+      $scope.existingRooms = Rooms.all;
+      console.log('here is an immediately run console.log of $scope.existingRooms', $scope.existingRooms)
 
-      //check $scope.visitTime against each room's [0] user with a function withinTimeInterval
+      var consolingMyself = function(){
+        console.log('here is a fucked up array of all the object keys:', Object.keys($scope.existingRooms))
+      }
 
-      if (Object.keys($scope.existingRooms).length > 0){ //this isn't working because the object, by default, has helper functions attached within it. This also might not be working because it doesn't have 
-        console.log('Rooms object length is', Object.keys($scope.existingRooms).length)
-        Object.keys($scope.existingRooms).forEach(function(key){
+      // setInterval(consolingMyself, 2000);
+
+      console.log('Rooms object length is', Object.keys($scope.existingRooms).length)
+      console.log($scope.userAddedToFirebase)
+      while (!($scope.userAddedToFirebase)){
+        $.each($scope.existingRooms, function(key, value){
+          console.log('within foreach loop, key:', key)
           if (key.charAt(0) != '$'){
-            console.log('this is the first key without $', key);
+            console.log('this is a key without $', key);
             console.log('this is the object corresponding to that key', $scope.existingRooms[key])
-            if (withinTimeInterval($scope.existingRooms[key].initiator.visitTime, $scope.visitTime)){
-              if (getDistanceFromLatLonInKm($scope.existingRooms[key][0].latLng.lat, $scope.existingRooms[key][0].latLng.long, $scope.coords.lat, $scope.coords.long) < 0.1){
-                //assign the initiator's data to our own 
-                $scope.multiPlayerData = $scope.userObject.multiPlayerData = $scope.existingRooms[key][0].data;
-                //create a new userObject on the scope
+            var timeBoolean = (withinTimeInterval($scope.existingRooms[key].initiator.visitTime, $scope.visitTime))
+            if (timeBoolean && (getDistanceFromLatLonInKm($scope.existingRooms[key].initiator.latLng.lat, $scope.existingRooms[key].initiator.latLng.long, $scope.coords.lat, $scope.coords.long) < 0.1)){
 
-                var random = $scope.multiPlayerData[Math.floor(Math.random() * ($scope.multiPlayerData.length))];
-                console.log('Rando frm ctrl: ', random)
-                nomSelector.setRandom(random);
+              $scope.userAddedToFirebase = true
+              console.log($scope.existingRooms[key].initiator, 'is within 100 meters!')
+              //assign the initiator's data to our own
+              $scope.multiPlayerData = $scope.existingRooms[key].initiator.multiPlayerData;
+              
+              var random = $scope.multiPlayerData[Math.floor(Math.random() * ($scope.multiPlayerData.length))];
+              console.log('Rando frm ctrl if we pull it data from an initiator: ', random)
+              nomSelector.setRandom(random);
 
-                $scope.userObject = {
-                  latLng: $scope.coord,
-                  multiPlayerData: $scope.multiPlayerData,
-                  visitTime: $scope.visitTime
-                }
-                Rooms.findRoomAndAddUser(key, $scope.userObject).then(function(ref){
-                  console.log('you added yourself as a new user to an existing room, your firebase ref:', ref)
-                  $scope.venuesLoaded = true;
-                })
-                // break; //does this break us out of the outer-most if statement? Is this necessary? Do I need to include other breaks for the other if statements?
+              //create a new userObject on the scope
+              $scope.userObject = {
+                latLng: $scope.coords,
+                // multiPlayerData: $scope.multiPlayerData,
+                visitTime: $scope.visitTime
               }
+              Rooms.findRoomAndAddUser(key, $scope.userObject).then(function(ref){
+                console.log('you added yourself as a new user to an existing room, your firebase ref:', ref)
+                $scope.venuesLoaded = true;
+              })
             }
-          }
+          }//end of if (key.charAt(0) != '$') statement 
         })
-        //Condition if all withinTimeInterval tests fail for each of the rooms' initiators--we're creating a new room and populating it with the initiator user
+      }
+        // $scope.userAddedToFirebase = true
+        // $http({method: 'GET', url: '/venues', params: {latLng: $scope.latLngString}}).
+        //   success(function(data, status, headers, config){
+        //     console.log('rest controller', data.length);
+        //     $scope.multiPlayerData = data;
+        //     $scope.venuesLoaded = true;
 
-        $http({method: 'GET', url: '/venues', params: {latLng: $scope.latLngString}}).
-          success(function(data, status, headers, config){
-            console.log('rest controller', data.length);
-            $scope.multiPlayerData = data;
-            $scope.venuesLoaded = true;
+        //     var random = $scope.multiPlayerData[Math.floor(Math.random() * ($scope.multiPlayerData.length))];
+        //     console.log('Rando from ctrl if withinTimeInterval tests fail: ', random)
+        //     nomSelector.setRandom(random);
 
-            var random = $scope.multiPlayerData[Math.floor(Math.random() * ($scope.multiPlayerData.length))];
-            console.log('Rando from ctrl: ', random)
-            nomSelector.setRandom(random);
+        //     $scope.userObject = {
+        //       latLng: $scope.coords, 
+        //       multiPlayerData: data,
+        //       visitTime: $scope.visitTime
+        //     }
 
-            $scope.userObject = {
-              latLng: $scope.coords, 
-              multiPlayerData: data,
-              visitTime: $scope.visitTime
-            }
-
-            $scope.newRoomObject = {'initiator': $scope.userObject}
-            Rooms.create($scope.newRoomObject).then(function(ref){
-              console.log('you initiated a new room, the firebase ref for that room:', ref);
-              $scope.venuesLoaded = true;
-            })
-          }).
-          error(function(data, status, headers, config){
-              console.log(status);
-          });
-      }//first if statement closes 
-      //if no rooms exist then create a new room, populate it with the initiator 
-      $http({method: 'GET', url: '/venues', params: {latLng: $scope.latLngString}}).
-        success(function(data, status, headers, config){
-          console.log('rest controller', data.length);
-          $scope.multiPlayerData = data;
-          $scope.venuesLoaded = true;
-
-          var random = $scope.multiPlayerData[Math.floor(Math.random() * ($scope.multiPlayerData.length))];
-          console.log('Rando from ctrl: ', random)
-          nomSelector.setRandom(random);
-
-          $scope.userObject = {
-            latLng: $scope.coords, 
-            multiPlayerData: data,
-            visitTime: $scope.visitTime
-          }
-
-          $scope.newRoomObject = {'initiator': $scope.userObject}
-          Rooms.create($scope.newRoomObject).then(function(ref){
-            console.log('you initiated a new room, the firebase ref for that room:', ref);
-            $scope.venuesLoaded = true;
-          })
-        }).
-        error(function(data, status, headers, config){
-            console.log(status);
-        });
-
+        //     $scope.newRoomObject = {'initiator': $scope.userObject}
+        //     Rooms.create($scope.newRoomObject).then(function(ref){
+        //       console.log('All withinTimeInterval tests have failed! You initiated a new room and its ref is:', ref, 'your new rooms id:', ref.path.m[1]);
+        //       $scope.venuesLoaded = true;
+        //     })
+        //   }).
+        //   error(function(data, status, headers, config){
+        //       console.log(status);
+        //   });
+    
     });//geolocation query closes
   } //initialize function closes
 }]);

@@ -17,15 +17,22 @@ angular.module('hungergame.restaurants').factory('Rooms', ['$firebase', 'FIREBAS
                 return rooms.$remove(roomId); //$remove takes a single optional argument, a key. Removes child referenced by that key. 
             },
             findRoomAndAddUser: function(roomId, newUserObject){
-                return rooms.roomId.$add(newUserObject)
+                return rooms.$child(roomId).$add(newUserObject)
             }
         };
         return Rooms;
     }
 ]);
 
-// findAndReplace: function(roomId, roomObject){
+//YES!!!! BROWSERIFY WORKS!!!! Now have Q, Async, and underscore libraries 
 
+//ROOMS.ALL IS HAPPENING ASYNCHRONOUSLY, SO IT ISN"T ABLE TO LOAD IN TIME BEFORE WE REQUEST ITS KEYS 
+
+//The rooms.all function on this service returns an object that's processable by Angular, in the sense that an ng-repeat over the elements in the object only repeats over the actual rooms, not over the $ functions.
+
+//but if I iterate over the object using something like a forEach function, none of the actual rooms get passed in. 
+
+// findAndReplace: function(roomId, roomObject){
 // }
 
 //Later, I make each rooms object a little bit more nuanced--I can attach a global data property, independent of the individual users, to each room and sync the data that way. That way, we can contain the votes properties there. 

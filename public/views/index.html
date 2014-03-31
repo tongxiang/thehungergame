@@ -5,14 +5,16 @@
       <div ui-view="loading" class="slidedown sign">
         <div class='container'>
           <div ng-init='initialize()' class='welcome jumbotron text-center'>
-            <h1>FEED THE HUNGER</h1>
+<!--             <h1>FEED THE HUNGER</h1>
             <a class='btn btn-primary btn-lg' ui-sref="home.loading">Single Player</a>
-            <a class='btn btn-primary btn-lg' ng-click='social()' ui-sref="home.loading">Multiplayer</a>
+            <a class='btn btn-primary btn-lg' ng-click='social()' ui-sref="home.loading">Multiplayer</a> -->
           </div>
         </div>
       </div>
     </div>
   </div>
+
+<div data-ng-repeat="room in existingRooms">{{room}}</div>
 
 
   <footer>
@@ -24,3 +26,5 @@
 
 <!--   <img src="{{restaurant.venue.photos.groups[0].items[0].prefix+'500x500'+restaurant.venue.photos.groups[0].items[0].suffix}}"></img>s
  -->
+
+
