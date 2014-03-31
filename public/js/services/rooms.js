@@ -20,14 +20,19 @@ angular.module('hungergame.restaurants').factory('Rooms', ['$firebase', 'FIREBAS
                 return rooms.$child(roomId).$child('initiator').$update({'roomId': roomId})
             },
 
-            //this does not work
-            addEntrant: function(roomId, modifyFunction) {
+            modifyEntrants: function(roomId, modifyFunction) {
                 return rooms.$child(roomId).$child('initiator').$child('entrants').$transaction(modifyFunction);
+            },
+
+            closeRoom: function(roomId){
+                return rooms.$child(roomId).$child('initiator').$update({'visitTime': 0});
             }
         };
         return Rooms;
     }
 ]);
+
+//$scope.multiplayer is by default false. Clicking multiplayer sets it true. 
 
 //YES!!!! BROWSERIFY WORKS!!!! Now have Q, Async, and underscore libraries 
 

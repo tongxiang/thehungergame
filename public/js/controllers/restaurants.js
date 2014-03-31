@@ -9,9 +9,9 @@ angular.module('hungergame.restaurants')
   $scope.userObject = {};
   $scope.userAddedToFirebase = false;
 //OMARI'S NEW CODE
-  $scope.multiplayer = false;
-  $scope.social = function() {
-    $scope.multiplayer = true;
+  $scope.singlePlayer = false;
+  $scope.solo = function() {
+    $scope.singlePlayer = true;
   }
   $scope.round = {
     //make a duration timer that is dynamic with the timer directive
@@ -54,6 +54,22 @@ angular.module('hungergame.restaurants')
       }
     }
   });
+
+  $scope.$watch('singlePlayer', function(){
+    if ($scope.singlePlayer){
+      Rooms.modifyEntrants(availableRoom.roomId, function(entrantsCount){
+        return entrantsCount - 1;
+      }).then(function(snapshot){
+        if (!snapshot){
+          console.log('entrants subtract function failed');
+        } else {
+          console.log('entrants snapshot', snapshot)
+        }
+      }, function(err){
+        console.log('entrants transaction failed: ', err)
+      })
+    }
+  })
 
   $scope.$on('timer-stopped', function (event, data){
 
@@ -112,6 +128,12 @@ angular.module('hungergame.restaurants')
     return d;
   }
 
+  function entrantsChecker(number){
+    if (number === 0){
+      return false;
+    }
+  }
+
   function checkTimeLatLng (roomArray){
     console.log('checkTimeLatLng running')
 
@@ -121,8 +143,8 @@ angular.module('hungergame.restaurants')
       // console.log('room Value: ', roomArray[room])
       // console.log('room initiator: ', roomArray[room]['initiator'])
       // console.log('room initiator: ', roomArray[room]['initiator']['visitTime'])
-
       var initiator = roomArray[room]['initiator']
+      var entrants = initiator['entrants']
       var visitTime = initiator['visitTime']
       var latLng = initiator['latLng']
       var lat = latLng['lat'];
@@ -135,10 +157,11 @@ angular.module('hungergame.restaurants')
 
       var timeBoolean = withinTimeInterval(visitTime, $scope.visitTime)
       var distanceCheck = getDistanceFromLatLonInKm(lat, lng, $scope.coords.lat, $scope.coords.long)
+      var entrantsCheck = entrantsChecker(entrants);
 
       console.log('Result of timeBoolean: ', timeBoolean);
       console.log('Result of distanceCheck: ', distanceCheck);
-      if (timeBoolean && (distanceCheck < 0.1)){
+      if (timeBoolean && (distanceCheck < 0.1) && entrantsCheck){
         // $scope.multiPlayerData = multiPlayerData;
         //create new user, but will voting work if we're no longer attached to the initiator via firebase? Do we have an indicator of which function we're on? Can we save the roomId? <<< critical 
         var roomInitiator = initiator
@@ -154,6 +177,8 @@ angular.module('hungergame.restaurants')
   //in using findNearBy, notice that both the geolocate and the findNearby functions are asynchronous requests. So we'll have to place findNearby in the geolocate callback or we'll have to use promises to run them.
 
     // OW Follow Up Note ^^: Neither promises nor chaining are necessary.  By setting the results of the geolocate function to a value on the scope, you can then use that value later on in a findNearBy query by also attaching findNearBy to the scope.  This also allows you to control the view on which the function runs
+
+
 
   $scope.initialize = function() {
     var loginDateTime = new Date;
@@ -197,6 +222,8 @@ angular.module('hungergame.restaurants')
                       console.log('snapshot id from child added', snapshot.snapshot.name)
                     })
 
+                    //if singleplayer button is clicked, then we subtract 1 from the number of Entrants in the room, and we make sure that we break the tie to the voting function with firebase. (That singleplayer doesn't run the addVote function)
+
                 }).
                 error(function(data, status, headers, config){
                     console.log(status);
@@ -208,7 +235,7 @@ angular.module('hungergame.restaurants')
           console.log('$scope.restaurants will be set for multiplayer entrants')
           console.log('this is the available room!: ', availableRoom);
           $scope.restaurants = availableRoom.multiPlayerData
-          Rooms.addEntrant(availableRoom.roomId, function(entrantsCount){
+          Rooms.modifyEntrants(availableRoom.roomId, function(entrantsCount){
             return entrantsCount + 1;
           }).then(function(snapshot){
             if (!snapshot){

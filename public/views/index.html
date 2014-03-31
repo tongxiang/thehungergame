@@ -1,16 +1,16 @@
-<section class='main' ng-controller="RestaurantsController">
+<section class='main' ng-controller="RestaurantsController" ng-init='initialize()'>
 
   <div ui-view="transition" class='pop container sign'>
     <div ui-view="first" class="slidedown sign">
       <div ui-view="loading" class="slidedown sign">
         <div class='container'>
-          <div ng-init='initialize()' class='welcome jumbotron text-center'>
+          <div class='welcome jumbotron text-center'>
             <h1 class='headline'>FEED THE HUNGER</h1>
             <div ng-if='!latLngString'>
               <p class='flash'>Acquiring your position...</p>
             </div>
-            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ui-sref="home.loading">Single Player</a>
-            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ng-click='social()' ui-sref="home.loading">Multiplayer</a>
+            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ui-sref="home.loading" ng-click='solo()'>Single Player</a>
+            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ui-sref="home.loading">Multiplayer</a>
           </div>
         </div>
       </div>
