@@ -7,7 +7,6 @@ var hungergame=angular.module('hungergame.restaurants');
 // http://docs.angularjs.org/guide/directive
 
 // Moved controller to restaurants controller
-
 hungergame.directive('slider', function ($timeout, $state, nomSelector) {
     return {
         restrict: 'AE',
@@ -24,6 +23,7 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
             scope.slideshowOn=false;
             scope.nom_count=0;
             scope.nope_count=0;
+            scope.vote_count = scope.nom_count + scope.nom_count;
 
             scope.moreInfoClicks=0;
             scope.playing=true; // Indicates Round
@@ -39,6 +39,7 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
                   scope.slideshowOn=true;
                   $timeout(function() {
                        sliderFunc();
+                       // scope.next();
                   }, 1500)
                 };
               }
@@ -52,6 +53,20 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
                 console.log('running next func')
                 // This is the next restaurant to be displayed's index
                 var nextIndex = (scope.currentIndex<scope.restaurants.length-1) ? scope.currentIndex+1 : 0;
+
+                // ** var next2Index = (scope.currentIndex<scope.restaurants.length-1) ? scope.currentIndex+2 : 1;
+
+                var prevIndex = (scope.currentIndex!==0) ? scope.currentIndex-1:scope.restaurants.length-1;
+
+                // var prev2Index = (scope.currentIndex) ? scope.currentIndex-2:scope.restaurants.length-2;
+                // if (scope.currentIndex===0) {
+                //   var prev2Index = scope.restaurants.length-2;
+                // } else if (scope.currentIndex===1) {
+                //   var prev2Index = scope.restaurants.length-1;
+                // } else {
+                //   var prev2Index = scope.currentIndex-2
+                // }
+
                 if(!$event) {
                   scope.currentIndex = nextIndex;
                 } else {
@@ -61,14 +76,27 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
 
                     // This is the swiped restaurant's siblings <li>
                     var lis = $event.target.parentNode.parentNode.children;
+                    console.log('this dat first li: ', lis[0])
 
-                    // This removes the class for the appropriate animation
-                    lis[nextIndex].classList.remove('reverse');
-                    ele.classList.remove('reverse');
+                    console.log('BEFORE==> ');
+                    console.log('event ele: ', ele);
+                    console.log('lis curr index: ', lis[scope.currentIndex])
+                    console.log('next ele: ', lis[nextIndex])
+
+                    // Removes reverse class from list item (note: +1 is to account for the icon divs which are part of the <ul>)
+                    lis[scope.currentIndex+1].classList.remove('reverse');
+                    lis[nextIndex+1].classList.remove('reverse');
+                    // ** lis[next2Index].classList.remove('reverse');
 
                     // Changes the restaurant
                     console.log('next index: ', nextIndex);
-                    scope.currentIndex = nextIndex;
+                    $timeout(function() {
+                      scope.currentIndex = nextIndex;
+                      // Adds reverse to swiped element post animation to anticipate a 'previous' swipe motion
+                      $timeout(function() {
+                        ele.classList.add('reverse');
+                      }, 350)
+                    }, 50)
                     console.log('scope.current: ', scope.currentIndex);
                 }
             };
@@ -76,25 +104,47 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
             scope.prev=function($event){
                 scope.end();
                 // This is the prev restaurant to be displayed's index
-                var prevIndex = (scope.currentIndex) ? scope.currentIndex-1:scope.restaurants.length-1;
+                // if (scope.currentIndex===0) {
+                //   var prev2Index = scope.restaurants.length-2;
+                // } else if (scope.currentIndex===1) {
+                //   var prev2Index = scope.restaurants.length-1;
+                // } else {
+                //   var prev2Index = scope.currentIndex-2
+                // }
+                var prevIndex = (scope.currentIndex!==0) ? scope.currentIndex-1:scope.restaurants.length-1;
+
+                var nextIndex = (scope.currentIndex<scope.restaurants.length-1) ? scope.currentIndex+1 : 0;
+                // var next2Index = (scope.currentIndex<scope.restaurants.length-1) ? scope.currentIndex+2 : 1;
 
                 // This is the swiped restaurant <li>
                 var ele = $event.target.parentNode;
-                console.log('prev ele: ', ele);
 
                   // This is the swiped restaurant's siblings <li>
                 var lis = $event.target.parentNode.parentNode.children;
-                console.log("lis: ",lis);
 
-                // This removes the class for the appropriate animation
-                lis[prevIndex].classList.add('reverse');
+                // Adds the class for the appropriate reverse animation
                 ele.classList.add('reverse');
+                // lis[scope.currentIndex+1].classList.add('reverse');
+
+                // Adds reverse class to list item (note: +1 is to account for the icon divs which are part of the <ul>)
+                lis[prevIndex+1].classList.add('reverse');
+
+                // console.log('ele: ', ele)
+                // console.log('VERSUS')
+                // console.log('currIndex: ', lis[scope.currentIndex])
+                // console.log('VERSUS')
+                // console.log('currIndex+1: ', lis[scope.currentIndex+1])
+                // console.log('VERSUS')
+                // console.log('prevIndex+1: ', lis[prevIndex+1])
 
                 // Changes the restaurant
-                scope.currentIndex = prevIndex;
-
-                // Add timeout to remove reverse class
-
+                $timeout(function() {
+                  scope.currentIndex = prevIndex;
+                  // Removes reverse from swiped element post animation
+                  $timeout(function() {
+                    ele.classList.remove('reverse');
+                  }, 350)
+                }, 50)
             };
 
             scope.resume=function() {
@@ -107,12 +157,21 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
             }, 1)
             }
 
-
             scope.swipedUp=function($event){
                 scope.end();
                 var ele = $event.target;
+                var lis = $event.target.parentNode.parentNode.children;
                 console.log('this is the ele: ', ele);
+                // lis.forEach(function(li){
+                //   li.classList.remove('reverse')
+                // })
+
+                for (var i=0; i<lis.length; i++) {
+                  lis[i].classList.remove('reverse')
+                }
+
                 ele.classList.add('swipedup');
+
 
                 // +++ Incorporate timer here +++
                 // !!!! Check where this is going and later remove !!!!
@@ -144,8 +203,19 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
             scope.swipedDown=function($event){
                 scope.end();
                 var ele = $event.target;
+                var lis = $event.target.parentNode.parentNode.children;
                 console.log('this is the ele: ', ele);
+                // lis.forEach(function(li) {
+                //   li.classList.remove('reverse');
+                // })
+
                 ele.classList.add('swipeddown');
+
+                for (var i=0; i<lis.length; i++) {
+                  lis[i].classList.remove('reverse')
+                }
+
+
 
                 // Removes the list item
                 $timeout (function() {
@@ -163,6 +233,15 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
 
             // Toggles card flip
             scope.moreInfo=function($event){
+              var ele = $event.target;
+              var lis = $event.target.parentNode.parentNode.children;
+              console.log('this is the ele: ', ele);
+              console.log('dees dem lis: ', lis[0]);
+
+              for (var i=0; i<lis.length; i++) {
+                lis[i].classList.remove('reverse')
+              }
+
               scope.moreInfoClicks+=1
               // End slideshow if playing
               scope.restaurants[scope.currentIndex].info=!scope.restaurants[scope.currentIndex].info;
@@ -170,9 +249,13 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
               scope.end();
 
               if(scope.moreInfoClicks%2==0) {
-                console.log('moreInfo should restart slideshow')
+                console.log('moreInfo should restart slideshow');
+                // lis.forEach(function(li){
+                //   li.classList.remove('reverse');
+                // })
+
                 $timeout (function() {
-                  scope.slideshowOn=false
+                  scope.slideshowOn=false;
                 }, 200);
               }
             };
@@ -187,12 +270,27 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
                 scope.restaurants[scope.currentIndex].visible=true;
             });
 
+            scope.$watch('restaurantsCount',function(){
+              if (scope.restaurantsCount == 1) {
+                console.log('one restaurant left')
+                scope.restaurants.forEach(function(restaurant){
+                    restaurant.visible=true;
+                });
+              }
+              if (scope.restaurantsCount == 0) {
+                // Breaks the recursive loop formed the sliderFunc
+                sliderFunc = scope.end;
+                console.log('NO MO NOMS')
+                $scope.$broadcast('timer-stop');
+              }
+            });
+
             // Watch the nom count to set a ceiling on the number a moms a user can select
             // ** UPDATED TO ACCOUNT FOR SHAKE FUNCITONALITY
             // scope.$watch('nom_count',function(){
             //         if (scope.nom_count > 0) {
             //             console.log('nom_count is: ', scope.nom_count);
-            //             scope.round.madeSelection = true;
+            //             // scope.round.madeSelection = true;
             //             // if(scope.restaurants[scope.currentIndex]) {
             //             //   scope.restaurants[scope.currentIndex].visible=false;
             //             // }
@@ -227,6 +325,7 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
 
                 // Sets restaurant selection
                 var selection = scope.restaurants.splice(selection_no,1)[0];
+                scope.restaurantsCount-=1
                 return selection;
             };
 

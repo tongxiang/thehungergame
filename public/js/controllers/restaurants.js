@@ -1,11 +1,10 @@
 'use strict'
 
 angular.module('hungergame.restaurants')
-  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', 'nomSelector', 'usSpinnerService', 'Rooms', '$state', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http, nomSelector, usSpinnerService, Rooms, $state, $timeout) {
+  .controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Global', 'Restaurants', 'geolocation', '$http', 'nomSelector', 'usSpinnerService', 'Rooms', '$state', function ($scope, $stateParams, $location, Global, Restaurants, geolocation, $http, nomSelector, usSpinnerService, Rooms, $state) {
 
   $scope.global = Global;
   $scope.venuesLoaded = false;
-  $scope.multiPlayerData = {};
   $scope.newRoomObject = {};
   $scope.userObject = {};
   $scope.userAddedToFirebase = false;
@@ -37,6 +36,7 @@ angular.module('hungergame.restaurants')
     }
 
     window.addEventListener('shake', shakeEventDidOccur, false);
+    // Ends user round on a spacebar keypress or a phone shake
 
     // Define a custom method to fire when shake occurs.
     function shakeEventDidOccur () {
@@ -47,7 +47,23 @@ angular.module('hungergame.restaurants')
     }
   }
 
+  $scope.$watch('restaurants',function(){
+    if ($scope.restaurants) {
+      if ($scope.restaurants.length === 0) {
+        $scope.$broadcast('timer-stop');
+      }
+    }
+  });
+
   $scope.$on('timer-stopped', function (event, data){
+
+      //
+      // if($scope.multiplayer) {
+      //   // send random vote to modify scope.multiplayer data
+
+
+      // }
+
       console.log('Timer Stopped - data = ', data);
       $scope.nom_count = nomSelector.nomCount()
       console.log('Nom count from service: ', $scope.nom_count)
@@ -126,31 +142,18 @@ angular.module('hungergame.restaurants')
         // $scope.multiPlayerData = multiPlayerData;
         //create new user, but will voting work if we're no longer attached to the initiator via firebase? Do we have an indicator of which function we're on? Can we save the roomId? <<< critical 
         var roomInitiator = initiator
+        var roomKey = room 
+        roomInitiator['roomId'] = roomKey
         break;
         //returns true or false, true if the user has attaches 
       }
     }
-
-    return roomInitiator
+    return roomInitiator;
   }
 
   //in using findNearBy, notice that both the geolocate and the findNearby functions are asynchronous requests. So we'll have to place findNearby in the geolocate callback or we'll have to use promises to run them.
 
     // OW Follow Up Note ^^: Neither promises nor chaining are necessary.  By setting the results of the geolocate function to a value on the scope, you can then use that value later on in a findNearBy query by also attaching findNearBy to the scope.  This also allows you to control the view on which the function runs
-
-  var findNearBy = function(coordString){
-      $http({method: 'GET', url: '/venues',
-          params: {latLng: coordString}}).
-          success(function(data, status, headers, config){
-              console.log('rest controller', data.length);
-              $scope.multiPlayerData = data;
-              $scope.venuesLoaded = true;
-              // return data;
-          }).
-          error(function(data, status, headers, config){
-              console.log(status);
-          });
-  };
 
   $scope.initialize = function() {
     var loginDateTime = new Date;
@@ -168,25 +171,56 @@ angular.module('hungergame.restaurants')
         var availableRoom = checkTimeLatLng(val)
         if (!availableRoom) {
           console.log('a room will be created')
-          var newRoom = {
-            initiator: {
-              latLng: $scope.coords,
-              visitTime: $scope.visitTime
-            }
-          }
-          Rooms.create(newRoom);
+            $http({method: 'GET', url: '/venues',
+                params: {latLng: $scope.latLngString}}).
+                success(function(data, status, headers, config){
+                  console.log('rest controller', data.length);
+                    $scope.restaurants = data;
+                    $scope.venuesLoaded = true;
+                    var newRoom = {
+                      initiator: {
+                        latLng: $scope.coords,
+                        visitTime: $scope.visitTime,
+                        entrants: 1,
+                        multiPlayerData: data, 
+                        roomId: ''
+                      }
+                    }
+
+                    Rooms.create(newRoom);
+
+                    Rooms.all.$on('child_added', function(snapshot){
+                      $scope.roomId = snapshot.snapshot.name;
+                      Rooms.addRoomIdToInitiator($scope.roomId).then(function(ref){
+                        console.log('successfully changed initiator', ref)
+                      });
+                      console.log('snapshot id from child added', snapshot.snapshot.name)
+                    })
+
+                }).
+                error(function(data, status, headers, config){
+                    console.log(status);
+                });
           //if a room needs to be created, set a variable to the scope, $scope.runFourSquareQuery (default value is false) - have a function on the next page with just ng-init > takes true or false, if true does foursquare query and adds the results to firebase. 
           //
           // Foursquare query
         } else {
           console.log('$scope.restaurants will be set for multiplayer entrants')
           console.log('this is the available room!: ', availableRoom);
-
-          // $scope.restaurants = initiator's multiplayer data
+          $scope.restaurants = availableRoom.multiPlayerData
+          Rooms.addEntrant(availableRoom.roomId, function(entrantsCount){
+            return entrantsCount + 1;
+          }).then(function(snapshot){
+            if (!snapshot){
+              console.log('entrants add function failed');
+            } else {
+              console.log('entrants snapshot', snapshot)
+            }
+          }, function(err){
+            console.log('entrants transaction failed: ', err)
+          })
         }
       })
-    
     });//geolocation query closes
-
   } //initialize function closes
-}]);
+}]); //closing controller 

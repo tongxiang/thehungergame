@@ -5,12 +5,12 @@
       <div ui-view="loading" class="slidedown sign">
         <div class='container'>
           <div ng-init='initialize()' class='welcome jumbotron text-center'>
-            <div ng-init='filterRooms(existingRooms)'></div>
-            <div>This is the test: {{test}}</div>
-            <div>This is the test2: {{test2.$child('0').$child('distance')}}</div>
-<!--             <h1>FEED THE HUNGER</h1>
-            <a class='btn btn-primary btn-lg' ui-sref="home.loading">Single Player</a>
-            <a class='btn btn-primary btn-lg' ng-click='social()' ui-sref="home.loading">Multiplayer</a> -->
+            <h1 class='headline'>FEED THE HUNGER</h1>
+            <div ng-if='!latLngString'>
+              <p class='flash'>Acquiring your position...</p>
+            </div>
+            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ui-sref="home.loading">Single Player</a>
+            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ng-click='social()' ui-sref="home.loading">Multiplayer</a>
           </div>
         </div>
       </div>

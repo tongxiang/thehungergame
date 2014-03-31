@@ -16,13 +16,13 @@ angular.module('hungergame.restaurants').factory('Rooms', ['$firebase', 'FIREBAS
             delete: function(roomId){
                 return rooms.$remove(roomId); //$remove takes a single optional argument, a key. Removes child referenced by that key. 
             },
-            findRoomAndAddUser: function(roomId, newUserObject){
-                return rooms.$child(roomId).$add(newUserObject)
+            addRoomIdToInitiator: function(roomId){
+                return rooms.$child(roomId).$child('initiator').$update({'roomId': roomId})
             },
 
             //this does not work
-            findDistance: function(roomId) {
-                return rooms.$child(roomId).$child('multiPlayerData');
+            addEntrant: function(roomId, modifyFunction) {
+                return rooms.$child(roomId).$child('initiator').$child('entrants').$transaction(modifyFunction);
             }
         };
         return Rooms;
