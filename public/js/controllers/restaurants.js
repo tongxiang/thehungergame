@@ -72,7 +72,7 @@ angular.module('hungergame.restaurants')
 
   var withinTimeInterval = function(time1, time2){
     var difference = Math.abs(time2-time1)
-    if (difference/1000 < 6000){
+    if (difference/1000 < 6000){ //we can change this later
       return true 
     }
     return false
@@ -96,16 +96,56 @@ angular.module('hungergame.restaurants')
     return d;
   }
 
-  //in using findNearBy, notice that both the geolocate and the findNearby functions are asynchronous requests. So we'll have to place findNearby in the geolocate callback or we'll have to use promises to run them. 
+  function checkTimeLatLng (roomArray){
+    console.log('checkTimeLatLng running')
+
+    for (var room in roomArray) {
+      // console.log('this the room: ', room)
+
+      // console.log('room Value: ', roomArray[room])
+      // console.log('room initiator: ', roomArray[room]['initiator'])
+      // console.log('room initiator: ', roomArray[room]['initiator']['visitTime'])
+
+      var initiator = roomArray[room]['initiator']
+      var visitTime = initiator['visitTime']
+      var latLng = initiator['latLng']
+      var lat = latLng['lat'];
+      var lng = latLng['long'];
+      var multiPlayerData = initiator['multiPlayerData']
+
+
+      // console.log('vs.')
+      // console.log('scope visitTime: ', $scope.visitTime)
+
+      var timeBoolean = withinTimeInterval(visitTime, $scope.visitTime)
+      var distanceCheck = getDistanceFromLatLonInKm(lat, lng, $scope.coords.lat, $scope.coords.long)
+
+      console.log('Result of timeBoolean: ', timeBoolean);
+      console.log('Result of distanceCheck: ', distanceCheck);
+      if (timeBoolean && (distanceCheck < 0.1)){
+        // $scope.multiPlayerData = multiPlayerData;
+        //create new user, but will voting work if we're no longer attached to the initiator via firebase? Do we have an indicator of which function we're on? Can we save the roomId? <<< critical 
+        var roomInitiator = initiator
+        break;
+        //returns true or false, true if the user has attaches 
+      }
+    }
+
+    return roomInitiator
+  }
+
+  //in using findNearBy, notice that both the geolocate and the findNearby functions are asynchronous requests. So we'll have to place findNearby in the geolocate callback or we'll have to use promises to run them.
+
+    // OW Follow Up Note ^^: Neither promises nor chaining are necessary.  By setting the results of the geolocate function to a value on the scope, you can then use that value later on in a findNearBy query by also attaching findNearBy to the scope.  This also allows you to control the view on which the function runs
 
   var findNearBy = function(coordString){
       $http({method: 'GET', url: '/venues',
           params: {latLng: coordString}}).
           success(function(data, status, headers, config){
               console.log('rest controller', data.length);
-              // $scope.restaurants = data;
+              $scope.multiPlayerData = data;
               $scope.venuesLoaded = true;
-              return data;
+              // return data;
           }).
           error(function(data, status, headers, config){
               console.log(status);
@@ -121,39 +161,32 @@ angular.module('hungergame.restaurants')
       $scope.existingRooms = Rooms.all;
       console.log('here is an immediately run console.log of $scope.existingRooms', $scope.existingRooms)
 
-      var consolingMyself = function(){
-        console.log('here is a fucked up array of all the object keys:', Object.keys($scope.existingRooms))
-      }
-      // setInterval(consolingMyself, 2000);
+      // THIS IS HOW IT's DONE!! See Anant N.: https://groups.google.com/forum/#!topic/firebase-angular/kbZnPIgeMco
 
-      //filter room properties into $ or - 
-      var filterRooms = function(){
-        var roomArray = [];
-        $.each($scope.existingRooms, function(key, value){
-          console.log('within foreach loop, key:', key)
-          if (key.charAt(0) != '$'){
-            roomArray.push($scope.existingRooms[key])
+      $scope.existingRooms.$on('loaded', function(val) {
+        console.log('all rooms: ', val)
+        var availableRoom = checkTimeLatLng(val)
+        if (!availableRoom) {
+          console.log('a room will be created')
+          var newRoom = {
+            initiator: {
+              latLng: $scope.coords,
+              visitTime: $scope.visitTime
             }
-          })
-        return roomArray
-      }
-
-      var checkTimeLatLng = function(roomArray){
-        roomArray.forEach(function(room){
-          var timeBoolean = (withinTimeInterval(room.initiator.visitTime, $scope.visitTime))
-          if (timeBoolean && (getDistanceFromLatLonInKm(room.initiator.latLng.lat, room.initiator.latLng.long, $scope.coords.lat, $scope.coords.long) < 0.1)){
-            $scope.multiPlayerData = room.initiator.multiPlayerData;
-            $scope.initiator = 
-            //create new user, but will voting work if we're no longer attached to the initiator via firebase? Do we have an indicator of which function we're on? Can we save the roomId? <<< critical 
-
-            //returns true or false, true if the user has attaches 
           }
-        })
-      }
+          Rooms.create(newRoom);
+          //if a room needs to be created, set a variable to the scope, $scope.runFourSquareQuery (default value is false) - have a function on the next page with just ng-init > takes true or false, if true does foursquare query and adds the results to firebase. 
+          //
+          // Foursquare query
+        } else {
+          console.log('$scope.restaurants will be set for multiplayer entrants')
+          console.log('this is the available room!: ', availableRoom);
 
-
-
+          // $scope.restaurants = initiator's multiplayer data
+        }
+      })
     
     });//geolocation query closes
+
   } //initialize function closes
 }]);

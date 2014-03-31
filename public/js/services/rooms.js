@@ -18,6 +18,11 @@ angular.module('hungergame.restaurants').factory('Rooms', ['$firebase', 'FIREBAS
             },
             findRoomAndAddUser: function(roomId, newUserObject){
                 return rooms.$child(roomId).$add(newUserObject)
+            },
+
+            //this does not work
+            findDistance: function(roomId) {
+                return rooms.$child(roomId).$child('multiPlayerData');
             }
         };
         return Rooms;
