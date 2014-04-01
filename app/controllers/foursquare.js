@@ -40,8 +40,6 @@ var foursquareExplore = function(lat, lng){
         var counter = 0
         venuesObject.groups[0].items.forEach(function(venue){
             // Had to implement patch at 11pm; error stating that groups[0] was undefined
-            counter++
-            console.log('foursquareExplore ran: '+ counter + ' times.')
             if (venue.venue.photos.groups[0] && venue.venue.photos.groups[0].items.length === 1){
                 venuesRelevantDataArray.push(
                 {
@@ -54,9 +52,11 @@ var foursquareExplore = function(lat, lng){
                     'formattedPhoneNumber': venue.venue.contact.formattedPhone,
                     'unformattedPhoneNumber': venue.venue.contact.phone,
                     'url': venue.venue.url,
-                    'userVotes': '',
-                    'photoUrl': ''
+                    'userVotes': 0,
+                    'photoUrl': '',
+                    'originalIndex': counter
                 })
+                counter ++;
             }
         })
         deferred.resolve(venuesRelevantDataArray);

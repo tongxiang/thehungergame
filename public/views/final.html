@@ -1,14 +1,28 @@
 <div ui-view="final" ng-controller="RestaurantsController" class='revealshow'>
     <h3>GET SOME!</h3>
-      <ul class='food slider'>
+      <ul class='food slider' ng-if="singlePlayer">
           <div class='fooditem well well-lg food'>
-            <google-map center="winner.map.center" zoom='14'>
+<!--             <google-map center="winner.map.center" zoom='14'>
               <marker coords="winner.map.center"></marker>
-            </google-map>
+            </google-map> -->
+            <p>singlePlayer</p>
             <p>Name: {{winner.name}}</p>
             <p>Address: {{winner.address}}</p>
             <p>Phone: {{winner.formattedPhoneNumber}}</p>
             <p>Distance from you: {{winner.distance}}m</p>
+          </div>
+      </ul>
+
+      <ul class='food slider' ng-if="!singlePlayer">
+          <div class='fooditem well well-lg food'>
+<!--             <google-map center="multiWinner.map.center" zoom='14'>
+              <marker coords="multiWinner.map.center"></marker>
+            </google-map> -->
+            <p>multiWinner</p>
+            <p>Name: {{multiWinner.name}}</p>
+            <p>Address: {{multiWinner.address}}</p>
+            <p>Phone: {{multiWinner.formattedPhoneNumber}}</p>
+            <p>Distance from you: {{multiWinner.distance}}m</p>
           </div>
       </ul>
     <div class='arrows text-center'>

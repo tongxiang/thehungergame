@@ -17,7 +17,7 @@ angular.module('hungergame.restaurants').factory('Restaurants', ['$resource', fu
 angular.module('hungergame.restaurants').service('nomSelector',[function() {
     var nomSelection_arr = [];
     var randomNom;
-
+    var roomId;
 
     // Returns a random integer up to a max
     function getRandom(max) {
@@ -57,6 +57,14 @@ angular.module('hungergame.restaurants').service('nomSelector',[function() {
 
         setRandom: function(random) {
           randomNom = random;
+        }, 
+
+        getId: function(){
+          return roomId;
+        }, 
+
+        setId: function(id){
+          roomId = id
         }
     }
 

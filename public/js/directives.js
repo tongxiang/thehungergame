@@ -7,7 +7,7 @@ var hungergame=angular.module('hungergame.restaurants');
 // http://docs.angularjs.org/guide/directive
 
 // Moved controller to restaurants controller
-hungergame.directive('slider', function ($timeout, $state, nomSelector) {
+hungergame.directive('slider', function ($timeout, $state, nomSelector, Rooms) {
     return {
         restrict: 'AE',
         replace: true,
@@ -183,13 +183,24 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
                   // Sets restaurant selection
                   var nom = restaurantSelector();
                   console.log("nom chosen: ", nom)
+                  if (!(scope.singlePlayer)){
+                    var nomId = nomSelector.getId()
+                    console.log('nomId', nomId)
+                    Rooms.changeVote(nomId, nom.originalIndex.toString(), function(voteValue){
+                      scope.madeSelection = true
+                      return voteValue + 1;
+                      // console.log(nope.name, 'has been downvoted!')
+                    })
+                  }
 
                   // +++ NOTE: Will need to incorporate firebase functionality here for multiplayer !! +++
                     // Attach to a user?
                     // Broadcast event?
-
-                  nomSelector.addNom(nom);
-                  scope.noms_arr.push(nom);
+                  if (scope.singlePlayer){
+                    nomSelector.addNom(nom);
+                    scope.noms_arr.push(nom);
+                  }
+                  
 
                   // Resets page <li> element
                   ele.classList.remove('swipedup');
@@ -220,8 +231,18 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector) {
                 // Removes the list item
                 $timeout (function() {
                   var nope = restaurantSelector();
+                  // console.log('nope object index', nope.originalIndex)
+                  // console.log('$scope.roomId:', scope.roomId)
+                  if (!(scope.singlePlayer)){
+                    var nopeId = nomSelector.getId()
+                    console.log('nopeId', nopeId)
+                    Rooms.changeVote(nopeId, nope.originalIndex.toString(), function(voteValue){
+                      return voteValue - 1;
+                      // console.log(nope.name, 'has been downvoted!')
+                    })
+                  }
                   scope.nopes_arr.push(nope);
-                  console.log('this is the nope: ', nope);
+                  // console.log('this is the nope: ', nope);
                   ele.classList.remove('swipeddown');
                   // console.log("after index: ", scope.currentIndex);
                 }, 550);

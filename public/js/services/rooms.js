@@ -26,6 +26,33 @@ angular.module('hungergame.restaurants').factory('Rooms', ['$firebase', 'FIREBAS
 
             closeRoom: function(roomId){
                 return rooms.$child(roomId).$child('initiator').$update({'visitTime': 0});
+            },
+            changeVote: function(roomId, index, modifyFunction){
+                return rooms.$child(roomId).$child('initiator').$child('multiPlayerData').$child(index).$child('userVotes').$transaction(modifyFunction);
+            }, 
+            getEntrants: function(roomId){
+                return rooms.$child(roomId).$child('initiator').$child('entrants');
+            },
+            modifyRoundsOver: function(roomId, modifyFunction) {
+                return rooms.$child(roomId).$child('initiator').$child('roundsOver').$transaction(modifyFunction);
+            }, 
+            getRoundsOver: function(roomId){
+                return rooms.$child(roomId).$child('initiator').$child('roundsOver');
+            },
+            modifyGameOver: function(roomId, modifyFunction){
+                return rooms.$child(roomId).$child('initiator').$child('gameOver').$transaction(modifyFunction);
+            },
+            getGameOver: function(roomId){
+                return rooms.$child(roomId).$child('initiator').$child('GameOver');
+            },
+            getRestaurantVotes: function(roomId){
+                return rooms.$child(roomId).$child('initiator').$child('multiPlayerData') 
+            },
+            broadCastWinningGame: function(roomId, winner){
+                return rooms.$child(roomId).$child('initiator').$update({'winningRestaurant': winner});
+            },
+            getWinningRestaurant: function(roomId){
+                return rooms.$child(roomId).$child('initiator').$child('winningRestaurant');
             }
         };
         return Rooms;
