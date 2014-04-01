@@ -1,38 +1,16 @@
 <a ui-sref='final' ng-controller='RestaurantsController' class='slidedown'>
   <div ng-switch on='madeSelection' class="jumbotron text-center">
 
-    <div ng-switch-when='false'>
-      <h1>MAXIMUM NOMMAGE!!!!</h1>
-      <h3>Your Food was CHOSEN in:</h3>
-      <h3>{{round.elapsed()}} seconds</h3>
-      <h3>The spot: {{multiWinner.name}}</h3>
-      <img src="{multiWinner.photoUrl}}">
-      <h3>Directions: {{multiWinner.address}}</h3>
-      <h3>Your spot is {{multiWinner.distance}} away from you! Go get it, then!</h3>
-    </div>
-    
     <div ng-switch-when='true'>
-      <h1>MAXIMUM NOMMAGE!!!!</h1>
-      <h3>Your food: {{multiWinner.name}}</h3>
-      <img src="{multiWinner.photoUrl}}">
-      <h3>Directions: {{multiWinner.address}}</h3>
-      <h3>Your spot is {{multiWinner.distance}} away from you! Go get it, then!</h3>
-    </div>
-
-  </div>
-</a>
-
-
-<!--   <div ng-switch-when='true'>
       <h1>Maximum Nommage!!</h1>
       <h3>Your Food was CHOSEN in:</h3>
       <h3>{{round.elapsed()}} seconds</h3>
     </div>
-{{multiWinner}}
+
     <div ng-switch-when='false'>
       <h1>Nuttin but NOPES!!</h1>
       <h3>But hey, have a nom on US:</h3>
     </div>
 
   </div>
-</a> -->
+</a>

@@ -7,12 +7,12 @@ var hungergame=angular.module('hungergame.restaurants');
 // http://docs.angularjs.org/guide/directive
 
 // Moved controller to restaurants controller
-hungergame.directive('slider', function ($timeout, $state, nomSelector, Rooms) {
+hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$rootScope', function ($timeout, $state, nomSelector, Rooms, $rootScope) {
     return {
         restrict: 'AE',
         replace: true,
         scope: {
-            restaurants: '=',
+            restaurants: '='
         },
 
         link: function (scope, elem, attrs) {
@@ -183,7 +183,7 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector, Rooms) {
                   // Sets restaurant selection
                   var nom = restaurantSelector();
                   console.log("nom chosen: ", nom)
-                  if (!(scope.singlePlayer)){
+                  if (!($rootScope.singlePlayer)){
                     var nomId = nomSelector.getId()
                     console.log('nomId', nomId)
                     Rooms.changeVote(nomId, nom.originalIndex.toString(), function(voteValue){
@@ -196,7 +196,7 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector, Rooms) {
                   // +++ NOTE: Will need to incorporate firebase functionality here for multiplayer !! +++
                     // Attach to a user?
                     // Broadcast event?
-                  if (scope.singlePlayer){
+                  if ($rootScope.singlePlayer){
                     nomSelector.addNom(nom);
                     scope.noms_arr.push(nom);
                   }
@@ -233,7 +233,7 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector, Rooms) {
                   var nope = restaurantSelector();
                   // console.log('nope object index', nope.originalIndex)
                   // console.log('$scope.roomId:', scope.roomId)
-                  if (!(scope.singlePlayer)){
+                  if (!($rootScope.singlePlayer)){
                     var nopeId = nomSelector.getId()
                     console.log('nopeId', nopeId)
                     Rooms.changeVote(nopeId, nope.originalIndex.toString(), function(voteValue){
@@ -358,4 +358,4 @@ hungergame.directive('slider', function ($timeout, $state, nomSelector, Rooms) {
         templateUrl:'../views/slider_temp.html'
     };
 
-});
+}]);

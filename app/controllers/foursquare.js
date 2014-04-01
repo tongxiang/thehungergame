@@ -31,9 +31,9 @@ var config = {
 
 var foursquare = require('node-foursquare')(config);
 
-var venuesRelevantDataArray = []
 
 var foursquareExplore = function(lat, lng){
+    var venuesRelevantDataArray = [];
     var deferred = Q.defer();
     foursquare.Venues.explore(lat, lng, {venuePhotos: 1, openNow: 1, sortByDistance: 1, price: 1}, null, function(error, venuesObject){
         console.log("the restaurant count that foursquareExplore is returning is",venuesObject.groups[0].items.length)
