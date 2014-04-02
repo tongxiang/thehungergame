@@ -96,7 +96,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                       $timeout(function() {
                         ele.classList.add('reverse');
                       }, 350) // 350
-                    }, 2) //50 
+                    }, 2) //50
                     console.log('scope.current: ', scope.currentIndex);
                 }
             };
@@ -200,7 +200,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                     nomSelector.addNom(nom);
                     scope.noms_arr.push(nom);
                   }
-                  
+
 
                   // Resets page <li> element
                   ele.classList.remove('swipedup');

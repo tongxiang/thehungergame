@@ -1,2 +1,12 @@
-  <h4 ng-init='shakeNbake()'>NOM-inate!</h4>
+<div class='game-heading-container'>
+  <timer interval="1000" countdown='10000' class='clock badge'>
+    <i class='glyphicon glyphicon-time'></i>
+    {{seconds}}
+  </timer>
+  <h2 class='game-heading' ng-init='shakeNbake()'>NOM-inate!</h2>
+  <span class='counter badge'>
+    <i class="fa fa-cutlery"></i>
+    {{currentIndex+1}} / {{restaurants.length}}
+  </span>
+</div>
   <slider restaurants="restaurants"></slider>

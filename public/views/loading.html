@@ -1,7 +1,6 @@
 <div class='loading' ng-switch on='venuesLoaded'>
-  <div ng-init='findNearBy(latLngString)' class='welcome jumbotron text-center'>
-    <h2>DELICIOUSNESS AWAITS</h2>
-    <h3>Choose Wisely</h3>
+  <div ng-init='findNearBy(latLngString)' class='welcome text-center'>
+    <h2>Prepare for <span id='highlight'>CHEAP</span> EATs</h2>
     <div class='spin-container' ng-switch-when='false'>
       <span us-spinner='{zIndex: 0}'></span>
     </div>

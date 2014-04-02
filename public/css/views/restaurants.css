@@ -1,9 +1,48 @@
 h4, h3 {
   text-align:center;
+  color: white;
+}
+
+.headline {
+  font-family: 'Nova Cut', cursive;
+  color: white;
+  font-size: 350%;
+}
+
+.headline span {
+  font-family: 'Cinzel Decorative', cursive;
+  color: red;
+  font-weight: bold;
+  font-size: 100%;
+}
+
+.button {
+  margin: 7px;
+}
+
+h2 {
+  font-family: 'Cinzel Decorative', cursive;
+  color: white;
+  font-weight: bold;
+  text-align:center;
 }
 
 .welcome {
   margin-top: 70px;
+}
+
+.welcome #highlight {
+  color: red;
+}
+
+.game-heading-container {
+  text-align: center;
+}
+
+.game-heading {
+  font-size: 125%;
+  display: inline-block;
+  margin: 10px 30px;
 }
 
 /*.sign {
@@ -47,29 +86,31 @@ ul.food li {
 }
 
 .icons {
-  position: relative
+  /*position: relative;*/
+  max-width: 320px;
+  text-align: center;
 }
 
 .counter {
-  font-size: large;
-  position: absolute;
+  font-size: medium;
+/*  position: absolute;
   top: -1.7em;
-  right: 1em;
+  right: 0.5em;*/
   z-index: 100;
 }
 
 
 .clock {
-  font-size: large;
+  font-size: medium;
   font-weight: bold;
-  position: absolute;
-  top: -1.7em;
-  left: 1.7em;
+/*  position: absolute;
+  top: -1.9em;
+  left: 2em;*/
   z-index: 100;
 }
 
 .fa-cutlery {
-  margin-right: 4px;
+  margin-right: 1px;
 }
 
 .loading {
