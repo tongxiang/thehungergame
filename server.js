@@ -18,28 +18,28 @@ var express = require('express'),
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Initializing system variables 
-var config = require('./config/config'),
-    mongoose = require('mongoose');
+var config = require('./config/config')
+    // mongoose = require('mongoose');
 
 // Bootstrap db connection
-var db = mongoose.connect(config.db);
+// var db = mongoose.connect(config.db);
 
 // Bootstrap models
-var models_path = __dirname + '/app/models';
-var walk = function(path) {
-    fs.readdirSync(path).forEach(function(file) {
-        var newPath = path + '/' + file;
-        var stat = fs.statSync(newPath);
-        if (stat.isFile()) {
-            if (/(.*)\.(js$|coffee$)/.test(file)) {
-                require(newPath);
-            }
-        } else if (stat.isDirectory()) {
-            walk(newPath);
-        }
-    });
-};
-walk(models_path);
+// var models_path = __dirname + '/app/models';
+// var walk = function(path) {
+//     fs.readdirSync(path).forEach(function(file) {
+//         var newPath = path + '/' + file;
+//         var stat = fs.statSync(newPath);
+//         if (stat.isFile()) {
+//             if (/(.*)\.(js$|coffee$)/.test(file)) {
+//                 require(newPath);
+//             }
+//         } else if (stat.isDirectory()) {
+//             walk(newPath);
+//         }
+//     });
+// };
+// walk(models_path);
 
 // Bootstrap passport config
 // require('./config/passport')(passport);
@@ -47,7 +47,7 @@ walk(models_path);
 var app = express();
 
 // Express settings
-require('./config/express')(app, passport, db);
+require('./config/express')(app);
 
 // Bootstrap routes
 var routes_path = __dirname + '/app/routes';
@@ -76,7 +76,7 @@ app.listen(port);
 console.log('Express app started on port ' + port);
 
 // Initializing logger
-logger.init(app, passport, mongoose);
+// logger.init(app);
 
 // Expose app
 exports = module.exports = app;

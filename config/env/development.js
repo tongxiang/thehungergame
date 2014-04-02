@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    db: 'mongodb://localhost/hungergame',
+    // db: 'mongodb://localhost/hungergame',
     app: {
         name: 'The Hunger Game'
     },
