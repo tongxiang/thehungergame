@@ -196,49 +196,49 @@ ul.food li {
 
 /* Scrolling Action */
 .slide.ng-hide-add {
-  -webkit-transition:all 0.25s linear 0s;
-  -moz-transition:all 0.25s linear 0s;
-  -o-transition:all 0.25s linear 0s;
-  transition:all 0.25s linear 0s;
+  -webkit-transition:all 0.35s linear 0s;
+  -moz-transition:all 0.35s linear 0s;
+  -o-transition:all 0.35s linear 0s;
+  transition:all 0.35s linear 0s;
   display:block!important;
 }
 
 .slide.ng-hide-remove {
-  -webkit-transition:all 0.25s linear 0s;
-  -moz-transition:all 0.25s linear 0s;
-  -o-transition:all 0.25s linear 0s;
-  transition:all 0.25s linear 0s;
+  -webkit-transition:all 0.35s linear 0s;
+  -moz-transition:all 0.35s linear 0s;
+  -o-transition:all 0.35s linear 0s;
+  transition:all 0.35s linear 0s;
   display:block!important;
 }
 
 /* Slideshow animate reversse */
 .slide.reverse.ng-hide-add-active, .slide.reverse.ng-hide-add-active {
-  -webkit-animation: slideOutRight 0.25s;
-  -moz-animation: slideOutRight 0.25s;
-  -ms-animation: slideOutRight 0.25s;
-  animation: slideOutRight 0.25s;
+  -webkit-animation: slideOutRight 0.35s;
+  -moz-animation: slideOutRight 0.35s;
+  -ms-animation: slideOutRight 0.35s;
+  animation: slideOutRight 0.35s;
 }
 
 .slide.reverse.ng-hide-remove-active, .slide.reverse.ng-hide-remove-active {
-  -webkit-animation: slideInLeft 0.25s;
-  -moz-animation: slideInLeft 0.25s;
-  -ms-animation: slideInLeft 0.25s;
-  animation: slideInLeft 0.25s;
+  -webkit-animation: slideInLeft 0.35s;
+  -moz-animation: slideInLeft 0.35s;
+  -ms-animation: slideInLeft 0.35s;
+  animation: slideInLeft 0.35s;
 }
 
 /* Slideshow animate forward */
 .slide.ng-hide-add-active {
-  -webkit-animation: slideOutLeft 0.25s;
-  -moz-animation: slideOutLeft 0.25s;
-  -ms-animation: slideOutLeft 0.25s;
-  animation: slideOutLeft 0.25s;
+  -webkit-animation: slideOutLeft 0.35s;
+  -moz-animation: slideOutLeft 0.35s;
+  -ms-animation: slideOutLeft 0.35s;
+  animation: slideOutLeft 0.35s;
 }
 
 .slide.ng-hide-remove-active {
-  -webkit-animation: slideInRight 0.25s;
-  -moz-animation: slideInRight 0.25s;
-  -ms-animation: slideInRight 0.25s;
-  animation: slideInRight 0.25s;
+  -webkit-animation: slideInRight 0.35s;
+  -moz-animation: slideInRight 0.35s;
+  -ms-animation: slideInRight 0.35s;
+  animation: slideInRight 0.35s;
 
 }
 
@@ -254,10 +254,10 @@ ul.food li {
 }
 
 .swipeddown {
-  -webkit-animation: hinge 0.60s;
-  -moz-animation: hinge 0.60s;
-  -ms-animation: hinge 0.60s;
-  animation: hinge 0.60s;
+  -webkit-animation: hinge 0.8s;
+  -moz-animation: hinge 0.8s;
+  -ms-animation: hinge 0.8s;
+  animation: hinge 0.8s;
 }
 
 
