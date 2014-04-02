@@ -16,6 +16,7 @@ body{
   /*padding-bottom: 300px;*/
   /*overflow: hidden;*/
   width: 100%;
+  background-color: transparent;
 }
 
 .navbar .nav>li>a.brand {

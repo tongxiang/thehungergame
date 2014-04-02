@@ -6,9 +6,8 @@
         <div class='container'>
           <div class='welcome container text-center'>
             <h1 class='headline'>FEED THE <span>HUNGER<span></h1>
-            <p>{{numberOfEntrants}}</p>
             <div ng-if='!latLngString'>
-              <p class='flash'>Acquiring your position...</p>
+              <p class='flash waiting'>Acquiring your position...</p>
             </div>
             <a ng-if='latLngString' class='button btn btn-primary btn-lg fadeIn' ui-sref="home.loading" ng-click='solo()'>Single Player</a>
             <a ng-if='latLngString' class='button btn btn-primary btn-lg fadeIn' ui-sref="home.loading" ng-click='multi()'>
@@ -20,17 +19,4 @@
       </div>
     </div>
   </div>
-
-<!-- <div data-ng-repeat="room in existingRooms">{{room}}</div> -->
-
-
-
-  <footer>
-    <div class='text-center'>
-      <p>Your location is: {{coords}}</p>
-    </div>
-  </footer>
 </section>
-
-<!--   <img src="{{restaurant.venue.photos.groups[0].items[0].prefix+'500x500'+restaurant.venue.photos.groups[0].items[0].suffix}}"></img>s
- -->

@@ -1,25 +1,23 @@
 <div ng-controller='RestaurantsController' class='slidedown'>
-  <div class="jumbotron text-center">
+  <div class="post-round jumbotron text-center">
 
     <div ng-if='madeSelection'>
-      <p>made selection? {{madeSelection}}</p>
-      <h1>Maximum Nommage!!</h1>
-      <h3>Your Food was CHOSEN in:</h3>
-      <h3>{{round.elapsed()}} seconds</h3>
+      <h2 class='header'>Maximum Nommage!!</h2>
+      <h4 class='subheading'>Your Food was CHOSEN in:</h4>
+      <h4 class='subheading'>{{round.elapsed()}} seconds</h4>
       <div ng-if='!getYoFood'>
         <span class='flash'>YOUR CHOICES ARE BATTLING IT OUT</span>
       </div>
-      <a ui-sref='final' ng-if='getYoFood' ng-controller='RestaurantsController' class='btn btn-lg btn-danger'>GET YO FOOD</a>
+      <a ui-sref='final' ng-if='getYoFood' ng-controller='RestaurantsController' class='btn btn-lg btn-danger'>FOOD ME!</a>
     </div>
 
     <div ng-if='!madeSelection'>
-      <p>made selection? {{madeSelection}}</p>
-      <h1>Nuttin but NOPES!!</h1>
-      <h3>But hey, have a nom on US:</h3>
+      <h2 class='header' >Nuttin but NOPES!!</h2>
+      <h4 class='subheading'>But hey, have a nom on US:</h4>
       <div ng-if='!getYoFood'>
         <span class='flash'>YOUR CHOICES ARE BATTLING IT OUT</span>
       </div>
-      <a ui-sref='final' ng-if='getYoFood' ng-controller='RestaurantsController' class='btn btn-lg btn-danger'>GET YO FOOD</a>
+      <a ui-sref='final' ng-if='getYoFood' ng-controller='RestaurantsController' class='btn btn-lg btn-danger'>FOOD ME!</a>
     </div>
 
   </div>

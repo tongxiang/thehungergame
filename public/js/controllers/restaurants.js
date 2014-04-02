@@ -47,7 +47,7 @@ angular.module('hungergame.restaurants')
     elapsed: function() {
       return 30 - $scope.roundTime;
     }
-  } 
+  }
 
   $scope.multi = function(){
     $rootScope.singlePlayer = false;
@@ -70,17 +70,17 @@ angular.module('hungergame.restaurants')
   $scope.venuesLoaded = false;
   if ($rootScope.singlePlayer){
     $scope.winner = nomSelector.getNom();
-  } 
-  
+  }
+
   // Ends user round on a spacebar keypress or a phone shake
   $scope.shakeNbake=function() {
     window.addEventListener("keypress", checkKeyPressed, false);
-//wrap this in a condition, once they end it, they can't end it again. 
+//wrap this in a condition, once they end it, they can't end it again.
     function checkKeyPressed(e) {
       if($scope.playing){
         if (e.charCode == "32") {
           $scope.$broadcast('timer-stop');
-          $scope.playing = false 
+          $scope.playing = false
         }
       }
     }
@@ -110,7 +110,7 @@ angular.module('hungergame.restaurants')
 
   $scope.$on('timer-stopped', function (event, data){
 
-    
+
     // Multiplayer
     if (!($rootScope.singlePlayer)){
       Rooms.modifyRoundsOver($scope.roomId, function(roundsCompleted){
@@ -138,16 +138,16 @@ angular.module('hungergame.restaurants')
         $rootScope.madeSelection = false;
       }
     }
-    
+
     console.log('madeSelection?: ', $rootScope.madeSelection)
     $scope.roundTime = data.seconds
     $scope.round.roundOver = true;
     $state.go('home.transition');
   });
-//END OMARI'S NEW CODE 
+//END OMARI'S NEW CODE
 
   var geolocate = function(){
-    geolocation.getLocation().then(function(data){ //this is happening asynchronously. probably could use async.series (https://github.com/caolan/async#series) - OR maybe we don't need to isolate this at all. 
+    geolocation.getLocation().then(function(data){ //this is happening asynchronously. probably could use async.series (https://github.com/caolan/async#series) - OR maybe we don't need to isolate this at all.
       $scope.coords = {'lat':data.coords.latitude, 'long':data.coords.longitude};
       $scope.latLngString = data.coords.latitude + ',' + data.coords.longitude;
     });
@@ -156,7 +156,7 @@ angular.module('hungergame.restaurants')
   var withinTimeInterval = function(time1, time2){
     var difference = Math.abs(time2-time1)
     if (difference/1000 < 20){ //we can change this later
-      return true 
+      return true
     }
     return false
   }
@@ -169,12 +169,12 @@ angular.module('hungergame.restaurants')
     var R = 6371; // Radius of the earth in km
     var dLat = deg2rad(lat2-lat1);  // deg2rad below
     var dLon = deg2rad(lon2-lon1);
-    var a = 
+    var a =
       Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
       Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c; // Distance in km
     return d;
   }
@@ -212,12 +212,12 @@ angular.module('hungergame.restaurants')
       console.log('Result of distanceCheck: ', distanceCheck);
       if (timeBoolean && (distanceCheck < 0.2)){
         // $scope.multiPlayerData = multiPlayerData;
-        //create new user, but will voting work if we're no longer attached to the initiator via firebase? Do we have an indicator of which function we're on? Can we save the roomId? <<< critical 
+        //create new user, but will voting work if we're no longer attached to the initiator via firebase? Do we have an indicator of which function we're on? Can we save the roomId? <<< critical
         var roomInitiator = initiator
         var roomKey = room
         roomInitiator['roomId'] = roomKey
         break;
-        //returns true or false, true if the user has attaches 
+        //returns true or false, true if the user has attaches
       }
     }
     return roomInitiator;
@@ -229,9 +229,9 @@ angular.module('hungergame.restaurants')
 
   $scope.initialize = function() {
     var loginDateTime = new Date;
-    $scope.visitTime = loginDateTime.getTime(); 
+    $scope.visitTime = loginDateTime.getTime();
     geolocation.getLocation().then(function(location) {
-      $scope.coords = {'lat':location.coords.latitude, 'long':location.coords.longitude}; 
+      $scope.coords = {'lat':location.coords.latitude, 'long':location.coords.longitude};
       $scope.latLngString = location.coords.latitude + ',' + location.coords.longitude;
       $scope.existingRooms = Rooms.all;
       console.log('here is an immediately run console.log of $scope.existingRooms', $scope.existingRooms)
@@ -257,7 +257,7 @@ angular.module('hungergame.restaurants')
                         latLng: ($scope.coords || {'lat': 0, 'long': 0}),
                         visitTime: ($scope.visitTime || 0),
                         entrants: 0,
-                        multiPlayerData: data, 
+                        multiPlayerData: data,
                         roomId: '',
                         roundsOver: 0,
                         gameOver: false,
@@ -281,7 +281,7 @@ angular.module('hungergame.restaurants')
                         console.log('number of roundsOver', value.snapshot.value)
                         $scope.roundsOver = value.snapshot.value
                         if ($scope.roundsOver == $scope.entrantsNumber){
-                          $rootScope.getYoFood = true 
+                          $rootScope.getYoFood = true
                           console.log('inside rounds over equality')
                           Rooms.modifyGameOver($scope.roomId, function(gameStatus){
                             return true;
@@ -339,7 +339,7 @@ angular.module('hungergame.restaurants')
                 error(function(data, status, headers, config){
                     console.log(status);
                 });
-          //if a room needs to be created, set a variable to the scope, $scope.runFourSquareQuery (default value is false) - have a function on the next page with just ng-init > takes true or false, if true does foursquare query and adds the results to firebase. 
+          //if a room needs to be created, set a variable to the scope, $scope.runFourSquareQuery (default value is false) - have a function on the next page with just ng-init > takes true or false, if true does foursquare query and adds the results to firebase.
           //
           // Foursquare query
         } else {
@@ -415,4 +415,4 @@ angular.module('hungergame.restaurants')
       })
     });//geolocation query closes
   } //initialize function closes
-}]); //closing controller 
+}]); //closing controller

@@ -40,7 +40,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                   $timeout(function() {
                        sliderFunc();
                        // scope.next();
-                  }, 2)
+                  }, 50)
                 };
               }
 
@@ -83,9 +83,9 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                     console.log('lis curr index: ', lis[scope.currentIndex])
                     console.log('next ele: ', lis[nextIndex])
 
-                    // Removes reverse class from list item (note: +1 is to account for the icon divs which are part of the <ul>)
-                    lis[scope.currentIndex+1].classList.remove('reverse');
-                    lis[nextIndex+1].classList.remove('reverse');
+                    // Removes reverse class from list item
+                    lis[scope.currentIndex].classList.remove('reverse');
+                    lis[nextIndex].classList.remove('reverse');
                     // ** lis[next2Index].classList.remove('reverse');
 
                     // Changes the restaurant
@@ -95,8 +95,8 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                       // Adds reverse to swiped element post animation to anticipate a 'previous' swipe motion
                       $timeout(function() {
                         ele.classList.add('reverse');
-                      }, 350) // 350
-                    }, 2) //50
+                      }, 500) // 350
+                    }, 50) //50
                     console.log('scope.current: ', scope.currentIndex);
                 }
             };
@@ -127,7 +127,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                 // lis[scope.currentIndex+1].classList.add('reverse');
 
                 // Adds reverse class to list item (note: +1 is to account for the icon divs which are part of the <ul>)
-                lis[prevIndex+1].classList.add('reverse');
+                lis[prevIndex].classList.add('reverse');
 
                 // console.log('ele: ', ele)
                 // console.log('VERSUS')
@@ -277,7 +277,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
 
                 $timeout (function() {
                   scope.slideshowOn=false;
-                }, 50); // 200
+                }, 40); // 200
               }
             };
 
@@ -289,6 +289,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                     restaurant.winner=false;
                 });
                 scope.restaurants[scope.currentIndex].visible=true;
+                $rootScope.currentIndex = scope.currentIndex
             });
 
             scope.$watch('restaurantsCount',function(){

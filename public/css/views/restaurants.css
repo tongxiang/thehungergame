@@ -9,6 +9,11 @@ h4, h3 {
   font-size: 350%;
 }
 
+.waiting {
+  font-size: 200%;
+  color: white;
+}
+
 .headline span {
   font-family: 'Cinzel Decorative', cursive;
   color: red;
@@ -27,6 +32,20 @@ h2 {
   text-align:center;
 }
 
+h2.header {
+  /*font-family: 'Asset', cursive;*/
+  font-family: Impact, Charcoal, sans-serif;
+  color: black;
+  text-align: center;
+  font-size: 200%;
+  margin-top: 5px;
+}
+
+.subheading {
+  color: black;
+  font-style: italic;
+}
+
 .welcome {
   margin-top: 70px;
 }
@@ -42,7 +61,7 @@ h2 {
 .game-heading {
   font-size: 125%;
   display: inline-block;
-  margin: 10px 30px;
+  margin: 10px 25px;
 }
 
 /*.sign {
@@ -54,8 +73,15 @@ h2 {
   padding-top: 35px;
 }*/
 
+.post-round {
+  margin: 20px auto;
+  max-width: 300px;
+  padding: 10px;
+}
+
 .finalsign {
-  margin-top: 10px;
+  font-size: 200%;
+  color: white;
 }
 
 
@@ -83,6 +109,13 @@ ul.food li {
 .fooditem {
   max-width: 320px;
   margin: auto;
+}
+
+.well {
+  opacity: 0.8
+}
+.well h4 {
+  color: black;
 }
 
 .icons {
@@ -123,9 +156,34 @@ ul.food li {
 }
 
 .angular-google-map-container {
-   height: 90px;
+   height: 160px;
    max-width: 320px;
 }
+
+.arrows{
+  position: absolute;
+  top: 390px;
+  width: 100%;
+  height: 100px;
+  margin: auto;
+  /*border: 1px solid green;*/
+}
+
+p {
+  margin: 5px 0px;
+}
+
+.finalrest {
+  opacity: 50%;
+  max-width: 350px;
+  margin: auto;
+  opacity: 0.8;
+}
+
+.jumbotron {
+  opacity: 0.8
+}
+
 
 /*
  ++++ BEGIN -- FROM SLIDER FILE's app.css ++++
@@ -148,13 +206,6 @@ ul.food li {
   width:100%;
   margin: 0 auto;
   /*margin-bottom: 10px;*/
-}
-
-.arrows{
-  position: absolute;
-  top: 26.5em;
-  width: 100%;
-  /*border: 1px solid green;*/
 }
 
 /*
@@ -237,34 +288,34 @@ ul.food li {
 
 /* Scrolling Action */
 .slide.ng-hide-add {
-  -webkit-transition:all 0.35s linear 0s;
-  -moz-transition:all 0.35s linear 0s;
-  -o-transition:all 0.35s linear 0s;
-  transition:all 0.35s linear 0s;
+  -webkit-transition:all 0.25s linear 0s;
+  -moz-transition:all 0.25s linear 0s;
+  -o-transition:all 0.25s linear 0s;
+  transition:all 0.25s linear 0s;
   display:block!important;
 }
 
 .slide.ng-hide-remove {
-  -webkit-transition:all 0.35s linear 0s;
-  -moz-transition:all 0.35s linear 0s;
-  -o-transition:all 0.35s linear 0s;
-  transition:all 0.35s linear 0s;
+  -webkit-transition:all 0.25s linear 0s;
+  -moz-transition:all 0.25s linear 0s;
+  -o-transition:all 0.25s linear 0s;
+  transition:all 0.25s linear 0s;
   display:block!important;
 }
 
 /* Slideshow animate reversse */
 .slide.reverse.ng-hide-add-active, .slide.reverse.ng-hide-add-active {
-  -webkit-animation: slideOutRight 0.35s;
-  -moz-animation: slideOutRight 0.35s;
-  -ms-animation: slideOutRight 0.35s;
-  animation: slideOutRight 0.35s;
+  -webkit-animation: slideOutRight 0.25s;
+  -moz-animation: slideOutRight 0.25s;
+  -ms-animation: slideOutRight 0.25s;
+  animation: slideOutRight 0.25s;
 }
 
 .slide.reverse.ng-hide-remove-active, .slide.reverse.ng-hide-remove-active {
-  -webkit-animation: slideInLeft 0.35s;
-  -moz-animation: slideInLeft 0.35s;
-  -ms-animation: slideInLeft 0.35s;
-  animation: slideInLeft 0.35s;
+  -webkit-animation: slideInLeft 0.25s;
+  -moz-animation: slideInLeft 0.25s;
+  -ms-animation: slideInLeft 0.25s;
+  animation: slideInLeft 0.25s;
 }
 
 /* Slideshow animate forward */
