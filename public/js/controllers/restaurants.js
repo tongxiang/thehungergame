@@ -11,12 +11,23 @@ angular.module('hungergame.restaurants')
   $scope.roundsOver = 0;
   $scope.playing = true;
   $scope.gameOver = false;
-  $rootScope.singlePlayer = false;
+  $rootScope.multiWinner;
+  $rootScope.winner;
+
+  $scope.reset = function(){
+    $rootScope.madeSelection = null;
+    $rootScope.multiWinner = null;
+    $rootScope.winner = null;
+    nomSelector.clearNom();
+    console.log('RESETTING IS HAPPENING NOW', $rootScope.winner)
+  }
 
   $scope.solo = function() {
     console.log('solo player game started')
     console.log('before solo value', $rootScope.singlePlayer)
     $rootScope.singlePlayer = true;
+    $rootScope.getYoFood = true;
+    // $rootScope.getYoFood = true;
     console.log('after solo value', $rootScope.singlePlayer)
     Rooms.modifyEntrants($scope.roomId, function(entrantsCount){
       return entrantsCount - 1;
@@ -36,20 +47,35 @@ angular.module('hungergame.restaurants')
     elapsed: function() {
       return 30 - $scope.roundTime;
     }
+  } 
+
+  $scope.multi = function(){
+    $rootScope.singlePlayer = false;
+    $rootScope.getYoFood = false;
+    $rootScope.madeSelection = false;
+    Rooms.modifyEntrants($scope.roomId, function(entrantsCount){
+      return entrantsCount + 1;
+    }).then(function(snapshot){
+      if (!snapshot){
+        console.log('entrants add function failed');
+      } else {
+        console.log('entrants snapshot', snapshot)
+      }
+    }, function(err){
+      console.log('entrants transaction failed: ', err)
+    })
   }
+
 
   $scope.venuesLoaded = false;
   if ($rootScope.singlePlayer){
     $scope.winner = nomSelector.getNom();
   } 
   
-
   // Ends user round on a spacebar keypress or a phone shake
   $scope.shakeNbake=function() {
     window.addEventListener("keypress", checkKeyPressed, false);
-
 //wrap this in a condition, once they end it, they can't end it again. 
-
     function checkKeyPressed(e) {
       if($scope.playing){
         if (e.charCode == "32") {
@@ -82,31 +108,10 @@ angular.module('hungergame.restaurants')
     }
   });
 
-  // $scope.$watch('singlePlayer', function(){
-    // if ($rootScope.singlePlayer){
-    //   Rooms.modifyEntrants($scope.roomId, function(entrantsCount){
-    //     return entrantsCount - 1;
-    //   }).then(function(snapshot){
-    //     if (!snapshot){
-    //       console.log('entrants subtract function failed');
-    //     } else {
-    //       console.log('entrants snapshot', snapshot)
-    //     }
-    //   }, function(err){
-    //     console.log('entrants transaction failed: ', err)
-    //   })
-    // }
-  // })
-
-  // $scope.$watch('entrantsNumber', function(){
-  //   Rooms.getEntrants($scope.roomId).$on('value', function(value){
-  //     console.log('entrantsNumber val', value.snapshot.value)
-  //     $scope.entrantsNumber = value.snapshot.value
-  //   })
-  // })
-
   $scope.$on('timer-stopped', function (event, data){
 
+    
+    // Multiplayer
     if (!($rootScope.singlePlayer)){
       Rooms.modifyRoundsOver($scope.roomId, function(roundsCompleted){
         return roundsCompleted + 1;
@@ -121,18 +126,23 @@ angular.module('hungergame.restaurants')
       })
     }
 
+
+    // Single Player
+    if($rootScope.singlePlayer) {
       console.log('Timer Stopped - data = ', data);
       $scope.nom_count = nomSelector.nomCount()
       console.log('Nom count from service: ', $scope.nom_count)
       if($scope.nom_count>0) {
-        $scope.madeSelection = true;
+        $rootScope.madeSelection = true;
       } else {
-        $scope.madeSelection = false;
+        $rootScope.madeSelection = false;
       }
-      console.log('madeSelection?: ', $scope.madeSelection)
-      $scope.roundTime = data.seconds
-      $scope.round.roundOver = true;
-      $state.go('home.transition');
+    }
+    
+    console.log('madeSelection?: ', $rootScope.madeSelection)
+    $scope.roundTime = data.seconds
+    $scope.round.roundOver = true;
+    $state.go('home.transition');
   });
 //END OMARI'S NEW CODE 
 
@@ -169,12 +179,12 @@ angular.module('hungergame.restaurants')
     return d;
   }
 
-  function entrantsChecker(number){
-    if (number === 0){
-      return false;
-    }
-    return true
-  }
+  // function entrantsChecker(number){
+  //   if (number === 0){
+  //     return false;
+  //   }
+  //   return true
+  // }
 
   function checkTimeLatLng (roomArray){
     console.log('checkTimeLatLng running')
@@ -196,11 +206,11 @@ angular.module('hungergame.restaurants')
       // console.log('scope visitTime: ', $scope.visitTime)
       var timeBoolean = withinTimeInterval(visitTime, $scope.visitTime)
       var distanceCheck = getDistanceFromLatLonInKm(lat, lng, $scope.coords.lat, $scope.coords.long)
-      var entrantsCheck = entrantsChecker(entrants);
+      // var entrantsCheck = entrantsChecker(entrants);
 
       console.log('Result of timeBoolean: ', timeBoolean);
       console.log('Result of distanceCheck: ', distanceCheck);
-      if (timeBoolean && (distanceCheck < 0.1) && entrantsCheck){
+      if (timeBoolean && (distanceCheck < 0.2)){
         // $scope.multiPlayerData = multiPlayerData;
         //create new user, but will voting work if we're no longer attached to the initiator via firebase? Do we have an indicator of which function we're on? Can we save the roomId? <<< critical 
         var roomInitiator = initiator
@@ -237,14 +247,16 @@ angular.module('hungergame.restaurants')
                 params: {latLng: $scope.latLngString}}).
                 success(function(data, status, headers, config){
                   console.log('rest controller', data.length);
+                    var random = data[Math.floor(Math.random() * data.length)]
+                    nomSelector.setRandom(random)
                     $scope.restaurants = data;
                     console.log('restaurants data from new room creation', $scope.restaurants)
                     $scope.venuesLoaded = true;
                     var newRoom = {
                       initiator: {
-                        latLng: $scope.coords,
-                        visitTime: $scope.visitTime,
-                        entrants: 1,
+                        latLng: ($scope.coords || {'lat': 0, 'long': 0}),
+                        visitTime: ($scope.visitTime || 0),
+                        entrants: 0,
                         multiPlayerData: data, 
                         roomId: '',
                         roundsOver: 0,
@@ -257,6 +269,9 @@ angular.module('hungergame.restaurants')
 
                     Rooms.all.$on('child_added', function(snapshot){
                       $scope.roomId = snapshot.snapshot.name;
+                      Rooms.addRoomIdToInitiator($scope.roomId).then(function(ref){
+                        console.log('successfully changed initiator', ref)
+                      });
                       nomSelector.setId($scope.roomId);
                       Rooms.getEntrants($scope.roomId).$on('value', function(value){
                         console.log('entrantsNumber val', value.snapshot.value)
@@ -266,7 +281,8 @@ angular.module('hungergame.restaurants')
                         console.log('number of roundsOver', value.snapshot.value)
                         $scope.roundsOver = value.snapshot.value
                         if ($scope.roundsOver == $scope.entrantsNumber){
-                          (console.log('inside rounds over equality'))
+                          $rootScope.getYoFood = true 
+                          console.log('inside rounds over equality')
                           Rooms.modifyGameOver($scope.roomId, function(gameStatus){
                             return true;
                             console.log('modifying game over property to be true')
@@ -300,7 +316,7 @@ angular.module('hungergame.restaurants')
                           }, function(err){
                             console.log('gameover transaction failed: ', err)
                           })
-                          console.log('game over!!! BEOTCHES')
+                          console.log('game over!!!')
                         }
                       })
                       Rooms.getRestaurantVotes($scope.roomId).$on('value', function(value){
@@ -317,13 +333,8 @@ angular.module('hungergame.restaurants')
                           $scope.winner = value.snapshot.value;
                         }
                       })
-                      Rooms.addRoomIdToInitiator($scope.roomId).then(function(ref){
-                        console.log('successfully changed initiator', ref)
-                      });
-                      console.log('snapshot id from child added', snapshot.snapshot.name)
+                      // console.log('snapshot id from child added', snapshot.snapshot.name)
                     })
-                    //if singleplayer button is clicked, then we subtract 1 from the number of Entrants in the room, and we make sure that we break the tie to the voting function with firebase. (That singleplayer doesn't run the addVote function)
-
                 }).
                 error(function(data, status, headers, config){
                     console.log(status);
@@ -334,7 +345,10 @@ angular.module('hungergame.restaurants')
         } else {
           console.log('$scope.restaurants will be set for multiplayer entrants')
           console.log('this is the available room!: ', availableRoom);
+          $scope.joinRoom = true;
           $scope.restaurants = availableRoom.multiPlayerData;
+          console.log('restaurants data from firebase', $scope.restaurants);
+          $scope.venuesLoaded = true;
           $scope.roomId = availableRoom.roomId;
           nomSelector.setId($scope.roomId);
           Rooms.getEntrants($scope.roomId).$on('value', function(value){
@@ -345,49 +359,50 @@ angular.module('hungergame.restaurants')
             console.log('get restaurant votes array', value.snapshot.value);
             $scope.restaurantVotes = value.snapshot.value;
           })
-                      Rooms.getRoundsOver($scope.roomId).$on('value', function(value){
-                        console.log('number of roundsOver', value.snapshot.value)
-                        $scope.roundsOver = value.snapshot.value
-                        if ($scope.roundsOver == $scope.entrantsNumber){
-                          (console.log('inside rounds over equality'))
-                          Rooms.modifyGameOver($scope.roomId, function(gameStatus){
-                            return true;
-                            console.log('modifying game over property to be true')
-                          }).then(function(snapshot){
-                            if (!snapshot){
-                              console.log('game over function failed');
-                            } else {
-                              console.log('gameover snapshot', snapshot)
-                              console.log('winning restaurant', snapshot.val())
-                              console.log('winning restaurant votes array', $scope.restaurantVotes)
-                              var winningRest = []
-                              var highestVoteCount = 0
-                              for (var rest in $scope.restaurantVotes){
-                                if ($scope.restaurantVotes[rest].userVotes >= highestVoteCount){
-                                  highestVoteCount = $scope.restaurantVotes[rest].userVotes;
-                                  winningRest.push($scope.restaurantVotes[rest])
-                                }
-                              }
-                              console.log('array of winning BOOM BOWW', winningRest)
-                              $rootScope.multiWinner = winningRest.pop()
-                              console.log('the ULTIMATE WINNER', $rootScope.multiWinner);
+          Rooms.getRoundsOver($scope.roomId).$on('value', function(value){
+            console.log('number of roundsOver', value.snapshot.value)
+            $scope.roundsOver = value.snapshot.value
+            if ($scope.roundsOver == $scope.entrantsNumber){
+              $rootScope.getYoFood = true;
+              console.log('inside rounds over equality')
+              Rooms.modifyGameOver($scope.roomId, function(gameStatus){
+                return true;
+                console.log('modifying game over property to be true')
+              }).then(function(snapshot){
+                if (!snapshot){
+                  console.log('game over function failed');
+                } else {
+                  console.log('gameover snapshot', snapshot)
+                  console.log('winning restaurant', snapshot.val())
+                  console.log('winning restaurant votes array', $scope.restaurantVotes)
+                  var winningRest = []
+                  var highestVoteCount = 0
+                  for (var rest in $scope.restaurantVotes){
+                    if ($scope.restaurantVotes[rest].userVotes >= highestVoteCount){
+                      highestVoteCount = $scope.restaurantVotes[rest].userVotes;
+                      winningRest.push($scope.restaurantVotes[rest])
+                    }
+                  }
+                  console.log('array of winning BOOM BOWW', winningRest)
+                  $rootScope.multiWinner = winningRest.pop()
+                  console.log('the ULTIMATE WINNER', $rootScope.multiWinner);
 
-                              $rootScope.multiWinner['map'] = {
-                                                      center: {
-                                                        latitude: $rootScope.multiWinner.latLng[0],
-                                                        longitude: $rootScope.multiWinner.latLng[1]
-                                                      },
-                                                      zoom: 14,
-                                                    }
-                                                    console.log('google maps object successfully attached:', $rootScope.multiWinner.map)
-                              Rooms.broadCastWinningGame($scope.roomId, winningRest);
-                            }
-                          }, function(err){
-                            console.log('gameover transaction failed: ', err)
-                          })
-                          console.log('game over!!!')
-                        }
-                      })
+                  $rootScope.multiWinner['map'] = {
+                                          center: {
+                                            latitude: $rootScope.multiWinner.latLng[0],
+                                            longitude: $rootScope.multiWinner.latLng[1]
+                                          },
+                                          zoom: 14,
+                                        }
+                                        console.log('google maps object successfully attached:', $rootScope.multiWinner.map)
+                  Rooms.broadCastWinningGame($scope.roomId, winningRest);
+                }
+              }, function(err){
+                console.log('gameover transaction failed: ', err)
+              })
+              console.log('game over!!!')
+            }
+          })
           Rooms.getGameOver($scope.roomId).$on('value', function(value){
             console.log('is game over?', value.snapshot.value)
             $scope.gameOver = value.snapshot.value
@@ -396,20 +411,6 @@ angular.module('hungergame.restaurants')
             }
           })
           // console.log('entrants', $scope.numberOfEntrants)
-          nomSelector.setId($scope.roomId);
-          $scope.venuesLoaded = true;
-          console.log('restaurants data from firebase', $scope.restaurants);
-          Rooms.modifyEntrants(availableRoom.roomId, function(entrantsCount){
-            return entrantsCount + 1;
-          }).then(function(snapshot){
-            if (!snapshot){
-              console.log('entrants add function failed');
-            } else {
-              console.log('entrants snapshot', snapshot)
-            }
-          }, function(err){
-            console.log('entrants transaction failed: ', err)
-          })
         }
       })
     });//geolocation query closes

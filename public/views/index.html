@@ -11,7 +11,10 @@
               <p class='flash'>Acquiring your position...</p>
             </div>
             <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ui-sref="home.loading" ng-click='solo()'>Single Player</a>
-            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ui-sref="home.loading">Multiplayer</a>
+            <a ng-if='latLngString' class='btn btn-primary btn-lg fadeIn' ui-sref="home.loading" ng-click='multi()'>
+              <span ng-if='!joinRoom' ng-click=>Multiplayer</span>
+              <span ng-if='joinRoom'>Join Game</span>
+            </a>
           </div>
         </div>
       </div>
@@ -31,5 +34,3 @@
 
 <!--   <img src="{{restaurant.venue.photos.groups[0].items[0].prefix+'500x500'+restaurant.venue.photos.groups[0].items[0].suffix}}"></img>s
  -->
-
-

@@ -40,7 +40,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                   $timeout(function() {
                        sliderFunc();
                        // scope.next();
-                  }, 1500)
+                  }, 2)
                 };
               }
 
@@ -95,8 +95,8 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                       // Adds reverse to swiped element post animation to anticipate a 'previous' swipe motion
                       $timeout(function() {
                         ele.classList.add('reverse');
-                      }, 350)
-                    }, 50)
+                      }, 350) // 350
+                    }, 2) //50 
                     console.log('scope.current: ', scope.currentIndex);
                 }
             };
@@ -187,7 +187,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                     var nomId = nomSelector.getId()
                     console.log('nomId', nomId)
                     Rooms.changeVote(nomId, nom.originalIndex.toString(), function(voteValue){
-                      scope.madeSelection = true
+                      $rootScope.madeSelection = true
                       return voteValue + 1;
                       // console.log(nope.name, 'has been downvoted!')
                     })
@@ -208,7 +208,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
 
                 $timeout(function() {
                   scope.slideshowOn=false;
-                }, 200)
+                }, 50) // 200
             };
 
             scope.swipedDown=function($event){
@@ -249,7 +249,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
 
                 $timeout(function() {
                   scope.slideshowOn=false;
-                }, 200)
+                }, 50) // 200
             };
 
             // Toggles card flip
@@ -277,7 +277,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
 
                 $timeout (function() {
                   scope.slideshowOn=false;
-                }, 200);
+                }, 50); // 200
               }
             };
 
@@ -319,7 +319,7 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
             //     });
 
             var timer;
-            var interval = 350;
+            var interval = 700;
 
             var sliderFunc=function(){
                 timer=$timeout(function(){
@@ -347,6 +347,8 @@ hungergame.directive('slider', ['$timeout', '$state', 'nomSelector', 'Rooms', '$
                 // Sets restaurant selection
                 var selection = scope.restaurants.splice(selection_no,1)[0];
                 scope.restaurantsCount-=1
+                var random = scope.restaurants[Math.floor(Math.random() * scope.restaurants.length)]
+                nomSelector.setRandom(random)
                 return selection;
             };
 
