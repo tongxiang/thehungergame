@@ -10,7 +10,7 @@ var express = require('express'),
     helpers = require('view-helpers'),
     config = require('./config');
 
-module.exports = function(app, passport, db) {
+module.exports = function(app) {
     app.set('showStackError', true);
 
     // Prettify HTML
@@ -55,21 +55,19 @@ module.exports = function(app, passport, db) {
         app.use(express.json());
         app.use(express.methodOverride());
 
-        // Express/Mongo session storage
-        app.use(express.session({
-            secret: config.sessionSecret,
-            store: new mongoStore({
-                db: db.connection.db,
-                collection: config.sessionCollection
-            })
-        }));
+        // // Express/Mongo session storage
+        // app.use(express.session({
+        //     secret: config.sessionSecret,
+        //     store: new mongoStore({
+        //         db: db.connection.db,
+        //         collection: config.sessionCollection
+        //     })
+        // }));
 
         // Dynamic helpers
         app.use(helpers(config.app.name));
 
         // Use passport session
-        app.use(passport.initialize());
-        app.use(passport.session());
 
         // Connect flash for flash messages
         app.use(flash());
