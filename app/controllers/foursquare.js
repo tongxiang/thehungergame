@@ -3,10 +3,6 @@
 var Q = require('q');
 var async = require('async');
 
-//Implement Promises Library -- Q, so that we can
-
-//we may also need the async series library, since we're going to running the arrayofResponses.foreach() over the entire
-
 var config = {
     'secrets' : {
         'clientId': 'E4AWAAAQ0FVJZWUCJAKDEGLOVV2XHIM5Y2X32UEWEPFMACFT',
@@ -66,13 +62,11 @@ var foursquareExplore = function(lat, lng){
 
 var getPhotosFromVenue = function(venueObject, done){
     foursquare.Venues.getPhotos(venueObject.id, null, {limit: 2}, null, function(error, photoArrayObject){
-        // OW: Temporary patch to account for no photos loading
         if (!photoArrayObject || !photoArrayObject.photos.items[0]) {
             venueObject['photoUrl'] = 'http://lorempixel.com/500/500/'
         }
         else if (!photoArrayObject.photos.items[1]){
             venueObject['photoUrl'] = photoArrayObject.photos.items[0].prefix.concat('500x500', photoArrayObject.photos.items[0].suffix)
-            // console.log('this ' + venueObject.name + ' doesnt have a second photo!')
         }
         else {
             venueObject['photoUrl'] = photoArrayObject.photos.items[1].prefix.concat('500x500', photoArrayObject.photos.items[1].suffix)
